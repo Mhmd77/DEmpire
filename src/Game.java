@@ -1,28 +1,9 @@
-import javafx.scene.canvas.GraphicsContext;
-
 import java.io.File;
-import java.io.Serializable;
+import java.util.ArrayList;
 
-class Game implements Serializable {
-    private int[][] world;
+public class Game {
+    private int[][] world=new int[16][16];
+    private ArrayList<Player> players;
+    private File mapFile;
 
-    Game(File map) {
-        world = new int[16][16];
-        loadMap(map);
-    }
-
-    private void loadMap(File file) {
-        for (int j = 0; j < 16; j++)
-            world[0][j] = 5;
-
-        for (int i = 1; i < 16; i++)
-            for (int j = 0; j < 16; j++)
-                world[i][j] = 0;
-        for (int j = 0; j < 16; j++)
-            world[16 - 1][j] = 1;
-    }
-
-    public int[][] getWorld() {
-        return world;
-    }
 }

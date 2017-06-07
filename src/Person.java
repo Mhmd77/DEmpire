@@ -5,7 +5,6 @@ import com.sun.javafx.jmx.MXNodeAlgorithmContext;
 import com.sun.javafx.sg.prism.NGNode;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 

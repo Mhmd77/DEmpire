@@ -1,9 +1,20 @@
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+import java.awt.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -24,8 +35,13 @@ public class Main extends Application {
         primaryStage.setTitle("Hello World");
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
+
         Canvas canvas = new Canvas(WIDTH_SCREEN, HEIGHT_SCREEN);
         root.getChildren().add(canvas);
+
+        //////////handling mouse
+        scene.setOnMouseClicked(game.mouseHandler);
+        //////////////////////
         gc = canvas.getGraphicsContext2D();
         socket = new Socket("localhost", 8888);
         ObjectInputStream dataInputStream = new ObjectInputStream(socket.getInputStream());

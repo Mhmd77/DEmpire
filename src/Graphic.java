@@ -12,7 +12,9 @@ public class Graphic {
     private static final int nTILE = 16;
     private static List<Image> images;
 
+
     public static void drawWorld(int[][] world, GraphicsContext gc) {
+
         images = new ArrayList<>();
         images.add(new Image("Images/grass.jpg"));//0
         images.add(new Image("Images/water.jpg"));//1
@@ -34,4 +36,5 @@ public class Graphic {
         gc.drawImage(water3, (nTILE - 1) * WIDTH_TILE, (nTILE - 2) * WIDTH_TILE);
         gc.drawImage(water4, 0 * WIDTH_TILE, (nTILE - 2) * WIDTH_TILE);*/
     }
+
 }

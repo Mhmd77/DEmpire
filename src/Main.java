@@ -18,7 +18,7 @@ public class Main extends Application {
         OST ost = new OST();
         OST battle = new OST();
         OST menu = new OST();
-
+        Player player = new Player();
         Graphic graphic = new Graphic(root, scene, canvas, primaryStage);
         ost.playSountrack();
         graphic.setGraphics();

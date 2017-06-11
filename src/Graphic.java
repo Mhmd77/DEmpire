@@ -3,6 +3,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 /**
@@ -10,21 +11,26 @@ import javafx.stage.Stage;
  */
 public class Graphic implements Graphics {
 
-    Group root;
-    Scene scene;
-    Canvas canvas;
-    Stage primaryStage;
-    GraphicsContext gc;
+    private Group root;
+    private Scene scene;
+    private Canvas canvas;
+    private Stage primaryStage;
+    private GraphicsContext gc;
+    private MapLoader mapLoader;
+    private static final int TILE_SIZE = 16;
+    private static final int WIDTH = 100;
+    private static final int HEIGHT = 50;
 
     Graphic(Group root, Scene scene, Canvas canvas, Stage primaryStage) {
-
         this.canvas = canvas;
         this.root = root;
         this.scene = scene;
         this.primaryStage = primaryStage;
+        this.mapLoader = new MapLoader();
+        mapLoader.loadMap();
     }
 
-    public void setGraphics() {
+    void setGraphics() {
         primaryStage.setTitle("Age of Empire");
         primaryStage.setScene(scene);
         root.getChildren().add(canvas);
@@ -35,15 +41,7 @@ public class Graphic implements Graphics {
 
     @Override
     public void drawBackground() {
-        Image grass = new Image("Images/grass.jpg");
-        Image water = new Image("Images/water.jpg");
-        Image rock = new Image("Images/rock.jpg");
-        for (int j = 0; j < 16; j++)
-            gc.drawImage(rock, j * 50, 0);
-        for (int i = 1; i < 15; i++)
-            for (int j = 0; j < 16; j++)
-                gc.drawImage(grass, j * 50, i * 50);
-        for (int j = 0; j < 16; j++)
-            gc.drawImage(water, j * 50, 750);
+        mapLoader.drawWorld(gc);
     }
+
 }

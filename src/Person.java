@@ -80,4 +80,5 @@ public class Person extends Node implements Human {
     public Object impl_processMXNode(MXNodeAlgorithm alg, MXNodeAlgorithmContext ctx) {
         return null;
     }
+
 }

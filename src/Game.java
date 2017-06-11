@@ -11,12 +11,18 @@ public class Game {
     private ArrayList<Player> players;
     private File mapFile;
     private boolean roamSoldier = true;
-    Person person = new Person();
+    Person person;
+
+    Game() {
+        players = new ArrayList<>();
+        person= new Person();
+    }
+
 
     EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-            if (mouseEvent.getEventType().equals(mouseEvent.MOUSE_CLICKED) && (mouseEvent.getY() < 100) && (roamSoldier) && (
+            if (mouseEvent.getEventType().equals(MouseEvent.MOUSE_CLICKED) && (mouseEvent.getY() < 100) && (roamSoldier) && (
                     person.position[0] < mouseEvent.getY()) && (person.position[0] + 50 > mouseEvent.getX())
                     && (person.position[1] < mouseEvent.getY()) && (person.position[1] + 50 > mouseEvent.getY())) {
 
@@ -32,13 +38,11 @@ public class Game {
         }
     };
 
-
-    Game() {
-        players = new ArrayList<>();
-    }
-
     void addPlayer(Player player) {
         this.players.add(player);
     }
 
+    Player getThisPlayer() {
+        return players.get(0);
+    }
 }

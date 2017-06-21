@@ -17,9 +17,6 @@ public class Graphic implements Graphics {
     private Stage primaryStage;
     private GraphicsContext gc;
     private MapLoader mapLoader;
-    private static final int TILE_SIZE = 16;
-    private static final int WIDTH = 100;
-    private static final int HEIGHT = 50;
 
     Graphic(Group root, Scene scene, Canvas canvas, Stage primaryStage) {
         this.canvas = canvas;

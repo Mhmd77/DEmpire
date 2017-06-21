@@ -11,8 +11,8 @@ public class MapLoader {
     private int[][] world;
     private List<Image> images;
     private static final int TILE_SIZE = 16;
-    private static final int WIDTH = 100;
-    private static final int HEIGHT = 50;
+    private static final int WIDTH = 80;
+    private static final int HEIGHT = 60;
 
     MapLoader() {
         world = new int[HEIGHT][WIDTH];
@@ -27,7 +27,7 @@ public class MapLoader {
 
     public void loadMap() {
         String line = null;
-        try (BufferedReader br = new BufferedReader(new FileReader("worldmap1.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("GameWorld.csv"))) {
             for (int i = 0; (line = br.readLine()) != null; i++) {
                 String[] cells = line.split(",");
                 for (int j = 0; j < cells.length; j++)

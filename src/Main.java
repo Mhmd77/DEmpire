@@ -1,5 +1,9 @@
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -12,12 +16,15 @@ import java.io.IOException;
 import java.net.Socket;
 
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 
 public class Main extends Application {
-    private static final int WIDTH = 1600;
-    private static final int HEIGHT = 800;
+    private static final int WIDTH = 1280;
+    private static final int HEIGHT = 960;
     private static ServerListener serverListener;
     private static Game game;
+    EventHandler<MouseEvent> mouseMove;
+
     public static void main(String[] args) throws IOException {
         game = new Game();
 //        Socket socket = new Socket("localhost", 8888);
@@ -58,16 +65,20 @@ public class Main extends Application {
         Graphic graphic = new Graphic(root, scene, canvas, primaryStage);
         ost.playSountrack();
         graphic.setGraphics();
-        Button btn = new Button();
-        btn.setText("CLICK");
         root.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                System.out.println(sp.getVvalue());
-                System.out.println(sp.getHvalue());
+                if (event.getX() > scene.getWidth() - 20)
+                    sp.setHvalue(sp.getHvalue() + 0.005);
+                else if (event.getX() < scene.getWidth() + 20)
+                    sp.setHvalue(sp.getHvalue() - 0.005);
+                if (event.getY() > scene.getHeight() - 20)
+                    sp.setVvalue(sp.getVvalue() + 0.005);
+                else if (event.getY() < scene.getHeight() + 20)
+                    sp.setVvalue(sp.getVvalue() - 0.005);
+                System.out.println(event.getX());
             }
         });
-        root.getChildren().add(btn);
     }
 
 

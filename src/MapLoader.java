@@ -1,5 +1,7 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -23,9 +25,10 @@ public class MapLoader {
             Image image = new Image(imageFileName);
             images.add(image);
         }
+        loadMap();
     }
 
-    public void loadMap() {
+    private void loadMap() {
         String line = null;
         try (BufferedReader br = new BufferedReader(new FileReader("GameWorld.csv"))) {
             for (int i = 0; (line = br.readLine()) != null; i++) {
@@ -38,10 +41,15 @@ public class MapLoader {
         }
     }
 
-    void drawWorld(GraphicsContext graphicsContext) {
+    void drawWorld(GridPane pane) {
         for (int i = 0; i < HEIGHT; i++)
             for (int j = 0; j < WIDTH; j++) {
-                graphicsContext.drawImage(images.get(world[i][j]), j * TILE_SIZE, i * TILE_SIZE);
+                ImageView img = new ImageView(images.get(world[i][j]));
+                pane.add(img, j, i);
             }
+//        for (int i = 0; i < HEIGHT; i++)
+//            for (int j = 0; j < WIDTH; j++) {
+//                graphicsContext.drawImage(images.get(world[i][j]), j * TILE_SIZE, i * TILE_SIZE);
+//            }
     }
 }

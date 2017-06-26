@@ -1,6 +1,4 @@
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import java.io.BufferedReader;
@@ -10,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MapLoader {
-    private int[][] world;
+    private static int[][] world;
     private List<Image> images;
     private static final int TILE_SIZE = 16;
     private static final int WIDTH = 80;
@@ -41,15 +39,19 @@ public class MapLoader {
         }
     }
 
-    void drawWorld(GridPane pane) {
+    GridPane drawWorld() {
+        GridPane pane = new GridPane();
+        pane.setPrefWidth(960);
+        pane.setPrefHeight(720);
         for (int i = 0; i < HEIGHT; i++)
             for (int j = 0; j < WIDTH; j++) {
-                ImageView img = new ImageView(images.get(world[i][j]));
+                TileImageView img = new TileImageView(images.get(world[i][j]), i, j);
                 pane.add(img, j, i);
             }
-//        for (int i = 0; i < HEIGHT; i++)
-//            for (int j = 0; j < WIDTH; j++) {
-//                graphicsContext.drawImage(images.get(world[i][j]), j * TILE_SIZE, i * TILE_SIZE);
-//            }
+        return pane;
+    }
+
+    static boolean isFree(int i, int j) {
+        return world[i][j] == 0 || world[i][j] == 1 || world[i][j] == 32 || world[i][j] == 33;
     }
 }

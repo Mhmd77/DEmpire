@@ -1,7 +1,7 @@
-import javafx.animation.TranslateTransition;
+package Game;
+
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import javafx.util.Duration;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,11 +11,13 @@ public class Game {
     private ArrayList<Player> players;
     private File mapFile;
     private boolean roamSoldier = true;
-    Person person;
+    private Person person;
+    private Graphic graphic;
 
     Game() {
         players = new ArrayList<>();
-        person= new Person();
+        person = new Person();
+        graphic = new Graphic(new MapLoader().drawWorld());
     }
 
 
@@ -44,5 +46,9 @@ public class Game {
 
     Player getThisPlayer() {
         return players.get(0);
+    }
+
+    public Graphic getGraphic() {
+        return graphic;
     }
 }

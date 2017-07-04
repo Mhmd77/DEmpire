@@ -7,7 +7,6 @@ public class Tiles {
     int id;
     int g;
     double h;
-    double f;
     double x;
     double y;
 

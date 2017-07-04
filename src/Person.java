@@ -7,9 +7,13 @@ import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+
 
 public class Person extends Node implements Human {
 
+    ArrayList<Tiles> closeList;
+    ArrayList<Tiles> openList;
     int[] position = new int[2];
     int speed;
     int life;
@@ -39,17 +43,114 @@ public class Person extends Node implements Human {
     }
 
 
-    @Override
-    public void roam(int x, int y, int desX, int desY, Person person) {
+    public ArrayList<Tiles> roam(int i, int j, int igoal, int jgoal, Tiles[][] tiles) {
+        int g = 1;
+        closeList = new ArrayList<>();
+        openList = new ArrayList<>();
+        closeList.add(tiles[i][j]);
 
-        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(2000), person);
-        translateTransition.setFromX(x);
-        translateTransition.setFromY(y);
-        translateTransition.setToX(desX - x);
-        translateTransition.setToY(desY - y);
-        translateTransition.play();
+        while (!closeList.contains(tiles[igoal][jgoal])) {
+            if ((!openList.contains(tiles[i - 1][j - 1])) && (!closeList.contains(tiles[i - 1][j - 1])) && (tiles[i - 1][j - 1].id == 1)
+                    || (tiles[i - 1][j - 1].id == 3)) {
+                tiles[i - 1][j - 1].g = g;
+                tiles[i - 1][j - 1].h = calculateH(tiles[i - 1][j - 1], tiles[igoal][jgoal]);
+                openList.add(tiles[i - 1][j - 1]);
+            }
+
+            if ((!openList.contains(tiles[i][j - 1])) && (!closeList.contains(tiles[i][j - 1])) && (tiles[i][j - 1].id == 1)
+                    || (tiles[i][j - 1].id == 3)) {
+                tiles[i][j - 1].g = g;
+                tiles[i][j - 1].h = calculateH(tiles[i][j - 1], tiles[igoal][jgoal]);
+                openList.add(tiles[i][j - 1]);
+            }
+
+            if ((!openList.contains(tiles[i - 1][j])) && (!closeList.contains(tiles[i - 1][j])) && (tiles[i - 1][j].id == 1)
+                    || (tiles[i - 1][j].id == 3)) {
+                tiles[i - 1][j].g = g;
+                tiles[i - 1][j].h = calculateH(tiles[i - 1][j], tiles[igoal][jgoal]);
+                openList.add(tiles[i - 1][j]);
+            }
+
+            if ((!openList.contains(tiles[i - 1][j + 1])) && (!closeList.contains(tiles[i - 1][j + 1])) && (tiles[i - 1][j + 1].id == 1)
+                    || (tiles[i - 1][j + 1].id == 3)) {
+                tiles[i - 1][j + 1].g = g;
+                tiles[i - 1][j + 1].h = calculateH(tiles[i - 1][j + 1], tiles[igoal][jgoal]);
+                openList.add(tiles[i - 1][j + 1]);
+            }
+
+            if ((!openList.contains(tiles[i][j + 1])) && (!closeList.contains(tiles[i][j + 1])) && (tiles[i][j + 1].id == 1)
+                    || (tiles[i][j + 1].id == 3)) {
+                tiles[i][j + 1].g = g;
+                tiles[i][j + 1].h = calculateH(tiles[i][j + 1], tiles[igoal][jgoal]);
+                openList.add(tiles[i][j + 1]);
+            }
+
+            if ((!openList.contains(tiles[i + 1][j - 1])) && (!closeList.contains(tiles[i + 1][j - 1])) && (tiles[i + 1][j - 1].id == 1)
+                    || (tiles[i + 1][j - 1].id == 3)) {
+                tiles[i + 1][j - 1].g = g;
+                tiles[i + 1][j - 1].h = calculateH(tiles[i + 1][j - 1], tiles[igoal][jgoal]);
+                openList.add(tiles[i + 1][j - 1]);
+            }
+
+            if ((!openList.contains(tiles[i + 1][j])) && (!closeList.contains(tiles[i + 1][j])) && (tiles[i + 1][j].id == 1)
+                    || (tiles[i + 1][j].id == 3)) {
+                tiles[i + 1][j].g = g;
+                tiles[i + 1][j].h = calculateH(tiles[i + 1][j], tiles[igoal][jgoal]);
+                openList.add(tiles[i + 1][j]);
+            }
+
+            if ((!openList.contains(tiles[i + 1][j + 1])) && (!closeList.contains(tiles[i + 1][j + 1])) && (tiles[i + 1][j + 1].id == 1)
+                    || (tiles[i + 1][j + 1].id == 3)) {
+                tiles[i + 1][j + 1].g = g;
+                tiles[i + 1][j + 1].h = calculateH(tiles[i + 1][j + 1], tiles[igoal][jgoal]);
+                openList.add(tiles[i + 1][j + 1]);
+            }
+
+            closeList.add(findMinH(openList));
+            openList.remove(findMinH(openList));
+            i = findMinH(openList).i;
+            j = findMinH(openList).j;
+            g++;
+
+            if ((Math.abs(findMinH(openList).i - tiles[igoal][jgoal].i) == 1) && (Math.abs(findMinH(openList).j - tiles[igoal][jgoal].j) == 1) ||
+                    (Math.abs(findMinH(openList).i - tiles[igoal][jgoal].i) == 0) && (Math.abs(findMinH(openList).j - tiles[igoal][jgoal].j) == 1)
+                    || (Math.abs(findMinH(openList).i - tiles[igoal][jgoal].i) == 1) && (Math.abs(findMinH(openList).j - tiles[igoal][jgoal].j) == 0)) {
+                closeList.add(tiles[igoal][jgoal]);
+            }
+
+        }
+
+        for (int k = 0; k < closeList.size(); k++) {
+            for (int l = k; l < closeList.size(); l++) {
+                if ((closeList.get(k).g == closeList.get(l).g) && (closeList.get(k).h > closeList.get(l).h)) {
+                    closeList.remove(l);
+
+                }
+            }
+        }
+
+        return closeList;
 
     }
+
+    double calculateH(Tiles first, Tiles goal) {
+        double h = ((first.x - goal.x) + (first.y - goal.y));
+        return Math.abs(h);
+
+    }
+
+    Tiles findMinH(ArrayList<Tiles> tiles) {
+        Tiles minH = new Tiles();
+        minH.h = tiles.get(0).h;
+
+        for (int i = 0; i < tiles.size(); i++) {
+            if (tiles.get(i).h < minH.h) {
+                minH.h = tiles.get(i).h;
+            }
+        }
+        return minH;
+    }
+
 
     @Override
     public void setPower() {

@@ -1,3 +1,5 @@
+package Game;
+
 import javafx.scene.image.Image;
 
 public class Resource {

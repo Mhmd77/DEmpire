@@ -1,25 +1,30 @@
 package Game;
 
+import Server.ServerListener;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class Game {
-    private int[][] world = new int[16][16];
-    private ArrayList<Player> players;
+    private boolean started = false;
+    private List<Player> players;
     private File mapFile;
     private boolean roamSoldier = true;
     private Person person;
     private Graphic graphic;
+    private ServerListener serverListener;
+
 
     Game() {
+
         players = new ArrayList<>();
         person = new Person();
         graphic = new Graphic(new MapLoader().drawWorld());
     }
-
 
     EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
         @Override
@@ -44,11 +49,34 @@ public class Game {
         this.players.add(player);
     }
 
-    Player getThisPlayer() {
+    public Player getThisPlayer() {
         return players.get(0);
     }
 
+    public Player getPlayer(int id) {
+        for (Player p :
+                players)
+            if(p.getID() == id)
+                return p;
+        return null;
+    }
     public Graphic getGraphic() {
         return graphic;
+    }
+
+
+    public ServerListener getServerListener() {
+        return serverListener;
+    }
+
+    public void setServerListener(ServerListener serverListener) {
+        serverListener.start();
+        this.serverListener = serverListener;
+    }
+    public void startGame() {
+        started = true;
+    }
+    public boolean isGameStarted() {
+        return started;
     }
 }

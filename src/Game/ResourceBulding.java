@@ -1,19 +1,21 @@
+package Game;
+
 /**
  * Created by ASUS on 6/7/2017.
  */
-public class ResourceBulding extends Building {
+public class ResourceBulding {
     private boolean buildable;
     private int kind;
     // Citizen citizen;
 
-    ResourceBulding(int life, int x, int y, int kind) {
-        super(life, x, y);
+    /*ResourceBulding(int life, int x, int y, int kind) {
+        super(life, x, y, imageView);
         this.kind = kind;
         if(kind!=2)
             buildable=true;
         else
             buildable=false;
-    }
+    }*/
 
 
     public int getKind() {

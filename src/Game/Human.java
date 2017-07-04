@@ -1,3 +1,6 @@
+package Game;
+
+import Game.Person;
 
 public interface Human {
     void setFoodAmount();

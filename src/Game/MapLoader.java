@@ -1,3 +1,7 @@
+package Game;
+
+import ImageViews.HarborImageView;
+import ImageViews.TileImageView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 
@@ -26,6 +30,10 @@ public class MapLoader {
         loadMap();
     }
 
+    public static int[][] getWorld() {
+        return world;
+    }
+
     private void loadMap() {
         String line = null;
         try (BufferedReader br = new BufferedReader(new FileReader("GameWorld.csv"))) {
@@ -52,6 +60,13 @@ public class MapLoader {
     }
 
     static boolean isFree(int i, int j) {
+        if (Main.getGame().getGraphic().getDragImage() instanceof HarborImageView) {
+            for (int m = 0; m < 6; m++)
+                if (world[i][j] == m + 598 || world[i][j] == m + 758)
+                    return true;
+
+            return world[i][j] == 630 || world[i][j] == 662 || world[i][j] == 694 || world[i][j] == 726;
+        }
         return world[i][j] == 0 || world[i][j] == 1 || world[i][j] == 32 || world[i][j] == 33;
     }
 }

@@ -1,5 +1,7 @@
 package Game;
 
+import java.util.ArrayList;
+
 import Game.Person;
 
 public interface Human {
@@ -11,7 +13,7 @@ public interface Human {
 
     void setRadius();
 
-    void roam(int x, int y, int desX, int desY, Person person);
+    ArrayList<Tiles> roam(int i, int j, int igoal, int jgoal, Tiles[][] tiles);
 
 
     void setPower();

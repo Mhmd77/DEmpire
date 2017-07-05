@@ -1,9 +1,6 @@
 package Game;
 
-/**
- * Created by Ali on 7/4/2017.
- */
-public class Tiles {
+public class Tile {
     int i;
     int j;
     int id;

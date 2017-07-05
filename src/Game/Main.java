@@ -78,6 +78,8 @@ public class Main extends Application {
                     int thisID = inputStream.readInt();
                     System.out.println("Registered As " + thisID);
                     game.addPlayer(new Player(thisID));
+                    for (int i = 0;i < thisID ;i++)
+                        game.addPlayer(new Player(i));
                     while (true) {
                         try {
                             DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());

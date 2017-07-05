@@ -8,7 +8,7 @@ public class Building {
     private BuildingKind kind;
     private Image image;
     private static boolean isActive = true;
-    private Position pos;
+    private Tile pos;
     private int life;
     private ImageView imageView;
 
@@ -16,7 +16,7 @@ public class Building {
         this.life = life;
         this.kind = kind;
         this.imageView = imageView;
-        pos = new Position();
+        pos = new Tile();
         pos.x = x;
         pos.y = y;
     }
@@ -45,7 +45,7 @@ public class Building {
         this.image = image;
     }
 
-    public Position getPos() {
+    public Tile getPos() {
         return pos;
     }
 

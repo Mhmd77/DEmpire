@@ -28,9 +28,7 @@ public class ServerListener extends Thread {
         while (true) {
             try {
                 DataInputStream inputStream = new DataInputStream(socket.getInputStream());
-                String command = inputStream.readUTF();
-                commandProcessor.addCommandLis(command);
-                System.out.println(command);
+                commandProcessor.addCommandLis(inputStream.readUTF());
             } catch (IOException e) {
                 try {
                     sleep(10);

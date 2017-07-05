@@ -26,7 +26,7 @@ public class Game {
         graphic = new Graphic(new MapLoader().drawWorld());
     }
 
-    EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
+    /*EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
             if (mouseEvent.getEventType().equals(MouseEvent.MOUSE_CLICKED) && (mouseEvent.getY() < 100) && (roamSoldier) && (
@@ -43,7 +43,7 @@ public class Game {
             }
 
         }
-    };
+    };*/
 
     void addPlayer(Player player) {
         this.players.add(player);
@@ -56,10 +56,11 @@ public class Game {
     public Player getPlayer(int id) {
         for (Player p :
                 players)
-            if(p.getID() == id)
+            if (p.getID() == id)
                 return p;
         return null;
     }
+
     public Graphic getGraphic() {
         return graphic;
     }
@@ -73,9 +74,17 @@ public class Game {
         serverListener.start();
         this.serverListener = serverListener;
     }
+
     public void startGame() {
         started = true;
+        System.out.printf("Players ");
+        for (Player p :
+                players)
+            System.out.printf(p.getID() + ",");
+        System.out.println("Registered");
+
     }
+
     public boolean isGameStarted() {
         return started;
     }

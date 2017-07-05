@@ -11,7 +11,6 @@ import java.util.List;
 public class TileImageView extends ImageView {
     private int i;
     private int j;
-    private TileImageView thisImg;
 
     TileImageView(String src, int i, int j) {
         super(src);
@@ -20,7 +19,6 @@ public class TileImageView extends ImageView {
         setDragEntered();
         setDragExited();
         setDragReleased();
-        thisImg = this;
     }
 
     public TileImageView(Image src, int i, int j) {
@@ -30,7 +28,6 @@ public class TileImageView extends ImageView {
         setDragEntered();
         setDragExited();
         setDragReleased();
-        thisImg = this;
     }
 
     private void setDragReleased() {

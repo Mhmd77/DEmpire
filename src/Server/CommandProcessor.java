@@ -20,8 +20,8 @@ public class CommandProcessor extends Thread {
                     if (commands.isEmpty())
                         commands.wait();
                     String command = commands.poll();
-                    int id = Integer.parseInt(command.substring(0, 1));
-                    String[] values = command.substring(2).split("-");
+                    String[] values = command.split("-");
+                    int id = Integer.parseInt(values[0]);
                     processCommand(values, id);
                     sleep(10);
                 }
@@ -33,13 +33,12 @@ public class CommandProcessor extends Thread {
     }
 
     private void processCommand(String[] values, int id) {
-        if (values[0].equals("building")) {
-            int i = Integer.parseInt(values[1]);
-            int j = Integer.parseInt(values[2]);
-            int kind = Integer.parseInt(values[3]);
-            Platform.runLater(() -> Main.getGame().getGraphic().createBuilding(i, j, kind));
-        } else
-            System.out.println(values[0] + values[1]);
+        if (values[1].equals("building")) {
+            int i = Integer.parseInt(values[2]);
+            int j = Integer.parseInt(values[3]);
+            int kind = Integer.parseInt(values[4]);
+            Platform.runLater(() -> Main.getGame().getGraphic().createBuilding(id, i, j, kind));
+        }
     }
 
     void addCommandLis(String command) {

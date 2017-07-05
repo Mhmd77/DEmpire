@@ -38,11 +38,11 @@ public enum BuildingKind {
             case 0:
                 return Castle;
             case 1:
-                return Castle;
+                return Harbor;
             case 2:
-                return Castle;
+                return Lumber;
             case 3:
-                return Castle;
+                return Mine;
         }
         return null;
     }

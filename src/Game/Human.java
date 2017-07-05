@@ -2,8 +2,6 @@ package Game;
 
 import java.util.ArrayList;
 
-import Game.Person;
-
 public interface Human {
     void setFoodAmount();
 
@@ -13,7 +11,7 @@ public interface Human {
 
     void setRadius();
 
-    ArrayList<Tiles> roam(int i, int j, int igoal, int jgoal, Tiles[][] tiles);
+    ArrayList<Tile> roam(int i, int j, int igoal, int jgoal, Tile[][] tiles);
 
 
     void setPower();

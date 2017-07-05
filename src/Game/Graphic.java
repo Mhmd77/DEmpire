@@ -2,6 +2,9 @@ package Game;
 
 import ImageViews.BuildingImageView;
 import ImageViews.HarborImageView;
+import ImageViews.LumberImageView;
+import ImageViews.MineImageView;
+import com.sun.xml.internal.ws.handler.HandlerTube;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -103,8 +106,21 @@ public class Graphic {
         dragImage.disableBuilding();
         ImageView newImage = new ImageView(dragImage.getImage());
         grid.add(newImage, j, i, 4, 4);
-        if (dragImage instanceof BuildingImageView) {
+        if (dragImage instanceof HarborImageView) {
+            HarborBuilding harbor = new HarborBuilding(100, j, i, BuildingKind.Harbor, newImage);
+            Main.getGame().getThisPlayer().addBuilding(harbor);
+            kind = BuildingKind.Harbor;
+        } else if (dragImage instanceof LumberImageView) {
+            LumberBuilding lumber = new LumberBuilding(100, j, i, BuildingKind.Harbor, newImage);
+            Main.getGame().getThisPlayer().addBuilding(lumber);
+            kind = BuildingKind.Lumber;
+        } else if (dragImage instanceof MineImageView) {
+            MineBuilding mine = new MineBuilding(100, j, i, BuildingKind.Harbor, newImage);
+            Main.getGame().getThisPlayer().addBuilding(mine);
+            kind = BuildingKind.Mine;
+        } else {
             CastleBuilding castle = new CastleBuilding(100, j, i, BuildingKind.Castle, newImage);
+            Main.getGame().getThisPlayer().addBuilding(castle);
             kind = BuildingKind.Castle;
         }
         dragImage = null;
@@ -115,9 +131,22 @@ public class Graphic {
         grid.add(kind.getImageView(), j, i, 4, 4);
     }
 
-    public void createBuilding(int i, int j, int kind) {
-        System.out.println("HERE");
-        grid.add(BuildingKind.getInstanceByKind(kind).getImageView(), j, i, 4, 4);
+    public void createBuilding(int id, int i, int j, int kind) {
+        ImageView newImage = BuildingKind.getInstanceByKind(kind).getImageView();
+        grid.add(newImage, j, i, 4, 4);
+        if (kind == BuildingKind.Castle.getValue()) {
+            CastleBuilding castle = new CastleBuilding(100, j, i, BuildingKind.Castle, newImage);
+            Main.getGame().getPlayer(id).addBuilding(castle);
+        } else if (kind == BuildingKind.Harbor.getValue()) {
+            HarborBuilding castle = new HarborBuilding(50, j, i, BuildingKind.Harbor, newImage);
+            Main.getGame().getPlayer(id).addBuilding(castle);
+        } else if (kind == BuildingKind.Lumber.getValue()) {
+            LumberBuilding lumber = new LumberBuilding(70, j, i, BuildingKind.Lumber, newImage);
+            Main.getGame().getPlayer(id).addBuilding(lumber);
+        } else if (kind == BuildingKind.Mine.getValue()) {
+            MineBuilding mine = new MineBuilding(70, j, i, BuildingKind.Lumber, newImage);
+            Main.getGame().getPlayer(id).addBuilding(mine);
+        }
     }
 
     public boolean isDragging() {

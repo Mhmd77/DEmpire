@@ -5,17 +5,15 @@ import com.sun.javafx.geom.transform.BaseTransform;
 import com.sun.javafx.jmx.MXNodeAlgorithm;
 import com.sun.javafx.jmx.MXNodeAlgorithmContext;
 import com.sun.javafx.sg.prism.NGNode;
-import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
-import javafx.util.Duration;
 
 import java.util.ArrayList;
 
 
 public class Person extends Node implements Human {
 
-    ArrayList<Tiles> closeList;
-    ArrayList<Tiles> openList;
+    ArrayList<Tile> closeList;
+    ArrayList<Tile> openList;
     int[] position = new int[2];
     int speed;
     int life;
@@ -45,7 +43,7 @@ public class Person extends Node implements Human {
     }
 
 
-    public ArrayList<Tiles> roam(int i, int j, int igoal, int jgoal, Tiles[][] tiles) {
+    public ArrayList<Tile> roam(int i, int j, int igoal, int jgoal, Tile[][] tiles) {
         int g = 1;
         closeList = new ArrayList<>();
         openList = new ArrayList<>();
@@ -126,7 +124,6 @@ public class Person extends Node implements Human {
             for (int l = k; l < closeList.size(); l++) {
                 if ((closeList.get(k).g == closeList.get(l).g) && (closeList.get(k).h > closeList.get(l).h)) {
                     closeList.remove(l);
-
                 }
             }
         }
@@ -135,14 +132,14 @@ public class Person extends Node implements Human {
 
     }
 
-    double calculateH(Tiles first, Tiles goal) {
+    private double calculateH(Tile first, Tile goal) {
         double h = ((first.x - goal.x) + (first.y - goal.y));
         return Math.abs(h);
 
     }
 
-    Tiles findMinH(ArrayList<Tiles> tiles) {
-        Tiles minH = new Tiles();
+    private Tile findMinH(ArrayList<Tile> tiles) {
+        Tile minH = new Tile();
         minH.h = tiles.get(0).h;
 
         for (int i = 0; i < tiles.size(); i++) {

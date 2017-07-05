@@ -45,6 +45,7 @@ public class MapLoader {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     GridPane drawWorld() {

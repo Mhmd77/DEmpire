@@ -6,6 +6,7 @@ import ImageViews.LumberImageView;
 import ImageViews.MineImageView;
 import Server.ServerListener;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -38,11 +39,26 @@ public class Main extends Application {
         VBox root = new VBox();
         primaryStage.setTitle("Age Of Empire");
         ScrollPane sp = game.getGraphic().createScrollPane();
+        Thread thread = new Thread(game.getGraphic());
+
         root.getChildren().add(sp);
         root.getChildren().add(createBottomMenu());
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
+    Platform.runLater(() -> {
+
+        try {
+             thread.start();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    });
+         //game.getGraphic().createPerson();
+
+     //    thread.start();
+
         primaryStage.show();
     }
 

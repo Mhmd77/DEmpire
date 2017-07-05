@@ -12,7 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 
-public class Graphic {
+public class Graphic implements Runnable {
     private GridPane grid;
     private ScrollPane scrollPane;
     private final double SCALE_DELTA = 1.05;
@@ -131,9 +131,23 @@ public class Graphic {
         scrollPane.setFitToWidth(true);
         return scrollPane;
     }
+   public void createPerson() throws InterruptedException {
+       Person p=new Person();
+p.move(grid);
+
+   }
 
     public ScrollPane getScrollPane() {
         return scrollPane;
     }
 
+    @Override
+    public void run() {
+        try{
+        createPerson();
+
+        }catch (InterruptedException e){
+            System.out.println(e);
+        }
+    }
 }

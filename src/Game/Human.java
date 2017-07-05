@@ -3,11 +3,14 @@ package Game;
 import java.util.ArrayList;
 
 import Game.Person;
+import javafx.scene.layout.GridPane;
 
 public interface Human {
     void setFoodAmount();
 
     void attack();
+
+    void move(GridPane pane);
 
     void setSpeed();
 

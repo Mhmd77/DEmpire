@@ -6,7 +6,10 @@ import com.sun.javafx.jmx.MXNodeAlgorithm;
 import com.sun.javafx.jmx.MXNodeAlgorithmContext;
 import com.sun.javafx.sg.prism.NGNode;
 import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
@@ -63,36 +66,24 @@ public class Person implements Human {
         ArrayList<Tiles> list = new ArrayList<Tiles>(Arrays.asList(tiles));
         ImageView pImage = new ImageView();
         pImage.setImage(personImage.getImage());
-        try {
+        final long startNanoTime = System.nanoTime();
+        final int[] x = {1};
+        final int[] y = {1};
+        Image image = new Image("Images/romanSoldier.jpg");
 
-            for (int k = 0; k < 4; k++) {
-               // long time0 = System.currentTimeMillis();
-                System.out.println("in" + k);
-                pane.getChildren().remove(pImage);
-                pImage.setImage(personImage.getImage());
-                pane.add(pImage, tiles[k].j, tiles[k].i,
-                        tiles[k].j + 4, tiles[k].i + 4);
-                TimeUnit.SECONDS.sleep(4);
-             /*  while (k<3) {
-                    long time1 = System.currentTimeMillis();
-                  //  System.out.println(time1-time0);
-//                    System.out.println("time 0: " + (time0 ));
+        new AnimationTimer() {
+            public void handle(long currentNanoTime) {
+                double t = (currentNanoTime - startNanoTime) / 1000000000.0;
 
-                    if (time1  - time0 >1000) {
-                        //  Thread.sleep(1000);s
-                      //  System.out.println("IN FOR...!");
-                        System.out.println("while");
-                        break;
-                    }
+                //gc.drawImage(image,x[0],y[0]);
+               pane.getChildren().remove(pImage);
+                pane.add(pImage, y[0], x[0], y[0] + 4, x[0] + 4);
+                x[0] += 1;
+               y[0] +=1;
 
-
-                }*/
 
             }
-        } catch (InterruptedException e) {
-            System.out.println(e);
-            System.out.println("sleep exc");
-        }
+        }.start();
 
     }
 
@@ -228,3 +219,18 @@ public class Person implements Human {
 
 
 }
+/* try {
+
+            for (int k = 0; k < 4; k++) {
+        System.out.println("in" + k);
+        pane.getChildren().remove(pImage);
+        pImage.setImage(personImage.getImage());
+        pane.add(pImage, tiles[k].j, tiles[k].i,
+        tiles[k].j + 4, tiles[k].i + 4);
+        TimeUnit.SECONDS.sleep(1);
+
+        }
+        } catch (InterruptedException e) {
+        System.out.println(e);
+        System.out.println("sleep exc");
+        }*/

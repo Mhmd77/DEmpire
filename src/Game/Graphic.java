@@ -6,13 +6,14 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 
-public class Graphic implements Runnable {
+public class Graphic  {
     private GridPane grid;
     private ScrollPane scrollPane;
     private final double SCALE_DELTA = 1.05;
@@ -141,13 +142,5 @@ p.move(grid);
         return scrollPane;
     }
 
-    @Override
-    public void run() {
-        try{
-        createPerson();
 
-        }catch (InterruptedException e){
-            System.out.println(e);
-        }
-    }
 }

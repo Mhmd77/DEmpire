@@ -3,6 +3,7 @@ package Game;
 import java.util.ArrayList;
 
 import Game.Person;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.GridPane;
 
 public interface Human {

@@ -2,6 +2,7 @@ package Game;
 
 import Server.ServerListener;
 import javafx.event.EventHandler;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 
 import java.io.File;
@@ -18,9 +19,7 @@ public class Game {
     private Graphic graphic;
     private ServerListener serverListener;
 
-
     Game() {
-
         players = new ArrayList<>();
         person = new Person();
         graphic = new Graphic(new MapLoader().drawWorld());

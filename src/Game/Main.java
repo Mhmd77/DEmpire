@@ -11,6 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
@@ -20,6 +22,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javax.security.auth.Refreshable;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -36,28 +39,18 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         game = new Game();
+
         VBox root = new VBox();
         primaryStage.setTitle("Age Of Empire");
         ScrollPane sp = game.getGraphic().createScrollPane();
-        Thread thread = new Thread(game.getGraphic());
 
         root.getChildren().add(sp);
         root.getChildren().add(createBottomMenu());
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
-    Platform.runLater(() -> {
-
-        try {
-             thread.start();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    });
-         //game.getGraphic().createPerson();
-
-     //    thread.start();
+        game.getGraphic().createPerson();
+        //  Platform.setImplicitExit(false);
 
         primaryStage.show();
     }

@@ -15,8 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 
-public class Graphic implements Runnable {
-    //    private GridPane grid;
+public class Graphic  {
     private Pane pane;
     private ScrollPane scrollPane;
     private final double SCALE_DELTA = 1.05;
@@ -147,6 +146,11 @@ public class Graphic implements Runnable {
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         return scrollPane;
     }
+   public void createPerson() throws InterruptedException {
+       Person p=new Person();
+p.move(grid);
+
+   }
 
     public void createPerson() throws InterruptedException {
         Person p = new Person();
@@ -158,17 +162,5 @@ public class Graphic implements Runnable {
         return scrollPane;
     }
 
-    @Override
-    public void run() {
-        try {
-            createPerson();
 
-        } catch (InterruptedException e) {
-            System.out.println(e);
-        }
-    }
-
-    public Node getNodeByRowColumnIndex(int i, int j) {
-        return pane.getChildren().get(i * 80 + j);
-    }
 }

@@ -1,11 +1,24 @@
 package Game;
 
+import com.sun.javafx.geom.BaseBounds;
+import com.sun.javafx.geom.transform.BaseTransform;
+import com.sun.javafx.jmx.MXNodeAlgorithm;
+import com.sun.javafx.jmx.MXNodeAlgorithmContext;
+import com.sun.javafx.sg.prism.NGNode;
+import javafx.animation.*;
+import javafx.application.Platform;
+import javafx.scene.Node;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EmptyStackException;
+import java.util.Timer;
+import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
 
@@ -81,6 +94,45 @@ public class Person implements Human {
         } catch (InterruptedException e) {
             System.out.println("sleep exc");
         }
+
+    }
+
+    @Override
+    public void move(GridPane pane) {
+        Tiles[] tiles = new Tiles[4];
+        for (int i = 0; i < 4; i++) {
+            tiles[i] = new Tiles();
+        }
+        tiles[0].i = 10;
+        tiles[0].j = 10;
+        tiles[1].i = 20;
+        tiles[1].j = 50;
+        tiles[2].i = 30;
+        tiles[2].j = 50;
+        tiles[3].i = 0;
+        tiles[3].j = 0;
+        boolean reachedDestination = false;
+        ArrayList<Tiles> list = new ArrayList<Tiles>(Arrays.asList(tiles));
+        ImageView pImage = new ImageView();
+        pImage.setImage(personImage.getImage());
+        final long startNanoTime = System.nanoTime();
+        final int[] x = {1};
+        final int[] y = {1};
+        Image image = new Image("Images/romanSoldier.jpg");
+
+        new AnimationTimer() {
+            public void handle(long currentNanoTime) {
+                double t = (currentNanoTime - startNanoTime) / 1000000000.0;
+
+                //gc.drawImage(image,x[0],y[0]);
+               pane.getChildren().remove(pImage);
+                pane.add(pImage, y[0], x[0], y[0] + 4, x[0] + 4);
+                x[0] += 1;
+               y[0] +=1;
+
+
+            }
+        }.start();
 
     }
 
@@ -176,6 +228,7 @@ public class Person implements Human {
             for (int l = k; l < closeList.size(); l++) {
                 if ((closeList.get(k).g == closeList.get(l).g) && (closeList.get(k).h > closeList.get(l).h)) {
                     closeList.remove(l);
+
                 }
             }
         }
@@ -184,13 +237,13 @@ public class Person implements Human {
 
     }
 
-    private double calculateH(Tiles first, Tiles goal) {
+    double calculateH(Tiles first, Tiles goal) {
         double h = ((first.x - goal.x) + (first.y - goal.y));
         return Math.abs(h);
 
     }
 
-    private Tiles findMinH(ArrayList<Tiles> tiles) {
+    Tiles findMinH(ArrayList<Tiles> tiles) {
         Tiles minH = new Tiles();
         minH.h = tiles.get(0).h;
 
@@ -212,4 +265,25 @@ public class Person implements Human {
     public void setClimbing() {
 
     }
+
+    @Override
+    protected NGNode impl_createPeer() {
+        return null;
+    }
+
+    @Override
+    public BaseBounds impl_computeGeomBounds(BaseBounds bounds, BaseTransform tx) {
+        return null;
+    }
+
+    @Override
+    protected boolean impl_computeContains(double localX, double localY) {
+        return false;
+    }
+
+    @Override
+    public Object impl_processMXNode(MXNodeAlgorithm alg, MXNodeAlgorithmContext ctx) {
+        return null;
+    }
+
 }

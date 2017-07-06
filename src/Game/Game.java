@@ -3,6 +3,7 @@ package Game;
 import Server.ServerListener;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 
 import java.io.File;
@@ -43,7 +44,7 @@ public class Game {
             }
 
         }
-    };*/
+    };
 
     void addPlayer(Player player) {
         this.players.add(player);
@@ -83,6 +84,7 @@ public class Game {
             System.out.printf(p.getID() + ",");
         System.out.println("Registered");
     }
+
 
 
     public boolean isGameStarted() {

@@ -60,7 +60,7 @@ public class Main extends Application {
     }
 
     private void createTopMenu(VBox root) {
-        List<Resource> resources = game.getThisPlayer().getResources();
+        List<Resource> resources = game.getResources();
         HBox topMenu = new HBox();
         VBox R1 = new VBox(), R2 = new VBox(), R3 = new VBox();
         R1.setAlignment(Pos.CENTER);

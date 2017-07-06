@@ -12,7 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 
-public class Graphic  {
+public class Graphic {
     private Pane pane;
     private ScrollPane scrollPane;
     private final double SCALE_DELTA = 1.05;
@@ -108,7 +108,6 @@ public class Graphic  {
             CastleBuilding castle = new CastleBuilding(100, j, i, BuildingKind.Castle, newImage);
             Main.getGame().getThisPlayer().addBuilding(castle);
             kind = BuildingKind.Castle;
-            Main.getGame().getThisPlayer().collectResource();
         }
         dragImage = null;
         Main.getGame().getServerListener().sendCommand("building", Main.getGame().getThisPlayer().getID(), i, j, kind.getValue());
@@ -143,15 +142,19 @@ public class Graphic  {
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         return scrollPane;
     }
-   public void createPerson() throws InterruptedException {
-       Person p=new Person();
+
+    public void createPerson() throws InterruptedException {
+        Person p = new Person();
         p.move(pane);
 
-   }
+    }
 
     public ScrollPane getScrollPane() {
         return scrollPane;
     }
 
+    public Node getNodeByRowColumnIndex(int i, int j) {
+        return pane.getChildren().get(i * 80 + j);
+    }
 
 }

@@ -17,6 +17,7 @@ public class Game {
     private Person person;
     private Graphic graphic;
     private ServerListener serverListener;
+    private List<Resource> resources;
 
 
     Game() {
@@ -24,7 +25,10 @@ public class Game {
         players = new ArrayList<>();
         person = new Person();
         graphic = new Graphic(new MapLoader().drawWorld());
-
+        resources = new ArrayList<>();
+        resources.add(new Resource(0));
+        resources.add(new Resource(1));
+        resources.add(new Resource(2));
     }
 
     /*EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
@@ -45,16 +49,19 @@ public class Game {
 
         }
     };*/
+    List<Resource> getResources() {
+        return resources;
+    }
 
     void addPlayer(Player player) {
         this.players.add(player);
     }
 
-    public Player getThisPlayer() {
+    Player getThisPlayer() {
         return players.get(0);
     }
 
-    public Player getPlayer(int id) {
+    Player getPlayer(int id) {
         for (Player p :
                 players)
             if (p.getID() == id)
@@ -67,25 +74,40 @@ public class Game {
     }
 
 
-    public ServerListener getServerListener() {
+    ServerListener getServerListener() {
         return serverListener;
     }
 
-    public void setServerListener(ServerListener serverListener) {
+    void setServerListener(ServerListener serverListener) {
         serverListener.start();
         this.serverListener = serverListener;
     }
 
-    public void startGame() {
+    void startGame() {
         started = true;
         System.out.printf("Players ");
         for (Player p :
                 players)
             System.out.printf(p.getID() + ",");
         System.out.println("Registered");
+        collectResource();
     }
 
-
+    void collectResource() {
+        Timer timer = new java.util.Timer();
+        for (Resource R :
+                resources) {
+            timer.schedule(new TimerTask() {
+                public void run() {
+                    Platform.runLater(new Runnable() {
+                        public void run() {
+                            R.addValue(100);
+                        }
+                    });
+                }
+            }, 0, R.getTime());
+        }
+    }
 
     public boolean isGameStarted() {
         return started;

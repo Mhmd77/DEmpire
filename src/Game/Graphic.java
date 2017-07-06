@@ -4,7 +4,6 @@ import ImageViews.BuildingImageView;
 import ImageViews.HarborImageView;
 import ImageViews.LumberImageView;
 import ImageViews.MineImageView;
-import com.sun.xml.internal.ws.handler.HandlerTube;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -13,36 +12,38 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 
 
-public class Graphic {
-    private GridPane grid;
+public class Graphic implements Runnable {
+    //    private GridPane grid;
+    private Pane pane;
     private ScrollPane scrollPane;
     private final double SCALE_DELTA = 1.05;
     private BuildingImageView dragImage;
     private final Double ScreenMovingSpeed = 0.05;
 
-    Graphic(GridPane grid) {
-        this.grid = grid;
+    Graphic(Pane pane) {
+        this.pane = pane;
         setGridScrollListener();
-        setGridMouseClickListener();
+        setPaneMouseClickListener();
         dragImage = null;
-        setMouseMoveOnNode(grid);
+        setMouseMoveOnNode(pane);
     }
 
-    private void setGridMouseClickListener() {
-        grid.setOnMousePressed(new EventHandler<MouseEvent>() {
+    private void setPaneMouseClickListener() {
+        pane.setOnMousePressed(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 if (event.getClickCount() == 2) {
-                    grid.setScaleX(1.0);
-                    grid.setScaleY(1.0);
+                    pane.setScaleX(1.0);
+                    pane.setScaleY(1.0);
                 }
             }
         });
     }
 
     private void setGridScrollListener() {
-        grid.setOnScroll(event -> {
+        pane.setOnScroll(event -> {
             if (event.getDeltaY() == 0) {
                 return;
             }
@@ -51,11 +52,11 @@ public class Graphic {
                     (event.getDeltaY() > 0)
                             ? SCALE_DELTA
                             : 1 / SCALE_DELTA;
-            if (grid.getScaleX() < 0.65 && event.getDeltaY() < 0) ;
-            else if (grid.getScaleX() > 1.1 && event.getDeltaY() > 0) ;
+            if (pane.getScaleX() < 0.65 && event.getDeltaY() < 0) ;
+            else if (pane.getScaleX() > 1.1 && event.getDeltaY() > 0) ;
             else {
-                grid.setScaleX(grid.getScaleX() * scaleFactor);
-                grid.setScaleY(grid.getScaleY() * scaleFactor);
+                pane.setScaleX(pane.getScaleX() * scaleFactor);
+                pane.setScaleY(pane.getScaleY() * scaleFactor);
             }
             event.consume();
         });
@@ -65,10 +66,10 @@ public class Graphic {
         node.setOnMouseMoved(event -> {
             if (event.getSceneX() < 25) {
                 scrollPane.setHvalue(scrollPane.getHvalue() - ScreenMovingSpeed);
-            } else if (event.getSceneX() > Main.WIDTH - 50) {
-                scrollPane.setHvalue(scrollPane.getHvalue() + ScreenMovingSpeed);
+            } else if (event.getSceneX() > Main.WIDTH + 9.2 - 50) {
+                scrollPane.setHvalue(scrollPane.getHvalue() + ScreenMovingSpeed / 2);
             }
-            if (event.getSceneY() < 25) {
+            if (event.getSceneY() < 70 + 25) {
                 scrollPane.setVvalue(scrollPane.getVvalue() - ScreenMovingSpeed);
             } else if (event.getSceneY() > Main.HEIGHT - 110) {
                 scrollPane.setVvalue(scrollPane.getVvalue() + ScreenMovingSpeed);
@@ -76,8 +77,10 @@ public class Graphic {
         });
     }
 
-    GridPane getGrid() {
-        return grid;
+    void add(Node node, int x, int y) {
+        node.setLayoutX(x * 16);
+        node.setLayoutY(y * 16);
+        pane.getChildren().add(node);
     }
 
     public void setDragImage(BuildingImageView dragImage) {
@@ -88,24 +91,11 @@ public class Graphic {
         return dragImage;
     }
 
-    public Node getNodeByRowColumnIndex(final int row, final int column) {
-        Node result = null;
-        ObservableList<Node> children = grid.getChildren();
-        for (Node node : children) {
-            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
-                result = node;
-                break;
-            }
-        }
-
-        return result;
-    }
-
     public void createBuilding(int i, int j) {
         BuildingKind kind = null;
         dragImage.disableBuilding();
         ImageView newImage = new ImageView(dragImage.getImage());
-        grid.add(newImage, j, i, 4, 4);
+        add(newImage, j, i);
         if (dragImage instanceof HarborImageView) {
             HarborBuilding harbor = new HarborBuilding(100, j, i, BuildingKind.Harbor, newImage);
             Main.getGame().getThisPlayer().addBuilding(harbor);
@@ -122,18 +112,15 @@ public class Graphic {
             CastleBuilding castle = new CastleBuilding(100, j, i, BuildingKind.Castle, newImage);
             Main.getGame().getThisPlayer().addBuilding(castle);
             kind = BuildingKind.Castle;
+            Main.getGame().getThisPlayer().collectResource();
         }
         dragImage = null;
         Main.getGame().getServerListener().sendCommand("building", Main.getGame().getThisPlayer().getID(), i, j, kind.getValue());
     }
 
-    public void createBuilding(int i, int j, BuildingKind kind) {
-        grid.add(kind.getImageView(), j, i, 4, 4);
-    }
-
     public void createBuilding(int id, int i, int j, int kind) {
         ImageView newImage = BuildingKind.getInstanceByKind(kind).getImageView();
-        grid.add(newImage, j, i, 4, 4);
+        add(newImage, j, i);
         if (kind == BuildingKind.Castle.getValue()) {
             CastleBuilding castle = new CastleBuilding(100, j, i, BuildingKind.Castle, newImage);
             Main.getGame().getPlayer(id).addBuilding(castle);
@@ -154,15 +141,34 @@ public class Graphic {
     }
 
     ScrollPane createScrollPane() {
-        scrollPane = new ScrollPane(grid);
+        scrollPane = new ScrollPane(pane);
+        pane.setStyle(Main.BG_COLOR);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setFitToWidth(true);
         return scrollPane;
+    }
+
+    public void createPerson() throws InterruptedException {
+        Person p = new Person();
+        Platform.runLater(() -> p.move(pane));
+//        p.move(grid);
     }
 
     public ScrollPane getScrollPane() {
         return scrollPane;
     }
 
+    @Override
+    public void run() {
+        try {
+            createPerson();
+
+        } catch (InterruptedException e) {
+            System.out.println(e);
+        }
+    }
+
+    public Node getNodeByRowColumnIndex(int i, int j) {
+        return pane.getChildren().get(i * 80 + j);
+    }
 }

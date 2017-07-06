@@ -1,6 +1,6 @@
 package Game;
 
-public class Tile {
+public class Tiles {
     int i;
     int j;
     int id;

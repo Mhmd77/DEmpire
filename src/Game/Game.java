@@ -1,13 +1,12 @@
 package Game;
 
 import Server.ServerListener;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Game {
     private boolean started = false;
@@ -24,6 +23,7 @@ public class Game {
         players = new ArrayList<>();
         person = new Person();
         graphic = new Graphic(new MapLoader().drawWorld());
+
     }
 
     /*EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
@@ -82,10 +82,12 @@ public class Game {
                 players)
             System.out.printf(p.getID() + ",");
         System.out.println("Registered");
-
     }
+
 
     public boolean isGameStarted() {
         return started;
     }
+
+
 }

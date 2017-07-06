@@ -4,6 +4,7 @@ import ImageViews.HarborImageView;
 import ImageViews.TileImageView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -45,16 +46,19 @@ public class MapLoader {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
-    GridPane drawWorld() {
-        GridPane pane = new GridPane();
-        pane.setPrefWidth(960);
-        pane.setPrefHeight(720);
+    Pane drawWorld() {
+        Pane pane = new Pane();
+        pane.setPrefWidth(1280);
+        pane.setPrefHeight(960);
         for (int i = 0; i < HEIGHT; i++)
             for (int j = 0; j < WIDTH; j++) {
                 TileImageView img = new TileImageView(images.get(world[i][j]), i, j);
-                pane.add(img, j, i);
+                img.setLayoutX(16 * j);
+                img.setLayoutY(16 * i);
+                pane.getChildren().add(img);
             }
         return pane;
     }

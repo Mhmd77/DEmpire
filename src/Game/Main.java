@@ -6,27 +6,32 @@ import ImageViews.LumberImageView;
 import ImageViews.MineImageView;
 import Server.ServerListener;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
 
 public class Main extends Application {
     static final int WIDTH = 960;
     static final int HEIGHT = 780;
     private static Game game;
+    final static String BG_COLOR = "-fx-background-color: #dddddd";
 
     public static void main(String[] args) throws IOException {
         launch(args);
@@ -36,28 +41,41 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         game = new Game();
         VBox root = new VBox();
+        root.setStyle(BG_COLOR);
+        root.setAlignment(Pos.CENTER);
         primaryStage.setTitle("Age Of Empire");
+        createTopMenu(root);
         ScrollPane sp = game.getGraphic().createScrollPane();
+//        Thread thread = new Thread(game.getGraphic());
         root.getChildren().add(sp);
         root.getChildren().add(createBottomMenu());
-        Scene scene = new Scene(root, WIDTH, HEIGHT);
+        Scene scene = new Scene(root, WIDTH, HEIGHT, Color.web("#dddddd"));
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
+//        thread.start();
         primaryStage.show();
     }
 
-    /*private void printNumbers() {
-        int[][] world = MapLoader.getWorld();
-        Set<Integer> set = new HashSet<>();
-        for (int i = 0; i < 50; i++) {
-            for (int j = 0; j < 30; j++)
-                if (!(world[i][j] == 0 || world[i][j] == 1 || world[i][j] == 32 || world[i][j] == 33))
-                    set.add(world[i][j]);
-        }
-        List<Integer> sortedList = new ArrayList<>(set);
-        Collections.sort(sortedList);
-        System.out.println(sortedList);
-    }*/
+    private void createTopMenu(VBox root) {
+        List<Resource> resources = game.getThisPlayer().getResources();
+        HBox topMenu = new HBox();
+        VBox R1 = new VBox(), R2 = new VBox(), R3 = new VBox();
+        R1.setAlignment(Pos.CENTER);
+        R2.setAlignment(Pos.CENTER);
+        R3.setAlignment(Pos.CENTER);
+        HBox.setMargin(R1, new Insets(0, 100, 0, 0));
+        HBox.setMargin(R2, new Insets(0, 100, 0, 0));
+        HBox.setMargin(R3, new Insets(0, 100, 0, 0));
+        HBox.setHgrow(R1, Priority.ALWAYS);
+        HBox.setHgrow(R2, Priority.ALWAYS);
+        HBox.setHgrow(R3, Priority.ALWAYS);
+        R1.getChildren().addAll(resources.get(0).getImage(), resources.get(0).getLabel());
+        R2.getChildren().addAll(resources.get(1).getImage(), resources.get(1).getLabel());
+        R3.getChildren().addAll(resources.get(2).getImage(), resources.get(2).getLabel());
+        topMenu.getChildren().addAll(R1, R2, R3);
+        root.getChildren().add(topMenu);
+    }
+
 
     private TabPane createBottomMenu() throws IOException {
         TabPane root = FXMLLoader.load(Main.class.getResource("FXML/fxml_bottom_menu.fxml"));
@@ -78,7 +96,7 @@ public class Main extends Application {
                     int thisID = inputStream.readInt();
                     System.out.println("Registered As " + thisID);
                     game.addPlayer(new Player(thisID));
-                    for (int i = 0;i < thisID ;i++)
+                    for (int i = 0; i < thisID; i++)
                         game.addPlayer(new Player(i));
                     while (true) {
                         try {
@@ -90,7 +108,7 @@ public class Main extends Application {
                             System.out.println("Game.Player " + id + " Registered!");
                             game.addPlayer(new Player(id));
                         } catch (IOException e) {
-
+                            e.printStackTrace();
                         }
                     }
                     game.startGame();

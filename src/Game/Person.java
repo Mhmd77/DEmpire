@@ -1,26 +1,29 @@
 package Game;
 
-import com.sun.javafx.geom.BaseBounds;
-import com.sun.javafx.geom.transform.BaseTransform;
-import com.sun.javafx.jmx.MXNodeAlgorithm;
-import com.sun.javafx.jmx.MXNodeAlgorithmContext;
-import com.sun.javafx.sg.prism.NGNode;
-import javafx.scene.Node;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 
-public class Person extends Node implements Human {
+public class Person implements Human {
 
-    ArrayList<Tile> closeList;
-    ArrayList<Tile> openList;
+    ArrayList<Tiles> closeList;
+    ArrayList<Tiles> openList;
     int[] position = new int[2];
     int speed;
     int life;
     int foodAmount;
     int attackPower;
     boolean isClimbing;
+    ImageView personImage;
 
+    Person() {
+        personImage = new ImageView("Images/romanSoldier.jpg");
+    }
 
     @Override
     public void setFoodAmount() {
@@ -29,6 +32,55 @@ public class Person extends Node implements Human {
 
     @Override
     public void attack() {
+
+    }
+
+    @Override
+    public void move(Pane pane) {
+        Tiles[] tiles = new Tiles[4];
+        for (int i = 0; i < 4; i++) {
+            tiles[i] = new Tiles();
+        }
+        tiles[0].i = 10;
+        tiles[0].j = 10;
+        tiles[1].i = 20;
+        tiles[1].j = 50;
+        tiles[2].i = 30;
+        tiles[2].j = 50;
+        tiles[3].i = 40;
+        tiles[3].j = 60;
+//        boolean reachedDestination = false;
+        ArrayList<Tiles> list = new ArrayList<Tiles>(Arrays.asList(tiles));
+        ImageView pImage = new ImageView();
+        pImage.setImage(personImage.getImage());
+        try {
+
+            for (int k = 0; k < 4; k++) {
+                // long time0 = System.currentTimeMillis();
+                System.out.println("in" + k);
+                pane.getChildren().remove(pImage);
+                pImage.setImage(personImage.getImage());
+                Main.getGame().getGraphic().add(pImage, tiles[k].j, tiles[k].i);
+                TimeUnit.SECONDS.sleep(4);
+             /*  while (k<3) {
+                    long time1 = System.currentTimeMillis();
+                  //  System.out.println(time1-time0);
+//                    System.out.println("time 0: " + (time0 ));
+
+                    if (time1  - time0 >1000) {
+                        //  Thread.sleep(1000);s
+                      //  System.out.println("IN FOR...!");
+                        System.out.println("while");
+                        break;
+                    }
+
+
+                }*/
+
+            }
+        } catch (InterruptedException e) {
+            System.out.println("sleep exc");
+        }
 
     }
 
@@ -43,7 +95,7 @@ public class Person extends Node implements Human {
     }
 
 
-    public ArrayList<Tile> roam(int i, int j, int igoal, int jgoal, Tile[][] tiles) {
+    public ArrayList<Tiles> roam(int i, int j, int igoal, int jgoal, Tiles[][] tiles) {
         int g = 1;
         closeList = new ArrayList<>();
         openList = new ArrayList<>();
@@ -132,14 +184,14 @@ public class Person extends Node implements Human {
 
     }
 
-    private double calculateH(Tile first, Tile goal) {
+    private double calculateH(Tiles first, Tiles goal) {
         double h = ((first.x - goal.x) + (first.y - goal.y));
         return Math.abs(h);
 
     }
 
-    private Tile findMinH(ArrayList<Tile> tiles) {
-        Tile minH = new Tile();
+    private Tiles findMinH(ArrayList<Tiles> tiles) {
+        Tiles minH = new Tiles();
         minH.h = tiles.get(0).h;
 
         for (int i = 0; i < tiles.size(); i++) {
@@ -160,25 +212,4 @@ public class Person extends Node implements Human {
     public void setClimbing() {
 
     }
-
-    @Override
-    protected NGNode impl_createPeer() {
-        return null;
-    }
-
-    @Override
-    public BaseBounds impl_computeGeomBounds(BaseBounds bounds, BaseTransform tx) {
-        return null;
-    }
-
-    @Override
-    protected boolean impl_computeContains(double localX, double localY) {
-        return false;
-    }
-
-    @Override
-    public Object impl_processMXNode(MXNodeAlgorithm alg, MXNodeAlgorithmContext ctx) {
-        return null;
-    }
-
 }

@@ -44,7 +44,7 @@ public class Game {
             }
 
         }
-    };
+    };*/
 
     void addPlayer(Player player) {
         this.players.add(player);

@@ -4,14 +4,11 @@ import ImageViews.BuildingImageView;
 import ImageViews.HarborImageView;
 import ImageViews.LumberImageView;
 import ImageViews.MineImageView;
-import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 
@@ -148,15 +145,9 @@ public class Graphic  {
     }
    public void createPerson() throws InterruptedException {
        Person p=new Person();
-p.move(grid);
+        p.move(pane);
 
    }
-
-    public void createPerson() throws InterruptedException {
-        Person p = new Person();
-        Platform.runLater(() -> p.move(pane));
-//        p.move(grid);
-    }
 
     public ScrollPane getScrollPane() {
         return scrollPane;

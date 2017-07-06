@@ -1,38 +1,25 @@
 package Game;
 
-import com.sun.javafx.geom.BaseBounds;
-import com.sun.javafx.geom.transform.BaseTransform;
-import com.sun.javafx.jmx.MXNodeAlgorithm;
-import com.sun.javafx.jmx.MXNodeAlgorithmContext;
-import com.sun.javafx.sg.prism.NGNode;
-import javafx.animation.*;
-import javafx.application.Platform;
-import javafx.scene.Node;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.util.Duration;
+import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EmptyStackException;
-import java.util.Timer;
-import java.util.concurrent.Delayed;
-import java.util.concurrent.TimeUnit;
 
 
 public class Person implements Human {
 
-    ArrayList<Tiles> closeList;
-    ArrayList<Tiles> openList;
+    private ArrayList<Tiles> closeList;
+    private ArrayList<Tiles> openList;
     int[] position = new int[2];
     int speed;
     int life;
     int foodAmount;
     int attackPower;
     boolean isClimbing;
-    ImageView personImage;
+    private ImageView personImage;
 
     Person() {
         personImage = new ImageView("Images/romanSoldier.jpg");
@@ -60,55 +47,6 @@ public class Person implements Human {
         tiles[1].j = 50;
         tiles[2].i = 30;
         tiles[2].j = 50;
-        tiles[3].i = 40;
-        tiles[3].j = 60;
-//        boolean reachedDestination = false;
-        ArrayList<Tiles> list = new ArrayList<Tiles>(Arrays.asList(tiles));
-        ImageView pImage = new ImageView();
-        pImage.setImage(personImage.getImage());
-        try {
-
-            for (int k = 0; k < 4; k++) {
-                // long time0 = System.currentTimeMillis();
-                System.out.println("in" + k);
-                pane.getChildren().remove(pImage);
-                pImage.setImage(personImage.getImage());
-                Main.getGame().getGraphic().add(pImage, tiles[k].j, tiles[k].i);
-                TimeUnit.SECONDS.sleep(4);
-             /*  while (k<3) {
-                    long time1 = System.currentTimeMillis();
-                  //  System.out.println(time1-time0);
-//                    System.out.println("time 0: " + (time0 ));
-
-                    if (time1  - time0 >1000) {
-                        //  Thread.sleep(1000);s
-                      //  System.out.println("IN FOR...!");
-                        System.out.println("while");
-                        break;
-                    }
-
-
-                }*/
-
-            }
-        } catch (InterruptedException e) {
-            System.out.println("sleep exc");
-        }
-
-    }
-
-    @Override
-    public void move(GridPane pane) {
-        Tiles[] tiles = new Tiles[4];
-        for (int i = 0; i < 4; i++) {
-            tiles[i] = new Tiles();
-        }
-        tiles[0].i = 10;
-        tiles[0].j = 10;
-        tiles[1].i = 20;
-        tiles[1].j = 50;
-        tiles[2].i = 30;
-        tiles[2].j = 50;
         tiles[3].i = 0;
         tiles[3].j = 0;
         boolean reachedDestination = false;
@@ -126,16 +64,14 @@ public class Person implements Human {
 
                 //gc.drawImage(image,x[0],y[0]);
                pane.getChildren().remove(pImage);
-                pane.add(pImage, y[0], x[0], y[0] + 4, x[0] + 4);
+                Main.getGame().getGraphic().add(pImage, y[0], x[0]);
                 x[0] += 1;
                y[0] +=1;
 
 
             }
         }.start();
-
     }
-
     @Override
     public void setSpeed() {
 
@@ -145,7 +81,6 @@ public class Person implements Human {
     public void setRadius() {
 
     }
-
 
     public ArrayList<Tiles> roam(int i, int j, int igoal, int jgoal, Tiles[][] tiles) {
         int g = 1;
@@ -237,13 +172,13 @@ public class Person implements Human {
 
     }
 
-    double calculateH(Tiles first, Tiles goal) {
+    private double calculateH(Tiles first, Tiles goal) {
         double h = ((first.x - goal.x) + (first.y - goal.y));
         return Math.abs(h);
 
     }
 
-    Tiles findMinH(ArrayList<Tiles> tiles) {
+    private Tiles findMinH(ArrayList<Tiles> tiles) {
         Tiles minH = new Tiles();
         minH.h = tiles.get(0).h;
 
@@ -255,7 +190,6 @@ public class Person implements Human {
         return minH;
     }
 
-
     @Override
     public void setPower() {
 
@@ -264,26 +198,6 @@ public class Person implements Human {
     @Override
     public void setClimbing() {
 
-    }
-
-    @Override
-    protected NGNode impl_createPeer() {
-        return null;
-    }
-
-    @Override
-    public BaseBounds impl_computeGeomBounds(BaseBounds bounds, BaseTransform tx) {
-        return null;
-    }
-
-    @Override
-    protected boolean impl_computeContains(double localX, double localY) {
-        return false;
-    }
-
-    @Override
-    public Object impl_processMXNode(MXNodeAlgorithm alg, MXNodeAlgorithmContext ctx) {
-        return null;
     }
 
 }

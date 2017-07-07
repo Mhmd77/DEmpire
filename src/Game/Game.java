@@ -23,7 +23,7 @@ public class Game {
     Game() {
 
         players = new ArrayList<>();
-        person = new Person();
+       // person = new Person();
         graphic = new Graphic(new MapLoader().drawWorld());
         resources = new ArrayList<>();
         resources.add(new Resource(0));

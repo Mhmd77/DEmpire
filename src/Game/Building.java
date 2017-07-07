@@ -4,13 +4,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Building {
-
     private BuildingKind kind;
     private Image image;
     private static boolean isActive = true;
     private Tiles pos;
     private int life;
     private ImageView imageView;
+    private Person person;
+    private boolean busy;
 
     public Building(int life, int x, int y, BuildingKind kind, ImageView imageView) {
         this.life = life;
@@ -55,5 +56,23 @@ public class Building {
 
     public BuildingKind getKind() {
         return kind;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+        setBusy(true);
+    }
+
+
+    public boolean isBusy() {
+        return busy;
+    }
+
+    public void setBusy(boolean busy) {
+        this.busy = busy;
     }
 }

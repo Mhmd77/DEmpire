@@ -17,9 +17,6 @@ public interface Human {
 
     void setRadius();
 
-    ArrayList<Tiles> roam(int i, int j, int igoal, int jgoal);
-
-
     void setPower();
 
     void setClimbing();

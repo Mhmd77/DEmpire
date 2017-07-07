@@ -63,15 +63,16 @@ public class Person implements Human {
                 double t = (currentNanoTime - startNanoTime) / 1000000000.0;
 
                 //gc.drawImage(image,x[0],y[0]);
-               pane.getChildren().remove(pImage);
+                pane.getChildren().remove(pImage);
                 Main.getGame().getGraphic().add(pImage, y[0], x[0]);
                 x[0] += 1;
-               y[0] +=1;
+                y[0] += 1;
 
 
             }
         }.start();
     }
+
     @Override
     public void setSpeed() {
 
@@ -82,7 +83,17 @@ public class Person implements Human {
 
     }
 
-    public ArrayList<Tiles> roam(int i, int j, int igoal, int jgoal, Tiles[][] tiles) {
+    public ArrayList<Tiles> roam(int i, int j, int igoal, int jgoal) {
+        Tiles[][] tiles = new Tiles[60][80];
+        int world[][] = MapLoader.getWorld();
+        for (int k = 0; k < 60; k++) {
+            for (int l = 0; l < 80; l++) {
+                tiles[k][l].id = world[k][l];
+                tiles[k][l].i = k;
+                tiles[k][l].j = l;
+            }
+        }
+
         int g = 1;
         closeList = new ArrayList<>();
         openList = new ArrayList<>();
@@ -90,7 +101,7 @@ public class Person implements Human {
 
         while (!closeList.contains(tiles[igoal][jgoal])) {
             if ((!openList.contains(tiles[i - 1][j - 1])) && (!closeList.contains(tiles[i - 1][j - 1])) && (tiles[i - 1][j - 1].id == 1)
-                    || (tiles[i - 1][j - 1].id == 3)) {
+                    || (tiles[i - 1][j - 1].id == 3  )) {
                 tiles[i - 1][j - 1].g = g;
                 tiles[i - 1][j - 1].h = calculateH(tiles[i - 1][j - 1], tiles[igoal][jgoal]);
                 openList.add(tiles[i - 1][j - 1]);
@@ -149,7 +160,7 @@ public class Person implements Human {
             openList.remove(findMinH(openList));
             i = findMinH(openList).i;
             j = findMinH(openList).j;
-            g++;
+            g = findMinH(openList).g;
 
             if ((Math.abs(findMinH(openList).i - tiles[igoal][jgoal].i) == 1) && (Math.abs(findMinH(openList).j - tiles[igoal][jgoal].j) == 1) ||
                     (Math.abs(findMinH(openList).i - tiles[igoal][jgoal].i) == 0) && (Math.abs(findMinH(openList).j - tiles[igoal][jgoal].j) == 1)

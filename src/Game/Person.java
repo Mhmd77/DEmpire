@@ -1,5 +1,6 @@
 package Game;
 
+import ImageViews.BuildingImageView;
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -100,57 +101,49 @@ public class Person implements Human {
         closeList.add(tiles[i][j]);
 
         while (!closeList.contains(tiles[igoal][jgoal])) {
-            if ((!openList.contains(tiles[i - 1][j - 1])) && (!closeList.contains(tiles[i - 1][j - 1])) && (tiles[i - 1][j - 1].id == 1)
-                    || (tiles[i - 1][j - 1].id == 3  )) {
+            if ((!openList.contains(tiles[i - 1][j - 1])) && (!closeList.contains(tiles[i - 1][j - 1])) && (BuildingImageView.isFreeLand(i - 1, j - 1))) {
                 tiles[i - 1][j - 1].g = g;
                 tiles[i - 1][j - 1].h = calculateH(tiles[i - 1][j - 1], tiles[igoal][jgoal]);
                 openList.add(tiles[i - 1][j - 1]);
             }
 
-            if ((!openList.contains(tiles[i][j - 1])) && (!closeList.contains(tiles[i][j - 1])) && (tiles[i][j - 1].id == 1)
-                    || (tiles[i][j - 1].id == 3)) {
+            if ((!openList.contains(tiles[i][j - 1])) && (!closeList.contains(tiles[i][j - 1])) && (BuildingImageView.isFreeLand(i, j - 1))) {
                 tiles[i][j - 1].g = g;
                 tiles[i][j - 1].h = calculateH(tiles[i][j - 1], tiles[igoal][jgoal]);
                 openList.add(tiles[i][j - 1]);
             }
 
-            if ((!openList.contains(tiles[i - 1][j])) && (!closeList.contains(tiles[i - 1][j])) && (tiles[i - 1][j].id == 1)
-                    || (tiles[i - 1][j].id == 3)) {
+            if ((!openList.contains(tiles[i - 1][j])) && (!closeList.contains(tiles[i - 1][j])) && (BuildingImageView.isFreeLand(i - 1, j))) {
                 tiles[i - 1][j].g = g;
                 tiles[i - 1][j].h = calculateH(tiles[i - 1][j], tiles[igoal][jgoal]);
                 openList.add(tiles[i - 1][j]);
             }
 
-            if ((!openList.contains(tiles[i - 1][j + 1])) && (!closeList.contains(tiles[i - 1][j + 1])) && (tiles[i - 1][j + 1].id == 1)
-                    || (tiles[i - 1][j + 1].id == 3)) {
+            if ((!openList.contains(tiles[i - 1][j + 1])) && (!closeList.contains(tiles[i - 1][j + 1])) && (BuildingImageView.isFreeLand(i - 1, j + 1))) {
                 tiles[i - 1][j + 1].g = g;
                 tiles[i - 1][j + 1].h = calculateH(tiles[i - 1][j + 1], tiles[igoal][jgoal]);
                 openList.add(tiles[i - 1][j + 1]);
             }
 
-            if ((!openList.contains(tiles[i][j + 1])) && (!closeList.contains(tiles[i][j + 1])) && (tiles[i][j + 1].id == 1)
-                    || (tiles[i][j + 1].id == 3)) {
+            if ((!openList.contains(tiles[i][j + 1])) && (!closeList.contains(tiles[i][j + 1])) && (BuildingImageView.isFreeLand(i, j + 1))) {
                 tiles[i][j + 1].g = g;
                 tiles[i][j + 1].h = calculateH(tiles[i][j + 1], tiles[igoal][jgoal]);
                 openList.add(tiles[i][j + 1]);
             }
 
-            if ((!openList.contains(tiles[i + 1][j - 1])) && (!closeList.contains(tiles[i + 1][j - 1])) && (tiles[i + 1][j - 1].id == 1)
-                    || (tiles[i + 1][j - 1].id == 3)) {
+            if ((!openList.contains(tiles[i + 1][j - 1])) && (!closeList.contains(tiles[i + 1][j - 1])) && (BuildingImageView.isFreeLand(i + 1, j - 1))) {
                 tiles[i + 1][j - 1].g = g;
                 tiles[i + 1][j - 1].h = calculateH(tiles[i + 1][j - 1], tiles[igoal][jgoal]);
                 openList.add(tiles[i + 1][j - 1]);
             }
 
-            if ((!openList.contains(tiles[i + 1][j])) && (!closeList.contains(tiles[i + 1][j])) && (tiles[i + 1][j].id == 1)
-                    || (tiles[i + 1][j].id == 3)) {
+            if ((!openList.contains(tiles[i + 1][j])) && (!closeList.contains(tiles[i + 1][j])) && (BuildingImageView.isFreeLand(i + 1, j))) {
                 tiles[i + 1][j].g = g;
                 tiles[i + 1][j].h = calculateH(tiles[i + 1][j], tiles[igoal][jgoal]);
                 openList.add(tiles[i + 1][j]);
             }
 
-            if ((!openList.contains(tiles[i + 1][j + 1])) && (!closeList.contains(tiles[i + 1][j + 1])) && (tiles[i + 1][j + 1].id == 1)
-                    || (tiles[i + 1][j + 1].id == 3)) {
+            if ((!openList.contains(tiles[i + 1][j + 1])) && (!closeList.contains(tiles[i + 1][j + 1])) && (BuildingImageView.isFreeLand(i + 1, j + 1))) {
                 tiles[i + 1][j + 1].g = g;
                 tiles[i + 1][j + 1].h = calculateH(tiles[i + 1][j + 1], tiles[igoal][jgoal]);
                 openList.add(tiles[i + 1][j + 1]);

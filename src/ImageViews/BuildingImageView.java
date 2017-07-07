@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BuildingImageView extends ImageView {
-    protected int[] nFreeTile;
+    static int[] nFreeTile;
 
     public BuildingImageView(String src) {
         super(src);
@@ -58,7 +58,7 @@ public class BuildingImageView extends ImageView {
         setStyle("-fx-opacity: 30%");
     }
 
-    protected boolean isFreeLand(int i, int j) {
+    public static boolean isFreeLand(int i, int j) {
         int[][] world = MapLoader.getWorld();
         for (int x :
                 nFreeTile)

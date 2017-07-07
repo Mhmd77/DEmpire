@@ -27,6 +27,7 @@ import javax.security.auth.Refreshable;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main extends Application {
@@ -55,7 +56,6 @@ public class Main extends Application {
         primaryStage.setResizable(false);
         game.getGraphic().createPerson();
         //  Platform.setImplicitExit(false);
-
         primaryStage.show();
     }
 

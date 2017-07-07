@@ -15,11 +15,14 @@ import java.util.List;
 public class BuildingImageView extends ImageView {
     static int[] nFreeTile;
 
+    static {
+        nFreeTile = new int[]{0, 1, 32, 33};
+    }
+
     public BuildingImageView(String src) {
         super(src);
         setMouseMethods();
         HBox.setMargin(this, new Insets(0, 10, 0, 0));
-        nFreeTile = new int[]{0, 1, 32, 33};
     }
 
     private void setMouseMethods() {
@@ -63,6 +66,7 @@ public class BuildingImageView extends ImageView {
         for (int x :
                 nFreeTile)
             if (world[i][j] == x) return true;
+            else System.out.println("HERE");
         return false;
     }
 

@@ -93,7 +93,7 @@ public class Game {
         collectResource();
     }
 
-    void collectResource() {
+    private void collectResource() {
         Timer timer = new java.util.Timer();
         for (Resource R :
                 resources) {

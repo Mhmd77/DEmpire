@@ -104,7 +104,7 @@ public class PathFinder {
 
     private double calculateH(Tiles first, Tiles goal) {
         double h = Math.abs(first.j - goal.j) + Math.abs(first.i - goal.i);
-        System.out.println(h);
+    //    System.out.println(h);
         return h;
 
     }

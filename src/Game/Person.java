@@ -2,12 +2,15 @@ package Game;
 
 import ImageViews.BuildingImageView;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class Person implements Human {
@@ -37,40 +40,25 @@ public class Person implements Human {
 
     @Override
     public void move(Pane pane) {
-        Tiles[] tiles = new Tiles[4];
-        for (int i = 0; i < 4; i++) {
-            tiles[i] = new Tiles();
-        }
-        tiles[0].i = 10;
-        tiles[0].j = 10;
-        tiles[1].i = 20;
-        tiles[1].j = 50;
-        tiles[2].i = 30;
-        tiles[2].j = 50;
-        tiles[3].i = 0;
-        tiles[3].j = 0;
-        boolean reachedDestination = false;
-        ArrayList<Tiles> list = new ArrayList<Tiles>(Arrays.asList(tiles));
         ImageView pImage = new ImageView();
         pImage.setImage(personImage.getImage());
         final long startNanoTime = System.nanoTime();
-        final int[] x = {1};
-        final int[] y = {1};
-        Image image = new Image("Images/romanSoldier.jpg");
+        ArrayList<Tiles> tiles = (new PathFinder()).roam(55, 10, 55, 60);
+        Main.getGame().getGraphic().add(pImage, 5, 5);
 
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
                 double t = (currentNanoTime - startNanoTime) / 1000000000.0;
-
-                //gc.drawImage(image,x[0],y[0]);
-                pane.getChildren().remove(pImage);
-                Main.getGame().getGraphic().add(pImage, y[0], x[0]);
-                x[0] += 1;
-                y[0] += 1;
-
+                double x = pImage.getLayoutX();
+                double y = pImage.getLayoutY();
+                x += 160*t;
+                y += 160*t;
+                pImage.setLayoutX(x);
+                pImage.setLayoutX(y);
 
             }
         }.start();
+
     }
 
     @Override

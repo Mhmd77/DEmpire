@@ -1,15 +1,14 @@
 package Game;
 
-import ImageViews.BuildingImageView;
-import ImageViews.HarborImageView;
-import ImageViews.LumberImageView;
-import ImageViews.MineImageView;
+import ImageViews.*;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+
+import java.util.List;
 
 
 public class Graphic {
@@ -18,6 +17,7 @@ public class Graphic {
     private final double SCALE_DELTA = 1.05;
     private BuildingImageView dragImage;
     private final Double ScreenMovingSpeed = 0.05;
+
 
     Graphic(Pane pane) {
         this.pane = pane;
@@ -143,8 +143,10 @@ public class Graphic {
         return scrollPane;
     }
 
-    public void createPerson() throws InterruptedException {
+    public void createAndMovePerson() throws InterruptedException {
         Person p = new Person();
+
+
         p.move(pane);
 
     }

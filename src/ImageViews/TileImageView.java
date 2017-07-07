@@ -5,12 +5,15 @@ import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 public class TileImageView extends ImageView {
     private int i;
     private int j;
+    PersonImageView cameFrom;
 
     TileImageView(String src, int i, int j) {
         super(src);
@@ -19,6 +22,8 @@ public class TileImageView extends ImageView {
         setDragEntered();
         setDragExited();
         setDragReleased();
+        mouseClicked();
+        cameFrom = new PersonImageView();
     }
 
     public TileImageView(Image src, int i, int j) {
@@ -28,6 +33,22 @@ public class TileImageView extends ImageView {
         setDragEntered();
         setDragExited();
         setDragReleased();
+        // mouseClicked();
+        cameFrom = new PersonImageView();
+
+    }
+
+    public Integer[] mouseClicked() {
+        Integer[] loc = new Integer[2];
+        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                loc[0] = i;
+                loc[1] = j;
+
+            }
+        });
+        return loc;
     }
 
     private void setDragReleased() {
@@ -43,6 +64,7 @@ public class TileImageView extends ImageView {
             }
         });
     }
+
 
     private void setDragExited() {
         setOnMouseDragExited(new EventHandler<MouseDragEvent>() {

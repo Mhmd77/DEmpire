@@ -14,7 +14,13 @@ import java.util.List;
 
 public class MapLoader {
     private static int[][] world;
-    private List<Image> images;
+
+    public  List<Image> getImages() {
+        return images;
+    }
+
+    private  List<Image> images;
+    public static List<TileImageView> tileImages;
     private static final int TILE_SIZE = 16;
     private static final int WIDTH = 80;
     private static final int HEIGHT = 60;
@@ -22,6 +28,7 @@ public class MapLoader {
     MapLoader() {
         world = new int[HEIGHT][WIDTH];
         images = new ArrayList<>();
+        tileImages=new ArrayList<>();
         for (int i = 1; i <= 1024; i++) {
             String imageFileName = "Images/world_image_";
             imageFileName += i + ".png";
@@ -59,6 +66,8 @@ public class MapLoader {
                 img.setLayoutX(16 * j);
                 img.setLayoutY(16 * i);
                 pane.getChildren().add(img);
+                tileImages.add(img);
+           //     img.mouseClicked();
             }
         return pane;
     }

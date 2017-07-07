@@ -55,7 +55,6 @@ public class Person implements Human {
                 y += 160*t;
                 pImage.setLayoutX(x);
                 pImage.setLayoutX(y);
-
             }
         }.start();
 

@@ -20,12 +20,9 @@ public class PathFinder {
                 t.id = world[k][l];
                 t.i = k;
                 t.j = l;
-                t.x = j * 16;
-                t.y = i * 16;
                 tiles[k][l] = t;
             }
         }
-
         int g = 1;
         closeList = new ArrayList<>();
         openList = new ArrayList<>();
@@ -75,7 +72,7 @@ public class PathFinder {
                 tiles[i - 1][j].h = calculateH(tiles[i - 1][j], tiles[igoal][jgoal]);
                 openList.add(tiles[i - 1][j]);
             }
-            Tiles min = findMinH(openList);
+            Tiles min = findMin(openList);
             closeList.add(min);
             openList.remove(min);
             i = min.i;
@@ -102,22 +99,16 @@ public class PathFinder {
         return false;
     }
 
-    private double calculateH(Tiles first, Tiles goal) {
-        double h = Math.abs(first.j - goal.j) + Math.abs(first.i - goal.i);
-        System.out.println(h);
-        return h;
+    private int calculateH(Tiles first, Tiles goal) {
+        return (Math.abs(first.j - goal.j) + Math.abs(first.i - goal.i));
 
     }
 
-    private Tiles findMinH(ArrayList<Tiles> tiles) {
-        Tiles minH = tiles.get(0);
-
-        for (int i = 0; i < tiles.size(); i++) {
-            if (tiles.get(i).h < minH.h) {
-                minH = tiles.get(i);
-            }
-        }
-//        System.out.println(minH.i +"\t" +minH.j + "\t" + minH.h);
-        return minH;
+    private Tiles findMin(ArrayList<Tiles> tiles) {
+        Tiles min = tiles.get(0);
+        for (Tiles tile : tiles)
+            if (tile.h + tile.g < min.h + min.g)
+                min = tile;
+        return min;
     }
 }

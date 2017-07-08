@@ -30,6 +30,7 @@ public class PersonImageView extends ImageView {
                 System.out.println("person selected");
             } else {
                 getOwnPerson().stopTransition();
+                getOwnPerson().setRoamEnded(true);
                 System.out.println("person selected2");
             }
 

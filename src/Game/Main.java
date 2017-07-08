@@ -54,7 +54,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, WIDTH, HEIGHT, Color.web("#dddddd"));
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
-        game.getGraphic().createAndMovePerson();
+        Person p=new Person(0,0);
         //  Platform.setImplicitExit(false);
         primaryStage.show();
     }

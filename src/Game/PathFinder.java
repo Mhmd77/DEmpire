@@ -20,76 +20,38 @@ public class PathFinder {
                 t.id = world[k][l];
                 t.i = k;
                 t.j = l;
-                t.x = j * 16;
-                t.y = i * 16;
                 tiles[k][l] = t;
             }
         }
-
-        int g = 1;
+        int g = 0;
         closeList = new ArrayList<>();
         openList = new ArrayList<>();
-        closeList.add(tiles[i][j]);
-
-        while (!closeList.contains(tiles[igoal][jgoal])) {
-            if (openList.contains(tiles[igoal][jgoal])) {
-                closeList.add(tiles[igoal][jgoal]);
-            }
-            if (i >= 1 && j >= 1 && (!openList.contains(tiles[i - 1][j - 1])) && (!closeList.contains(tiles[i - 1][j - 1])) && (isFreeLand(i - 1, j - 1))) {
-                tiles[i - 1][j - 1].g = g;
-                tiles[i - 1][j - 1].h = calculateH(tiles[i - 1][j - 1], tiles[igoal][jgoal]);
-                openList.add(tiles[i - 1][j - 1]);
-            }
-            if (j >= 1 && (!openList.contains(tiles[i][j - 1])) && (!closeList.contains(tiles[i][j - 1])) && (isFreeLand(i, j - 1))) {
-                tiles[i][j - 1].g = g;
-                tiles[i][j - 1].h = calculateH(tiles[i][j - 1], tiles[igoal][jgoal]);
-                openList.add(tiles[i][j - 1]);
-            }
-            if (i <= 58 && j >= 1 && (!openList.contains(tiles[i + 1][j - 1])) && (!closeList.contains(tiles[i + 1][j - 1])) && (isFreeLand(i + 1, j - 1))) {
-                tiles[i + 1][j - 1].g = g;
-                tiles[i + 1][j - 1].h = calculateH(tiles[i + 1][j - 1], tiles[igoal][jgoal]);
-                openList.add(tiles[i + 1][j - 1]);
-            }
-            if (i <= 58 && j >= 1 && (!openList.contains(tiles[i + 1][j])) && (!closeList.contains(tiles[i + 1][j])) && (isFreeLand(i + 1, j))) {
-                tiles[i + 1][j].g = g;
-                tiles[i + 1][j].h = calculateH(tiles[i + 1][j], tiles[igoal][jgoal]);
-                openList.add(tiles[i + 1][j]);
-            }
-            if (i <= 58 && j <= 58 && (!openList.contains(tiles[i + 1][j + 1])) && (!closeList.contains(tiles[i + 1][j + 1])) && (isFreeLand(i + 1, j + 1))) {
-                tiles[i + 1][j + 1].g = g;
-                tiles[i + 1][j + 1].h = calculateH(tiles[i + 1][j + 1], tiles[igoal][jgoal]);
-                openList.add(tiles[i + 1][j + 1]);
-            }
-            if (j <= 78 && (!openList.contains(tiles[i][j + 1])) && (!closeList.contains(tiles[i][j + 1])) && (isFreeLand(i, j + 1))) {
-                tiles[i][j + 1].g = g;
-                tiles[i][j + 1].h = calculateH(tiles[i][j + 1], tiles[igoal][jgoal]);
-                openList.add(tiles[i][j + 1]);
-            }
-            if (i >= 1 && j <= 78 && (!openList.contains(tiles[i - 1][j + 1])) && (!closeList.contains(tiles[i - 1][j + 1])) && (isFreeLand(i - 1, j + 1))) {
-                tiles[i - 1][j + 1].g = g;
-                tiles[i - 1][j + 1].h = calculateH(tiles[i - 1][j + 1], tiles[igoal][jgoal]);
-                openList.add(tiles[i - 1][j + 1]);
-            }
-            if (i >= 1 && (!openList.contains(tiles[i - 1][j])) && (!closeList.contains(tiles[i - 1][j])) && (isFreeLand(i - 1, j))) {
-                tiles[i - 1][j].g = g;
-                tiles[i - 1][j].h = calculateH(tiles[i - 1][j], tiles[igoal][jgoal]);
-                openList.add(tiles[i - 1][j]);
-            }
-            Tiles min = findMinH(openList);
-            closeList.add(min);
-            openList.remove(min);
-            i = min.i;
-            j = min.j;
-            g = min.g + 1;
-        }
-
-        for (int k = 0; k < closeList.size(); k++) {
-            for (int l = k; l < closeList.size(); l++) {
-                if ((closeList.get(k).g == closeList.get(l).g) && (closeList.get(k).h > closeList.get(l).h)) {
-                    closeList.remove(l);
+        Tiles thisNode = tiles[i][j];
+        openList.add(thisNode);
+        while (!openList.isEmpty()) {
+            thisNode = findMin(openList);
+            if (closeList.contains(tiles[igoal][jgoal]))
+                break;
+            closeList.add(thisNode);
+            openList.remove(thisNode);
+            i = thisNode.i;
+            j = thisNode.j;
+            g = thisNode.g + 1;
+            for (Tiles t : getAdj(tiles, thisNode.i, thisNode.j)) {
+                t.h = calculateH(t, tiles[igoal][jgoal]);
+                t.g = g;
+                if (closeList.contains(t)) {
+                    continue;
                 }
+                if (!openList.contains(t)) {
+                    openList.add(t);
+                } /*else {
+
+                }*/
             }
         }
+        closeList.add(tiles[igoal][jgoal]);
+        closeList.remove(closeList.size() - 1);
         return closeList;
     }
 
@@ -99,25 +61,51 @@ public class PathFinder {
         for (int x :
                 nFreeTile)
             if (world[i][j] == x) return true;
+
         return false;
     }
 
     private double calculateH(Tiles first, Tiles goal) {
-        double h = Math.abs(first.j - goal.j) + Math.abs(first.i - goal.i);
-    //    System.out.println(h);
-        return h;
+        double x1 = (first.j - goal.j) * (first.j - goal.j);
+        double x2 = (first.i - goal.i) * (first.i - goal.i);
+        return Math.sqrt(x1 + x2);
 
     }
 
-    private Tiles findMinH(ArrayList<Tiles> tiles) {
-        Tiles minH = tiles.get(0);
+    private Tiles findMin(ArrayList<Tiles> tiles) {
+        Tiles min = tiles.get(tiles.size() - 1);
+        for (Tiles tile : tiles)
+            if (tile.h < min.h )
+                min = tile;
+        return min;
+    }
 
-        for (int i = 0; i < tiles.size(); i++) {
-            if (tiles.get(i).h < minH.h) {
-                minH = tiles.get(i);
-            }
+    private ArrayList<Tiles> getAdj(Tiles[][] tiles, int i, int j) {
+        ArrayList<Tiles> result = new ArrayList<Tiles>();
+        if (i >= 1 && j >= 1 && isFreeLand(i - 1, j - 1)) {
+            result.add(tiles[i - 1][j - 1]);
         }
-//        System.out.println(minH.i +"\t" +minH.j + "\t" + minH.h);
-        return minH;
+        if (j >= 1 && isFreeLand(i, j - 1)) {
+            result.add(tiles[i][j - 1]);
+        }
+        if (i <= 58 && j >= 1 && isFreeLand(i + 1, j - 1)) {
+            result.add(tiles[i + 1][j - 1]);
+        }
+        if (i <= 58 && j >= 1 && isFreeLand(i + 1, j)) {
+            result.add(tiles[i + 1][j]);
+        }
+        if (i <= 58 && j <= 78 && isFreeLand(i + 1, j + 1)) {
+            result.add(tiles[i + 1][j + 1]);
+        }
+        if (j <= 78 && isFreeLand(i, j + 1)) {
+            result.add(tiles[i][j + 1]);
+        }
+        if (i >= 1 && j <= 78 && isFreeLand(i - 1, j + 1)) {
+            result.add(tiles[i - 1][j + 1]);
+        }
+        if (i >= 1 && isFreeLand(i - 1, j)) {
+            result.add(tiles[i - 1][j]);
+        }
+        return result;
     }
 }

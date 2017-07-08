@@ -33,62 +33,50 @@ public class TileImageView extends ImageView {
         setDragEntered();
         setDragExited();
         setDragReleased();
-        // mouseClicked();
+        mouseClicked();
         cameFrom = new PersonImageView();
 
     }
 
-    public Integer[] mouseClicked() {
-        Integer[] loc = new Integer[2];
-        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                loc[0] = i;
-                loc[1] = j;
-
+    public void mouseClicked() {
+        this.setOnMouseClicked(event -> {
+            System.out.println("tile selected");
+            if (Main.getGame().getGraphic().getSelectedPerson() != null) {
+                Main.getGame().getGraphic().getSelectedPerson().move(this.i, this.j);
             }
         });
-        return loc;
+
     }
 
     private void setDragReleased() {
-        setOnMouseDragReleased(new EventHandler<MouseDragEvent>() {
-            @Override
-            public void handle(MouseDragEvent event) {
-                List<TileImageView> freeTiles = Main.getGame().getGraphic().getDragImage().getFreeTiles(i, j);
-                if (freeTiles != null) {
-                    Main.getGame().getGraphic().createBuilding(i - 1, j - 1);
-                    for (TileImageView img : freeTiles)
-                        img.setStyle("-fx-opacity: 1");
-                }
+        setOnMouseDragReleased(event -> {
+            List<TileImageView> freeTiles = Main.getGame().getGraphic().getDragImage().getFreeTiles(i, j);
+            if (freeTiles != null) {
+                Main.getGame().getGraphic().createBuilding(i - 1, j - 1);
+                for (TileImageView img : freeTiles)
+                    img.setStyle("-fx-opacity: 1");
             }
         });
     }
 
 
     private void setDragExited() {
-        setOnMouseDragExited(new EventHandler<MouseDragEvent>() {
-            @Override
-            public void handle(MouseDragEvent event) {
-                if (Main.getGame().getGraphic().isDragging()) {
-                    List<TileImageView> freeTiles = Main.getGame().getGraphic().getDragImage().getFreeTiles(i, j);
-                    if (freeTiles != null)
-                        for (TileImageView img : freeTiles)
-                            img.setStyle("-fx-opacity: 1");
-                }
+        setOnMouseDragExited(event -> {
+            if (Main.getGame().getGraphic().isDragging()) {
+                List<TileImageView> freeTiles = Main.getGame().getGraphic().getDragImage().getFreeTiles(i, j);
+                if (freeTiles != null)
+                    for (TileImageView img : freeTiles)
+                        img.setStyle("-fx-opacity: 1");
             }
         });
     }
 
     private void setDragEntered() {
-        setOnMouseDragEntered(new EventHandler<MouseDragEvent>() {
-            @Override
-            public void handle(MouseDragEvent event) {
-                List<TileImageView> freeTiles = Main.getGame().getGraphic().getDragImage().getFreeTiles(i, j);
-                if (freeTiles != null)
-                    for (TileImageView img : freeTiles)
-                        img.setStyle("-fx-opacity: 0.5");
-            }
+        setOnMouseDragEntered(event -> {
+            List<TileImageView> freeTiles = Main.getGame().getGraphic().getDragImage().getFreeTiles(i, j);
+            if (freeTiles != null)
+                for (TileImageView img : freeTiles)
+                    img.setStyle("-fx-opacity: 0.5");
         });
     }
 

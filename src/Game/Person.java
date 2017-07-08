@@ -4,110 +4,111 @@ import ImageViews.BuildingImageView;
 import ImageViews.PersonImageView;
 import ImageViews.TileImageView;
 import javafx.animation.AnimationTimer;
+import javafx.animation.PathTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.CubicCurveTo;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
-public class Person implements Human {
+public class Person {
     List<TileImageView> tileImageView;
-
-
-    private ArrayList<Tiles> closeList;
-    private ArrayList<Tiles> openList;
-    Integer[] position = new Integer[2];
-    Integer[] destination = new Integer[2];
+    int[] position = new int[2];//Position 0 : i Position 1 : j
+    //    Integer[] destination = new Integer[2];
     int speed;
     int life;
     int foodAmount;
     int attackPower;
     boolean isClimbing;
     private PersonImageView personImage;
+    private PathTransition pathTransition;
 
-    Person() {
-
+    Person(int i, int j) {
         tileImageView = MapLoader.tileImages;
-
-        // destination[0]= MapLoader.tileImages.get(0).getI();
-        //  dest = TileImageView.
-        personImage = new PersonImageView("Images/romanSoldier.jpg", 0, 0);
-        position[0] = personImage.getI();
-        position[1] = personImage.getJ();
-
-    }
-
-    public void setDest() {
-        for (int i = 0; i < 4800; i++) {
-            TileImageView img = tileImageView.get(i);
-            destination = img.mouseClicked();
-            if ((destination[0] == null || destination[1] == null) && i == 4799)
-                i = 0;
-
-        }
-
+        personImage = new PersonImageView("Images/romanSoldier.png", i, j, this);
+        position[0] = i;
+        position[1] = j;
+        Main.getGame().getGraphic().add(personImage, position[1], position[0]);
     }
 
 
-    @Override
     public void setFoodAmount() {
 
     }
 
-    @Override
+
     public void attack() {
 
     }
 
-    @Override
-    public void move(Pane pane) {
-        PathFinder p = new PathFinder();
-        ArrayList<Tiles> list = new ArrayList<Tiles>();
-        list = p.roam(position[0], position[1], 55, 55);
-        ImageView pImage = new ImageView();
-        pImage.setImage(personImage.getImage());
-        //final long startNanoTime = System.nanoTime();
-        final int[] x = {position[0]};
-        final int[] y = {position[1]};
-        Main.getGame().getGraphic().add(pImage, y[0], x[0]);
-        ArrayList<Tiles> finalList = list;
-        System.out.println(finalList.size());
-        new AnimationTimer() {
-            int i = 0;
 
-            public void handle(long currentNanoTime) {
-                // double t = (currentNanoTime - startNanoTime) / 1000000000.0;
-                pImage.setX(finalList.get(i).i);
-                pImage.setY(finalList.get(i).j);
-
-                if (i == finalList.size() - 1)
-                    stop();
-                i++;
-
-            }
-        }.start();
+    public void move(int igoal, int jgoal) {
+        ArrayList<Tiles> list = (new PathFinder()).roam(position[0], position[1], igoal, jgoal);
+        pathTransition = new PathTransition();
+        Path path = new Path();
+        path.getElements().add(new MoveTo(16 + position[1] * 16, 16 + position[0] * 16));
+        for (Tiles t :
+                list) {
+            path.getElements().add(new LineTo(t.j * 16 + 16, t.i * 16 + 16));
+        }
+        pathTransition.setDuration(Duration.millis(300 * list.size()));
+        pathTransition.setNode(personImage);
+        pathTransition.setPath(path);
+        pathTransition.setCycleCount(1);
+        pathTransition.play();
+        pathTransition.setOnFinished(event -> {
+            position[0] = list.get(list.size() - 1).i;
+            position[1] = list.get(list.size() - 1).j;
+            System.out.println("FINISHED");
+            Main.getGame().getGraphic().setSelectedPerson(null);
+        });
     }
 
-    @Override
+
     public void setSpeed() {
 
     }
 
-    @Override
+
     public void setRadius() {
 
     }
 
-    @Override
+
     public void setPower() {
 
     }
 
-    @Override
+
     public void setClimbing() {
 
+    }
+
+    public void setPersonImage(PersonImageView personImage) {
+        this.personImage = personImage;
+    }
+
+    public PersonImageView getPersonImage() {
+        return personImage;
+    }
+
+    public void stopTransition() {
+        pathTransition.stop();
+        int j = (int) (personImage.getTranslateX() / 16);
+        int i = (int) (personImage.getTranslateY() / 16);
+        personImage.setInJ(i, j);
+        position[0] = i;
+        position[1] = j;
+        System.out.println(i + "\t" + j);
     }
 }

@@ -8,18 +8,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
-import java.util.List;
-
 
 public class Graphic {
     private Pane pane;
     private ScrollPane scrollPane;
     private final double SCALE_DELTA = 1.05;
     private BuildingImageView dragImage;
+    private Person selectedPerson;
+    private TileImageView selectedTile;
     private final Double ScreenMovingSpeed = 0.05;
 
 
-    Graphic(Pane pane) {
+    public Graphic(Pane pane) {
         this.pane = pane;
         setGridScrollListener();
         setPaneMouseClickListener();
@@ -143,14 +143,6 @@ public class Graphic {
         return scrollPane;
     }
 
-    public void createAndMovePerson() throws InterruptedException {
-        Person p = new Person();
-
-
-        p.move(pane);
-
-    }
-
     public ScrollPane getScrollPane() {
         return scrollPane;
     }
@@ -159,4 +151,16 @@ public class Graphic {
         return pane.getChildren().get(i * 80 + j);
     }
 
+    public void setSelectedPerson(Person selectedPerson) {
+        this.selectedPerson = selectedPerson;
+    }
+
+    public void setSelectedTile(TileImageView selectedTile) {
+        this.selectedTile = selectedTile;
+    }
+
+    public Person getSelectedPerson() {
+        return selectedPerson;
+    }
 }
+

@@ -13,7 +13,6 @@ import java.util.List;
 public class TileImageView extends ImageView {
     private int i;
     private int j;
-    PersonImageView cameFrom;
 
     TileImageView(String src, int i, int j) {
         super(src);
@@ -23,7 +22,6 @@ public class TileImageView extends ImageView {
         setDragExited();
         setDragReleased();
         mouseClicked();
-        cameFrom = new PersonImageView();
     }
 
     public TileImageView(Image src, int i, int j) {
@@ -34,14 +32,17 @@ public class TileImageView extends ImageView {
         setDragExited();
         setDragReleased();
         mouseClicked();
-        cameFrom = new PersonImageView();
 
     }
 
     public void mouseClicked() {
         this.setOnMouseClicked(event -> {
+            System.out.println(Main.getGame().getGraphic().getSelectedPerson().isRoamEnded());
             System.out.println("tile selected");
-            if (Main.getGame().getGraphic().getSelectedPerson() != null) {
+            if (Main.getGame().getGraphic().getSelectedPerson() != null
+                    && Main.getGame().getGraphic().getSelectedPerson().isRoamEnded()) {
+                Main.getGame().getGraphic().getSelectedPerson().setRoamEnded(false);
+
                 Main.getGame().getGraphic().getSelectedPerson().move(this.i, this.j);
             }
         });

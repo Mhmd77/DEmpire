@@ -6,28 +6,21 @@ import ImageViews.LumberImageView;
 import ImageViews.MineImageView;
 import Server.ServerListener;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import javax.security.auth.Refreshable;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main extends Application {
@@ -41,7 +34,9 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+   public void start(Stage primaryStage) throws Exception {
+//        OST mainTheme=new OST("OTHER/Age-of-Empires-III-Soundtrack-Of-Licious_12620134.mp3");
+//        mainTheme.playSountrack();
         game = new Game();
         VBox root = new VBox();
         root.setStyle(BG_COLOR);

@@ -32,6 +32,7 @@ public class Person {
     boolean isClimbing;
     private PersonImageView personImage;
     private PathTransition pathTransition;
+    private boolean roamEnded=true;
 
     Person(int i, int j) {
         tileImageView = MapLoader.tileImages;
@@ -67,6 +68,7 @@ public class Person {
         pathTransition.setCycleCount(1);
         pathTransition.play();
         pathTransition.setOnFinished(event -> {
+            roamEnded=true;
             position[0] = list.get(list.size() - 1).i;
             position[1] = list.get(list.size() - 1).j;
             System.out.println("FINISHED");
@@ -110,5 +112,13 @@ public class Person {
         position[0] = i;
         position[1] = j;
         System.out.println(i + "\t" + j);
+    }
+
+    public boolean isRoamEnded() {
+        return roamEnded;
+    }
+
+    public void setRoamEnded(boolean roamEnded) {
+        this.roamEnded = roamEnded;
     }
 }

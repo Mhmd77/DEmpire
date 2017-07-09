@@ -6,11 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HarborImageView extends BuildingImageView {
-    static {
-        nFreeTile = new int[]{598, 599, 600, 601, 602, 603, 758, 759, 760, 761, 762, 763, 630, 635, 662, 667, 694, 699, 726, 731};
-    }
     public HarborImageView(String src) {
         super(src);
+        nFreeTile = new int[]{598, 599, 600, 601, 602, 603, 758, 759, 760, 761, 762, 763, 630, 635, 662, 667, 694, 699, 726, 731};
     }
 
     public List<TileImageView> getFreeTiles(int i, int j) {

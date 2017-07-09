@@ -1,43 +1,39 @@
 package Game;
 
-import ImageViews.BuildingImageView;
 import ImageViews.PersonImageView;
 import ImageViews.TileImageView;
-import javafx.animation.AnimationTimer;
 import javafx.animation.PathTransition;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
 
 
 public class Person {
     List<TileImageView> tileImageView;
-    int[] position = new int[2];//Position 0 : i Position 1 : j
-    int life;
-    int foodAmount;
-    int attackPower;
-    boolean makeSoldier = false;
+    public int[] position = new int[2];//Position 0 : i Position 1 : j
+    private int speed = 1;
+    private int life = 500;
+    private int foodAmount = 1;
+    private int attackPower = 40;
+    private boolean isClimbing = false;
+    private int team;
     private PersonImageView personImage;
     private PathTransition pathTransition;
-    private boolean roamEnded=true;
+    private boolean roamEnded = true;
 
-    Person(int i, int j) {
+    Person(int i, int j, int team, String loc) {
+        this.team = team;
         tileImageView = MapLoader.tileImages;
-        personImage = new PersonImageView("Images/romanSoldier.png", i, j, this);
+        personImage = new PersonImageView(loc, i, j, this);
         position[0] = i;
         position[1] = j;
         Main.getGame().getGraphic().add(personImage, position[1], position[0]);
+        System.out.println("PERSON CREATED");
     }
 
 
@@ -46,8 +42,8 @@ public class Person {
     }
 
 
-    public void attack() {
-
+    public void attack(Person p) {
+        System.out.println("attack initial implement");
     }
 
 
@@ -58,17 +54,15 @@ public class Person {
         path.getElements().add(new MoveTo(16 + position[1] * 16, 16 + position[0] * 16));
         for (Tiles t :
                 list) {
-
-                path.getElements().add(new LineTo(t.j * 16 + 16, t.i * 16 + 16));
-
+            path.getElements().add(new LineTo(t.j * 16 + 16, t.i * 16 + 16));
         }
-        pathTransition.setDuration(Duration.millis(Main.getGame().getThisPlayer().getSpeed() * list.size()));
+        pathTransition.setDuration(Duration.millis(300 * list.size()));
         pathTransition.setNode(personImage);
         pathTransition.setPath(path);
         pathTransition.setCycleCount(1);
         pathTransition.play();
         pathTransition.setOnFinished(event -> {
-            roamEnded=true;
+            roamEnded = true;
             position[0] = list.get(list.size() - 1).i;
             position[1] = list.get(list.size() - 1).j;
             System.out.println("FINISHED");
@@ -76,20 +70,6 @@ public class Person {
         });
     }
 
-
-    public void setSpeed() {
-
-    }
-
-
-    public void setRadius() {
-
-    }
-
-
-    public void setPower() {
-
-    }
 
     public void setPersonImage(PersonImageView personImage) {
         this.personImage = personImage;
@@ -117,5 +97,40 @@ public class Person {
         this.roamEnded = roamEnded;
     }
 
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
 
+    public int getLife() {
+        return life;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public int getFoodAmount() {
+        return foodAmount;
+    }
+
+    public int getAttackPower() {
+        return attackPower;
+    }
+
+    public boolean isClimbing() {
+        return isClimbing;
+    }
+
+    public void setClimbing() {
+        speed /= 2;
+        isClimbing = true;
+    }
+
+    public int getTeam() {
+        return team;
+    }
 }

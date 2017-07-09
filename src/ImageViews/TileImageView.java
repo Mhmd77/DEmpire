@@ -37,12 +37,11 @@ public class TileImageView extends ImageView {
 
     public void mouseClicked() {
         this.setOnMouseClicked(event -> {
-            System.out.println(Main.getGame().getGraphic().getSelectedPerson().isRoamEnded());
-            System.out.println("tile selected");
+//            System.out.println(Main.getGame().getGraphic().getSelectedPerson().isRoamEnded());
+//            System.out.println("tile selected");
             if (Main.getGame().getGraphic().getSelectedPerson() != null
                     && Main.getGame().getGraphic().getSelectedPerson().isRoamEnded()) {
                 Main.getGame().getGraphic().getSelectedPerson().setRoamEnded(false);
-
                 Main.getGame().getGraphic().getSelectedPerson().move(this.i, this.j);
             }
         });

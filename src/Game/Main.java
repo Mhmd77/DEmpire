@@ -18,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -34,9 +35,11 @@ public class Main extends Application {
     }
 
     @Override
-   public void start(Stage primaryStage) throws Exception {
-//        OST mainTheme=new OST("OTHER/Age-of-Empires-III-Soundtrack-Of-Licious_12620134.mp3");
+    public void start(Stage primaryStage) throws Exception {
+//        OST mainTheme=new OST("OTHER/Age-of-Empires-III-Soundtrack-Of-Licious_12620134.mp3")
 //        mainTheme.playSountrack();
+//        Player player1 = new Player(0);
+//        Player player2 = new Player(1);
         game = new Game();
         VBox root = new VBox();
         root.setStyle(BG_COLOR);
@@ -49,8 +52,6 @@ public class Main extends Application {
         Scene scene = new Scene(root, WIDTH, HEIGHT, Color.web("#dddddd"));
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
-        Person p=new Person(0,0);
-        //  Platform.setImplicitExit(false);
         primaryStage.show();
     }
 
@@ -89,7 +90,7 @@ public class Main extends Application {
                 b.setDisable(true);
                 try {
 
-                    Socket socket = new Socket("localhost", 8888);
+                    Socket socket = new Socket("192.168.100.05", 8888);
                     DataInputStream inputStream = new DataInputStream(socket.getInputStream());
                     int thisID = inputStream.readInt();
                     System.out.println("Registered As " + thisID);

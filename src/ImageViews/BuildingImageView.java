@@ -13,14 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BuildingImageView extends ImageView {
-    static int[] nFreeTile;
+    protected int[] nFreeTile;
 
-    static {
-        nFreeTile = new int[]{0, 1, 32, 33};
-    }
 
     public BuildingImageView(String src) {
         super(src);
+        nFreeTile = new int[]{0, 1, 32, 33};
         setMouseMethods();
         HBox.setMargin(this, new Insets(0, 10, 0, 0));
     }
@@ -61,7 +59,7 @@ public class BuildingImageView extends ImageView {
         setStyle("-fx-opacity: 30%");
     }
 
-    public static boolean isFreeLand(int i, int j) {
+    protected boolean isFreeLand(int i, int j) {
         int[][] world = MapLoader.getWorld();
         for (int x :
                 nFreeTile)

@@ -6,6 +6,7 @@ import ImageViews.LumberImageView;
 import ImageViews.MineImageView;
 import Server.ServerListener;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -117,6 +118,22 @@ public class Main extends Application {
                 }
             }
         });
+        Button b2 = new Button();
+        b2.setText("Climbing");
+
+        b2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                getGame().getThisPlayer().changeClimbing();
+                if (getGame().getThisPlayer().isClimbing()) {
+                    b2.setStyle("-fx-border-color: green;-fx-border-width: 2px");
+                }else
+                    b2.setStyle("-fx-border-color: crimson;-fx-border-width: 2px");
+            }
+        });
+        b2.setLayoutX(50);
+        pane.getChildren().add(b2);
+
         return root;
     }
 

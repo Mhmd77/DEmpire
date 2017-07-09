@@ -8,5 +8,6 @@ public class Tiles {
     double h;
     double x;
     double y;
+    boolean setRock = false;
 
 }

@@ -24,12 +24,10 @@ import java.util.List;
 public class Person {
     List<TileImageView> tileImageView;
     int[] position = new int[2];//Position 0 : i Position 1 : j
-    //    Integer[] destination = new Integer[2];
-    int speed;
     int life;
     int foodAmount;
     int attackPower;
-    boolean isClimbing;
+    boolean makeSoldier = false;
     private PersonImageView personImage;
     private PathTransition pathTransition;
     private boolean roamEnded=true;
@@ -60,9 +58,11 @@ public class Person {
         path.getElements().add(new MoveTo(16 + position[1] * 16, 16 + position[0] * 16));
         for (Tiles t :
                 list) {
-            path.getElements().add(new LineTo(t.j * 16 + 16, t.i * 16 + 16));
+
+                path.getElements().add(new LineTo(t.j * 16 + 16, t.i * 16 + 16));
+
         }
-        pathTransition.setDuration(Duration.millis(300 * list.size()));
+        pathTransition.setDuration(Duration.millis(Main.getGame().getThisPlayer().getSpeed() * list.size()));
         pathTransition.setNode(personImage);
         pathTransition.setPath(path);
         pathTransition.setCycleCount(1);
@@ -91,11 +91,6 @@ public class Person {
 
     }
 
-
-    public void setClimbing() {
-
-    }
-
     public void setPersonImage(PersonImageView personImage) {
         this.personImage = personImage;
     }
@@ -121,4 +116,6 @@ public class Person {
     public void setRoamEnded(boolean roamEnded) {
         this.roamEnded = roamEnded;
     }
+
+
 }

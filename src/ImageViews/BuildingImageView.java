@@ -29,7 +29,8 @@ public class BuildingImageView extends ImageView {
         ImageView img = this;
         setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
+            public void handle(MouseEvent event)
+            {
                 setCursor(Cursor.OPEN_HAND);
             }
         });

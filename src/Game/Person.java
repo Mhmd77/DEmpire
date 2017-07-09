@@ -4,9 +4,14 @@ import ImageViews.BuildingImageView;
 import ImageViews.PersonImageView;
 import ImageViews.TileImageView;
 import javafx.animation.AnimationTimer;
+import javafx.animation.PathTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.*;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +39,7 @@ public class Person implements Human {
 
         // destination[0]= MapLoader.tileImages.get(0).getI();
         //  dest = TileImageView.
-        personImage = new PersonImageView("Images/romanSoldier.jpg", 0, 0);
+        personImage = new PersonImageView("Images/romanSoldier.png", 0, 0);
         position[0] = personImage.getI();
         position[1] = personImage.getJ();
 
@@ -64,31 +69,38 @@ public class Person implements Human {
 
     @Override
     public void move(Pane pane) {
-        PathFinder p = new PathFinder();
-        ArrayList<Tiles> list = new ArrayList<Tiles>();
-        list = p.roam(position[0], position[1], 55, 55);
+
+        ArrayList<Tiles> list = (new PathFinder()).roam(0, 0, 45, 70);
+//        list = p.roam(position[0], position[1], 55, 55);
         ImageView pImage = new ImageView();
         pImage.setImage(personImage.getImage());
         //final long startNanoTime = System.nanoTime();
-        final int[] x = {position[0]};
-        final int[] y = {position[1]};
-        Main.getGame().getGraphic().add(pImage, y[0], x[0]);
-        ArrayList<Tiles> finalList = list;
-        System.out.println(finalList.size());
-        new AnimationTimer() {
-            int i = 0;
+//        final int[] x = {position[0]};
+//        final int[] y = {position[1]};
 
-            public void handle(long currentNanoTime) {
-                // double t = (currentNanoTime - startNanoTime) / 1000000000.0;
-                pImage.setX(finalList.get(i).i);
-                pImage.setY(finalList.get(i).j);
+        PathFinder p = new PathFinder();
+        PathTransition pathTransition = new PathTransition();
+        Path path = new Path();
+        path.getElements().add(new MoveTo(16, 16));
+        for (Tiles t :
+                list) {
+            path.getElements().add(new LineTo(t.j * 16 + 16, t.i * 16 + 16));
+        }
 
-                if (i == finalList.size() - 1)
-                    stop();
-                i++;
-
+        pathTransition.setDuration(Duration.millis(300 * list.size()));
+        pathTransition.setNode(pImage);
+        pathTransition.setPath(path);
+        pathTransition.setCycleCount(1);
+        pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("FINISHED");
             }
-        }.start();
+        });
+//        pathTransition.play();
+//        pathTransition.
+//        Main.getGame().getGraphic().add(pImage, 0, 0);
+//        System.out.println(pImage.getLayoutX());
     }
 
     @Override

@@ -1,9 +1,6 @@
 package Game;
 
-import ImageViews.BuildingImageView;
-import ImageViews.HarborImageView;
-import ImageViews.LumberImageView;
-import ImageViews.MineImageView;
+import ImageViews.*;
 import Server.ServerListener;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -143,10 +140,12 @@ public class Main extends Application {
         HarborImageView src2 = new HarborImageView("Images/harbor.png");
         MineImageView src3 = new MineImageView("Images/mine.png");
         LumberImageView src4 = new LumberImageView("Images/mine.png");
+        ArmyImageView src5 = new ArmyImageView("Images/mine.png");
         hBox.getChildren().add(src);
         hBox.getChildren().add(src2);
         hBox.getChildren().add(src3);
         hBox.getChildren().add(src4);
+        hBox.getChildren().add(src5);
 
     }
 

@@ -2,10 +2,10 @@ package ImageViews;
 
 import java.util.List;
 
+/**
+ * Created by asus on 6/29/2017.
+ */
 public class LumberImageView extends BuildingImageView {
-    static {
-
-    }
 
     public LumberImageView(String src) {
         super(src);

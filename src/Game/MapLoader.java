@@ -67,7 +67,7 @@ public class MapLoader {
                 img.setLayoutY(16 * i);
                 pane.getChildren().add(img);
                 tileImages.add(img);
-           //     img.mouseClicked();
+           //     img.setMouseClickListener();
             }
         return pane;
     }

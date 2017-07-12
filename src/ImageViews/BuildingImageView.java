@@ -18,6 +18,7 @@ public class BuildingImageView extends ImageView {
 
     public BuildingImageView(String src) {
         super(src);
+        nFreeTile = new int[]{0, 1, 32, 33};
         setMouseMethods();
         HBox.setMargin(this, new Insets(0, 10, 0, 0));
         nFreeTile = new int[]{0, 1, 32, 33};

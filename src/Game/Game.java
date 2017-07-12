@@ -13,17 +13,13 @@ public class Game {
     private boolean started = false;
     private List<Player> players;
     private File mapFile;
-    private boolean roamSoldier = true;
-    private Person person;
     private Graphic graphic;
     private ServerListener serverListener;
     private List<Resource> resources;
 
 
     Game() {
-
         players = new ArrayList<>();
-       // person = new Person();
         graphic = new Graphic(new MapLoader().drawWorld());
         resources = new ArrayList<>();
         resources.add(new Resource(0));
@@ -31,24 +27,6 @@ public class Game {
         resources.add(new Resource(2));
     }
 
-    /*EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent mouseEvent) {
-            if (mouseEvent.getEventType().equals(MouseEvent.MOUSE_CLICKED) && (mouseEvent.getY() < 100) && (roamSoldier) && (
-                    person.position[0] < mouseEvent.getY()) && (person.position[0] + 50 > mouseEvent.getX())
-                    && (person.position[1] < mouseEvent.getY()) && (person.position[1] + 50 > mouseEvent.getY())) {
-
-                roamSoldier = false;
-                return;
-            }
-            if (!roamSoldier) {
-                person.roam(person.position[0], person.position[1], (int) mouseEvent.getX(), (int) mouseEvent.getY(), person);
-                roamSoldier = true;
-                return;
-            }
-
-        }
-    };*/
     List<Resource> getResources() {
         return resources;
     }
@@ -57,11 +35,11 @@ public class Game {
         this.players.add(player);
     }
 
-    Player getThisPlayer() {
+    public Player getThisPlayer() {
         return players.get(0);
     }
 
-    Player getPlayer(int id) {
+    public Player getPlayer(int id) {
         for (Player p :
                 players)
             if (p.getID() == id)
@@ -87,8 +65,10 @@ public class Game {
         started = true;
         System.out.printf("Players ");
         for (Player p :
-                players)
+                players) {
             System.out.printf(p.getID() + ",");
+//            p.createPersons(2);
+        }
         System.out.println("Registered");
         collectResource();
     }

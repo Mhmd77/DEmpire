@@ -11,7 +11,8 @@ public class PathFinder {
         closeList = new ArrayList<Tiles>();
     }
 
-    public ArrayList<Tiles> roam(int i, int j, int igoal, int jgoal) {
+    public ArrayList<Tiles> findPath(int i, int j, int igoal, int jgoal) {
+//        System.out.println("Starting ..." + i + "\t" + j + "\t" + igoal + "\t" + jgoal);
         Tiles[][] tiles = new Tiles[60][80];
         int world[][] = MapLoader.getWorld();
         for (int k = 0; k < 60; k++) {
@@ -20,8 +21,6 @@ public class PathFinder {
                 t.id = world[k][l];
                 t.i = k;
                 t.j = l;
-                t.x = j * 16;
-                t.y = i * 16;
                 tiles[k][l] = t;
             }
         }
@@ -47,15 +46,15 @@ public class PathFinder {
                 }
                 if (!openList.contains(t)) {
                     openList.add(t);
-                } /*else {
-
-                }*/
+                }
             }
         }
         closeList.add(tiles[igoal][jgoal]);
-        for (Tiles t : closeList)
-            System.out.println(String.valueOf(t.i + 1) + "\t" + String.valueOf(t.j + 1));
         closeList.remove(closeList.size() - 1);
+        for (Tiles t :
+                closeList) {
+//            System.out.println(t.i + "\t" + t.j);
+        }
         return closeList;
     }
 
@@ -79,7 +78,7 @@ public class PathFinder {
     private Tiles findMin(ArrayList<Tiles> tiles) {
         Tiles min = tiles.get(tiles.size() - 1);
         for (Tiles tile : tiles)
-            if (tile.h < min.h )
+            if (tile.h < min.h)
                 min = tile;
         return min;
     }

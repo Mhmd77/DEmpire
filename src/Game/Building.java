@@ -13,13 +13,13 @@ public class Building {
     private Person person;
     private boolean busy;
 
-    public Building(int life, int x, int y, BuildingKind kind, ImageView imageView) {
+    public Building(int life, int j, int i, BuildingKind kind, ImageView imageView) {
         this.life = life;
         this.kind = kind;
         this.imageView = imageView;
         pos = new Tiles();
-        pos.x = x;
-        pos.y = y;
+        pos.j = j;
+        pos.i = i;
     }
 
     public static void setIsActive(boolean isActive) {

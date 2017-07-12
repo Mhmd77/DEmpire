@@ -13,7 +13,6 @@ import java.util.List;
 public class TileImageView extends ImageView {
     private int i;
     private int j;
-    PersonImageView cameFrom;
 
     TileImageView(String src, int i, int j) {
         super(src);
@@ -23,7 +22,6 @@ public class TileImageView extends ImageView {
         setDragExited();
         setDragReleased();
         mouseClicked();
-        cameFrom = new PersonImageView();
     }
 
     public TileImageView(Image src, int i, int j) {
@@ -33,62 +31,50 @@ public class TileImageView extends ImageView {
         setDragEntered();
         setDragExited();
         setDragReleased();
-        // mouseClicked();
-        cameFrom = new PersonImageView();
+        mouseClicked();
 
     }
 
-    public Integer[] mouseClicked() {
-        Integer[] loc = new Integer[2];
-        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                loc[0] = i;
-                loc[1] = j;
-
+    public void mouseClicked() {
+        this.setOnMouseClicked(event -> {
+            if (Main.getGame().getGraphic().getSelectedPerson() != null
+                    && Main.getGame().getGraphic().getSelectedPerson().isRoamEnded()) {
+                Main.getGame().getGraphic().getSelectedPerson().setRoamEnded(false);
+                Main.getGame().getGraphic().getSelectedPerson().move(this.i, this.j);
             }
         });
-        return loc;
+
     }
 
     private void setDragReleased() {
-        setOnMouseDragReleased(new EventHandler<MouseDragEvent>() {
-            @Override
-            public void handle(MouseDragEvent event) {
-                List<TileImageView> freeTiles = Main.getGame().getGraphic().getDragImage().getFreeTiles(i, j);
-                if (freeTiles != null) {
-                    Main.getGame().getGraphic().createBuilding(i - 1, j - 1);
-                    for (TileImageView img : freeTiles)
-                        img.setStyle("-fx-opacity: 1");
-                }
+        setOnMouseDragReleased(event -> {
+            List<TileImageView> freeTiles = Main.getGame().getGraphic().getDragImage().getFreeTiles(i, j);
+            if (freeTiles != null) {
+                Main.getGame().getGraphic().createBuilding(i - 1, j - 1);
+                for (TileImageView img : freeTiles)
+                    img.setStyle("-fx-opacity: 1");
             }
         });
     }
 
 
     private void setDragExited() {
-        setOnMouseDragExited(new EventHandler<MouseDragEvent>() {
-            @Override
-            public void handle(MouseDragEvent event) {
-                if (Main.getGame().getGraphic().isDragging()) {
-                    List<TileImageView> freeTiles = Main.getGame().getGraphic().getDragImage().getFreeTiles(i, j);
-                    if (freeTiles != null)
-                        for (TileImageView img : freeTiles)
-                            img.setStyle("-fx-opacity: 1");
-                }
+        setOnMouseDragExited(event -> {
+            if (Main.getGame().getGraphic().isDragging()) {
+                List<TileImageView> freeTiles = Main.getGame().getGraphic().getDragImage().getFreeTiles(i, j);
+                if (freeTiles != null)
+                    for (TileImageView img : freeTiles)
+                        img.setStyle("-fx-opacity: 1");
             }
         });
     }
 
     private void setDragEntered() {
-        setOnMouseDragEntered(new EventHandler<MouseDragEvent>() {
-            @Override
-            public void handle(MouseDragEvent event) {
-                List<TileImageView> freeTiles = Main.getGame().getGraphic().getDragImage().getFreeTiles(i, j);
-                if (freeTiles != null)
-                    for (TileImageView img : freeTiles)
-                        img.setStyle("-fx-opacity: 0.5");
-            }
+        setOnMouseDragEntered(event -> {
+            List<TileImageView> freeTiles = Main.getGame().getGraphic().getDragImage().getFreeTiles(i, j);
+            if (freeTiles != null)
+                for (TileImageView img : freeTiles)
+                    img.setStyle("-fx-opacity: 0.5");
         });
     }
 

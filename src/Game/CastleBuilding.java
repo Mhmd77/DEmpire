@@ -1,6 +1,6 @@
 package Game;
 
-import javafx.scene.image.ImageView;
+        import javafx.scene.image.ImageView;
 
 public class CastleBuilding extends Building {
 

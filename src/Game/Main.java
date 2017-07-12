@@ -5,25 +5,25 @@ import ImageViews.HarborImageView;
 import ImageViews.LumberImageView;
 import ImageViews.MineImageView;
 import Server.ServerListener;
+import javafx.animation.PathTransition;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
-import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
-import javax.security.auth.Refreshable;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -37,12 +37,12 @@ public class Main extends Application {
     final static String BG_COLOR = "-fx-background-color: #dddddd";
 
     public static void main(String[] args) throws IOException {
+        game = new Game();
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        game = new Game();
         VBox root = new VBox();
         root.setStyle(BG_COLOR);
         root.setAlignment(Pos.CENTER);
@@ -54,8 +54,6 @@ public class Main extends Application {
         Scene scene = new Scene(root, WIDTH, HEIGHT, Color.web("#dddddd"));
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
-        game.getGraphic().createAndMovePerson();
-        //  Platform.setImplicitExit(false);
         primaryStage.show();
     }
 
@@ -88,38 +86,34 @@ public class Main extends Application {
         Button b = new Button();
         b.setText("START");
         pane.getChildren().add(b);
-        b.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                b.setDisable(true);
-                try {
+        b.setOnMouseClicked(event -> {
+            b.setDisable(true);
+            try {
 
-                    Socket socket = new Socket("localhost", 8888);
-                    DataInputStream inputStream = new DataInputStream(socket.getInputStream());
-                    int thisID = inputStream.readInt();
-                    System.out.println("Registered As " + thisID);
-                    game.addPlayer(new Player(thisID));
-                    for (int i = 0; i < thisID; i++)
-                        game.addPlayer(new Player(i));
-                    while (true) {
-                        try {
-                            DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
-                            boolean isFinished = dataInputStream.readBoolean();
-                            if (isFinished)
-                                break;
-                            int id = dataInputStream.readInt();
-                            System.out.println("Game.Player " + id + " Registered!");
-                            game.addPlayer(new Player(id));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                Socket socket = new Socket("localhost", 8888);
+                DataInputStream inputStream = new DataInputStream(socket.getInputStream());
+                int thisID = inputStream.readInt();
+                System.out.println("Registered As " + thisID);
+                game.addPlayer(new Player(thisID));
+                for (int i = 0; i < thisID; i++)
+                    game.addPlayer(new Player(i));
+                while (true) {
+                    try {
+                        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+                        boolean isFinished = dataInputStream.readBoolean();
+                        if (isFinished)
+                            break;
+                        int id = dataInputStream.readInt();
+                        game.addPlayer(new Player(id));
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                    game.startGame();
-                    ServerListener serverListener = new ServerListener(socket);
-                    game.setServerListener(serverListener);
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
                 }
+                game.startGame();
+                ServerListener serverListener = new ServerListener(socket);
+                game.setServerListener(serverListener);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         });
         return root;
@@ -140,5 +134,4 @@ public class Main extends Application {
     public static Game getGame() {
         return game;
     }
-
 }

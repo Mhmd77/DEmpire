@@ -5,7 +5,6 @@ import javafx.scene.image.ImageView;
 
 public class Building {
     private BuildingKind kind;
-    private Image image;
     private static boolean isActive = true;
     private Tiles pos;
     private int life;
@@ -36,14 +35,6 @@ public class Building {
 
     public void setLife(int life) {
         this.life = life;
-    }
-
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
     }
 
     public Tiles getPos() {

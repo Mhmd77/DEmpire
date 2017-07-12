@@ -3,7 +3,7 @@ package Game;
 import javafx.scene.image.ImageView;
 
 public enum BuildingKind {
-    Castle(0), Harbor(1), Lumber(2), Mine(3);
+    Castle(0), Harbor(1), Lumber(2), Mine(3), Army(4);
     private int value;
 
     BuildingKind(int value) {
@@ -25,6 +25,9 @@ public enum BuildingKind {
             case Mine:
                 image = new ImageView("Images/mine.png");
                 break;
+            case Army:
+                image = new ImageView("Images/mine.png");
+                break;
         }
         return image;
     }
@@ -43,6 +46,8 @@ public enum BuildingKind {
                 return Lumber;
             case 3:
                 return Mine;
+            case 4:
+                return Army;
         }
         return null;
     }

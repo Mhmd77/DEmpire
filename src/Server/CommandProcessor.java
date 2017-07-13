@@ -38,7 +38,15 @@ public class CommandProcessor extends Thread {
             int j = Integer.parseInt(values[3]);
             int kind = Integer.parseInt(values[4]);
             Platform.runLater(() -> Main.getGame().getGraphic().createBuilding(id, i, j, kind));
+        } else if (values[1].equals("person_move")) {
+            int i = Integer.parseInt(values[2]);
+            int j = Integer.parseInt(values[3]);
+            int personID = Integer.parseInt(values[4]);
+            Platform.runLater(() -> Main.getGame().getPlayer(id).getPersons().get(personID).move(i, j, id));
+        } else if (values[1].equals("change_climbing")) {
+            Main.getGame().getPlayer(id).changeClimbing();
         }
+
     }
 
     void addCommandLis(String command) {

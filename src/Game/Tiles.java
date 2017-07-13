@@ -8,7 +8,6 @@ public class Tiles {
     double h;
     double x;
     double y;
-    boolean setRock = false;
 
     @Override
     public boolean equals(Object obj) {

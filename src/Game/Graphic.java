@@ -15,7 +15,6 @@ public class Graphic {
     private final double SCALE_DELTA = 1.05;
     private BuildingImageView dragImage;
     private Person selectedPerson;
-    private TileImageView selectedTile;
     private final Double ScreenMovingSpeed = 0.05;
 
 
@@ -145,20 +144,12 @@ public class Graphic {
         return scrollPane;
     }
 
-    public ScrollPane getScrollPane() {
-        return scrollPane;
-    }
-
     public Node getNodeByRowColumnIndex(int i, int j) {
         return pane.getChildren().get(i * 80 + j);
     }
 
     public void setSelectedPerson(Person selectedPerson) {
         this.selectedPerson = selectedPerson;
-    }
-
-    public void setSelectedTile(TileImageView selectedTile) {
-        this.selectedTile = selectedTile;
     }
 
     public Person getSelectedPerson() {

@@ -4,9 +4,6 @@ import javafx.scene.Node;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 
-/**
- * Created by asus on 7/12/2017.
- */
 public class Utils {
     public static class MoveToAbs extends MoveTo {
 

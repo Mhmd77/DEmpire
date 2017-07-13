@@ -11,8 +11,11 @@ public class PathFinder {
         closeList = new ArrayList<Tiles>();
     }
 
-    public ArrayList<Tiles> findPath(int i, int j, int igoal, int jgoal) {
-//        System.out.println("Starting ..." + i + "\t" + j + "\t" + igoal + "\t" + jgoal);
+    public ArrayList<Tiles> findPath(int i, int j, int iGoal, int jGoal) {
+        return findPath(i, j, iGoal, jGoal, Main.getGame().getThisPlayer().getID());
+    }
+
+    public ArrayList<Tiles> findPath(int i, int j, int iGoal, int jGoal, int id) {
         Tiles[][] tiles = new Tiles[60][80];
         int world[][] = MapLoader.getWorld();
         for (int k = 0; k < 60; k++) {
@@ -31,15 +34,13 @@ public class PathFinder {
         openList.add(thisNode);
         while (!openList.isEmpty()) {
             thisNode = findMin(openList);
-            if (closeList.contains(tiles[igoal][jgoal]))
+            if (closeList.contains(tiles[iGoal][jGoal]))
                 break;
             closeList.add(thisNode);
             openList.remove(thisNode);
-            i = thisNode.i;
-            j = thisNode.j;
             g = thisNode.g + 1;
-            for (Tiles t : getAdj(tiles, thisNode.i, thisNode.j)) {
-                t.h = calculateH(t, tiles[igoal][jgoal]);
+            for (Tiles t : getAdj(tiles, thisNode.i, thisNode.j, id)) {
+                t.h = calculateH(t, tiles[iGoal][jGoal]);
                 t.g = g;
                 if (closeList.contains(t)) {
                     continue;
@@ -49,12 +50,8 @@ public class PathFinder {
                 }
             }
         }
-        closeList.add(tiles[igoal][jgoal]);
+        closeList.add(tiles[iGoal][jGoal]);
         closeList.remove(closeList.size() - 1);
-        for (Tiles t :
-                closeList) {
-//            System.out.println(t.i + "\t" + t.j);
-        }
         return closeList;
     }
 
@@ -98,22 +95,19 @@ public class PathFinder {
         return min;
     }
 
-    private ArrayList<Tiles> getAdj(Tiles[][] tiles, int i, int j) {
+    private ArrayList<Tiles> getAdj(Tiles[][] tiles, int i, int j, int id) {
         ArrayList<Tiles> result = new ArrayList<Tiles>();
         if (i >= 1 && j >= 1) {
-            if (isFreeLand(i - 1, j - 1) == 2 && Main.getGame().getThisPlayer().isClimbing()) {
-                tiles[i - 1][j - 1].setRock = true;
+            if (isFreeLand(i - 1, j - 1) == 2 && Main.getGame().getPlayer(id).isClimbing()) {
                 result.add(tiles[i - 1][j - 1]);
             } else if (isFreeLand(i - 1, j - 1) == 0) {
                 result.add(tiles[i - 1][j - 1]);
-
             }
         }
         if (j >= 1) {
             if (isFreeLand(i, j - 1) == 0) {
                 result.add(tiles[i][j - 1]);
-            } else if (isFreeLand(i, j - 1) == 2 && Main.getGame().getThisPlayer().isClimbing()) {
-                tiles[i][j - 1].setRock = true;
+            } else if (isFreeLand(i, j - 1) == 2 && Main.getGame().getPlayer(id).isClimbing()) {
                 result.add(tiles[i][j - 1]);
             }
         }
@@ -121,8 +115,7 @@ public class PathFinder {
         if (i <= 58 && j >= 1) {
             if (isFreeLand(i + 1, j - 1) == 0) {
                 result.add(tiles[i + 1][j - 1]);
-            } else if (isFreeLand(i + 1, j - 1) == 2 && Main.getGame().getThisPlayer().isClimbing()) {
-                tiles[i + 1][j - 1].setRock = true;
+            } else if (isFreeLand(i + 1, j - 1) == 2 && Main.getGame().getPlayer(id).isClimbing()) {
                 result.add(tiles[i + 1][j - 1]);
             }
         }
@@ -130,16 +123,14 @@ public class PathFinder {
         if (i <= 58 && j >= 1) {
             if (isFreeLand(i + 1, j) == 0) {
                 result.add(tiles[i + 1][j]);
-            } else if (isFreeLand(i + 1, j) == 2 && Main.getGame().getThisPlayer().isClimbing()) {
-                tiles[i + 1][j].setRock = true;
+            } else if (isFreeLand(i + 1, j) == 2 && Main.getGame().getPlayer(id).isClimbing()) {
                 result.add(tiles[i + 1][j]);
             }
         }
         if (i <= 58 && j <= 78) {
             if (isFreeLand(i + 1, j + 1) == 0) {
                 result.add(tiles[i + 1][j + 1]);
-            } else if (isFreeLand(i + 1, j + 1) == 2 && Main.getGame().getThisPlayer().isClimbing()) {
-                tiles[i + 1][j + 1].setRock = true;
+            } else if (isFreeLand(i + 1, j + 1) == 2 && Main.getGame().getPlayer(id).isClimbing()) {
                 result.add(tiles[i + 1][j + 1]);
 
             }
@@ -148,8 +139,7 @@ public class PathFinder {
         if (j <= 78) {
             if (isFreeLand(i, j + 1) == 0) {
                 result.add(tiles[i][j + 1]);
-            } else if (isFreeLand(i, j + 1) == 2 && Main.getGame().getThisPlayer().isClimbing()) {
-                tiles[i][j + 1].setRock = true;
+            } else if (isFreeLand(i, j + 1) == 2 && Main.getGame().getPlayer(id).isClimbing()) {
                 result.add(tiles[i][j + 1]);
             }
         }
@@ -157,16 +147,14 @@ public class PathFinder {
         if (i >= 1 && j <= 78) {
             if (isFreeLand(i - 1, j + 1) == 0) {
                 result.add(tiles[i - 1][j + 1]);
-            } else if (isFreeLand(i - 1, j + 1) == 2 && Main.getGame().getThisPlayer().isClimbing()) {
-                tiles[i - 1][j + 1].setRock = true;
+            } else if (isFreeLand(i - 1, j + 1) == 2 && Main.getGame().getPlayer(id).isClimbing()) {
                 result.add(tiles[i - 1][j + 1]);
             }
         }
         if (i >= 1) {
             if (isFreeLand(i - 1, j) == 0) {
                 result.add(tiles[i - 1][j]);
-            } else if (isFreeLand(i - 1, j) == 2 && Main.getGame().getThisPlayer().isClimbing()) {
-                tiles[i - 1][j].setRock = true;
+            } else if (isFreeLand(i - 1, j) == 2 && Main.getGame().getPlayer(id).isClimbing()) {
                 result.add(tiles[i - 1][j]);
             }
         }

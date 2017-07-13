@@ -1,7 +1,5 @@
 package Game;
 
-import javafx.application.Platform;
-
 import java.util.*;
 
 public class Player {
@@ -9,24 +7,20 @@ public class Player {
     private List<Person> persons;
     private int id;
     private boolean climbing;
-    private double speed = 300;
-    private int[] personPosById;
+    private double speedPerson = 300;
 
     Player(int id) {
         buildings = new ArrayList<>();
         this.id = id;
         climbing = false;
-    }
-    public double getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
         persons = new ArrayList<Person>();
     }
 
-    public void createPersons(int n) {
+    public double getSpeedPerson() {
+        return speedPerson;
+    }
+
+    void createPersons(int n) {
         Tiles pos = getCastle().getPos();
         Person p = new Person(pos.i + 5, pos.j + 5, this.id, "Images/romanSoldier.png");
         persons.add(p);
@@ -37,12 +31,12 @@ public class Player {
         return id;
     }
 
-    public void addBuilding(Building building) {
+    void addBuilding(Building building) {
         this.buildings.add(building);
     }
 
 
-    public boolean isClimbing() {
+    boolean isClimbing() {
         return climbing;
     }
 
@@ -54,16 +48,19 @@ public class Player {
 
     }
 
-    void reduceSpeed() {
-        speed /= 2;
+    private void reduceSpeed() {
+        speedPerson *= 2;
     }
-    void gainSpeed() {
-        speed *= 2;}
+
+    private void gainSpeed() {
+        speedPerson /= 2;
+    }
+
     public void setPersons(Person persons) {
         this.persons.add(persons);
     }
 
-    CastleBuilding getCastle() {
+    private CastleBuilding getCastle() {
         for (Building building : buildings) {
             if (building instanceof CastleBuilding) {
                 return (CastleBuilding) building;
@@ -73,4 +70,7 @@ public class Player {
         return null;
     }
 
+    public List<Person> getPersons() {
+        return persons;
+    }
 }

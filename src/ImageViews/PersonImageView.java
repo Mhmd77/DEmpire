@@ -9,11 +9,6 @@ public class PersonImageView extends ImageView {
     private int i;
     private int j;
 
-    public PersonImageView() {
-        super();
-        setMouseClickListener();
-    }
-
     public PersonImageView(String src, int i, int j, Person ownPerson) {
         super(src);
         this.i = i;

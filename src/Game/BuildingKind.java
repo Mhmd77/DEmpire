@@ -26,7 +26,7 @@ public enum BuildingKind {
                 image = new ImageView("Images/mine.png");
                 break;
             case Army:
-                image = new ImageView("Images/mine.png");
+                image = new ImageView("Images/army.png");
                 break;
         }
         return image;

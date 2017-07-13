@@ -15,13 +15,11 @@ import java.util.List;
 
 public class Person {
     List<TileImageView> tileImageView;
-    public int i;//Position 0 : i Position 1 : j
-    public int j;//Position 0 : i Position 1 : j
-    private int speed = 1;
+    public int i;
+    public int j;
     private int life = 500;
     private int foodAmount = 1;
     private int attackPower = 40;
-    private boolean isClimbing = false;
     private int team;
     private PersonImageView personImage;
     private PathTransition pathTransition;
@@ -36,28 +34,26 @@ public class Person {
         Main.getGame().getGraphic().add(personImage, this.j, this.i);
     }
 
-
-    public void setFoodAmount() {
-
-    }
-
-
     public void attack(Person p) {
         System.out.println("attack initial implement");
     }
 
-
     public void move(int igoal, int jgoal) {
-        ArrayList<Tiles> list = (new PathFinder()).findPath(i, j, igoal, jgoal);
+        move(igoal, jgoal, Main.getGame().getThisPlayer().getID());
+    }
+
+    public void move(int igoal, int jgoal, int playerID) {
+        ArrayList<Tiles> list = (new PathFinder()).findPath(i, j, igoal, jgoal, playerID);
         Path path = new Path();
-        path.getElements().add(new Utils.MoveToAbs(personImage));
+        path.getElements().add(new MoveTo(16, 16));
+        list.remove(0);
         for (Tiles t :
                 list)
-            path.getElements().add(new Utils.LineToAbs(personImage, t.j * 16, t.i* 16));
+            path.getElements().add(new Utils.LineToAbs(personImage, t.j * 16, t.i * 16));
 
         pathTransition = new PathTransition();
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        pathTransition.setDuration(Duration.millis(300 * list.size()));
+        pathTransition.setDuration(Duration.millis(Main.getGame().getPlayer(team).getSpeedPerson() * list.size()));
         pathTransition.setNode(personImage);
         pathTransition.setPath(path);
         pathTransition.setCycleCount(1);
@@ -66,17 +62,31 @@ public class Person {
             roamEnded = true;
             i = list.get(list.size() - 1).i;
             j = list.get(list.size() - 1).j;
+            double x = personImage.getLayoutX() + personImage.getTranslateX();
+            double y = personImage.getLayoutY() + personImage.getTranslateY();
+            personImage.relocate(x, y);
+            personImage.setTranslateX(0);
+            personImage.setTranslateY(0);
             Main.getGame().getGraphic().setSelectedPerson(null);
         });
+        if (getTeam() == Main.getGame().getThisPlayer().getID()) {
+            Main.getGame().getServerListener().sendCommand("person_move", team, igoal, jgoal, getPersonID());
+        }
     }
 
     public void stopTransition() {
         pathTransition.stop();
         int jTmp = (int) (personImage.getTranslateX() / 16);
         int iTmp = (int) (personImage.getTranslateY() / 16);
+        double x = personImage.getLayoutX() + personImage.getTranslateX();
+        double y = personImage.getLayoutY() + personImage.getTranslateY();
+        personImage.relocate(x, y);
+        personImage.setTranslateX(0);
+        personImage.setTranslateY(0);
         personImage.setInJ(i, j);
         i = iTmp;
         j = jTmp;
+        Main.getGame().getGraphic().setSelectedPerson(null);
     }
 
     public boolean isRoamEnded() {
@@ -87,8 +97,8 @@ public class Person {
         this.roamEnded = roamEnded;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
+    public void setFoodAmount() {
+
     }
 
     public int getLife() {
@@ -99,9 +109,6 @@ public class Person {
         this.life = life;
     }
 
-    public int getSpeed() {
-        return speed;
-    }
 
     public int getFoodAmount() {
         return foodAmount;
@@ -111,16 +118,15 @@ public class Person {
         return attackPower;
     }
 
-    public boolean isClimbing() {
-        return isClimbing;
-    }
-
-    public void setClimbing() {
-        speed /= 2;
-        isClimbing = true;
-    }
 
     public int getTeam() {
         return team;
+    }
+
+    public int getPersonID() {
+        for (int i = 0; i < Main.getGame().getThisPlayer().getPersons().size(); i++)
+            if (Main.getGame().getThisPlayer().getPersons().get(i).equals(this))
+                return i;
+        return -1;
     }
 }

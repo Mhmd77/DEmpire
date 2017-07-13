@@ -4,6 +4,7 @@ import ImageViews.*;
 import Server.ServerListener;
 import javafx.animation.PathTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -52,6 +53,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, WIDTH, HEIGHT, Color.web("#dddddd"));
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
+        primaryStage.setOnCloseRequest(e -> Platform.exit());
         primaryStage.show();
     }
 
@@ -121,15 +123,15 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
                 getGame().getThisPlayer().changeClimbing();
+                getGame().getServerListener().sendCommand("change_climbing", getGame().getThisPlayer().getID());
                 if (getGame().getThisPlayer().isClimbing()) {
-                    b2.setStyle("-fx-border-color: green;-fx-border-width: 2px");
-                }else
+                    b2.setStyle("-fx-border-color: green;-fx-border-width: 2px;-fx-border-radius: 3px");
+                } else
                     b2.setStyle("-fx-border-color: crimson;-fx-border-width: 2px");
             }
         });
         b2.setLayoutX(50);
         pane.getChildren().add(b2);
-
         return root;
     }
 
@@ -138,7 +140,7 @@ public class Main extends Application {
         HarborImageView src2 = new HarborImageView("Images/harbor.png");
         MineImageView src3 = new MineImageView("Images/mine.png");
         LumberImageView src4 = new LumberImageView("Images/mine.png");
-        ArmyImageView src5 = new ArmyImageView("Images/mine.png");
+        ArmyImageView src5 = new ArmyImageView("Images/army.png");
         hBox.getChildren().add(src);
         hBox.getChildren().add(src2);
         hBox.getChildren().add(src3);

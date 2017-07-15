@@ -9,7 +9,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class Resource {
-
+    static final int GOLD = 0, WOOD = 1, FOOD = 2;
     private ImageView image;
     private Label label;
     private int limit;
@@ -31,20 +31,20 @@ public class Resource {
 
     private void setInfo() {
         switch (kind) {
-            case 0: {//GOLD
-                setLimit(1000);
+            case GOLD: {
+                setLimit(100000);
                 setTime(10000);
                 image = new ImageView("Images/gold_icon.png");
                 break;
             }
-            case 1: {//WOOD
-                setLimit(1000);
+            case WOOD: {
+                setLimit(100000);
                 setTime(2000);
                 image = new ImageView("Images/lumber_icon.png");
                 break;
             }
-            case 2: {//FOOD
-                setLimit(1000);
+            case FOOD: {
+                setLimit(100000);
                 setTime(3000);
                 image = new ImageView("Images/stone_icon.png");
                 break;
@@ -82,6 +82,7 @@ public class Resource {
         }
         return true;
     }
+
     public int getTime() {
         return time;
     }

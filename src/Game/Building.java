@@ -1,7 +1,9 @@
 package Game;
 
+import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 public class Building {
     private BuildingKind kind;
@@ -15,10 +17,11 @@ public class Building {
     public Building(int life, int j, int i, BuildingKind kind, ImageView imageView) {
         this.life = life;
         this.kind = kind;
-        this.imageView = imageView;
+        setImageView(imageView);
         pos = new Tiles();
         pos.j = j;
         pos.i = i;
+        busy = false;
     }
 
     public static void setIsActive(boolean isActive) {
@@ -37,7 +40,7 @@ public class Building {
         this.life = life;
     }
 
-    public Tiles getPos() {
+    Tiles getPos() {
         return pos;
     }
 
@@ -58,12 +61,29 @@ public class Building {
         setBusy(true);
     }
 
-
-    public boolean isBusy() {
+    private boolean isBusy() {
         return busy;
     }
 
-    public void setBusy(boolean busy) {
+    protected void setBusy(boolean busy) {
         this.busy = busy;
+    }
+
+    private void setImageView(ImageView imageView) {
+        imageView.setOnMouseClicked(event -> {
+            if (Main.getGame().getGraphic().getSelectedPerson() != null) {
+                if (isBusy()) {
+                    System.out.println("In Use");
+                } else {
+                    Main.getGame().getGraphic().getSelectedPerson().setBuilding(this);
+                    Main.getGame().getGraphic().getSelectedPerson().move(getPos().i, getPos().j);
+                }
+
+            }
+        });
+        this.imageView = imageView;
+    }
+
+    protected void collect() {
     }
 }

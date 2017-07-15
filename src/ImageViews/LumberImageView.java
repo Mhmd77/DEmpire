@@ -1,10 +1,10 @@
 package ImageViews;
 
+import Game.Main;
+import javafx.scene.Cursor;
+
 import java.util.List;
 
-/**
- * Created by asus on 6/29/2017.
- */
 public class LumberImageView extends BuildingImageView {
 
     public LumberImageView(String src) {

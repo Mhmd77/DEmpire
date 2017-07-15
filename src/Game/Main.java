@@ -29,34 +29,27 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main extends Application {
+public class Main {
     static final int WIDTH = 960;
     static final int HEIGHT = 780;
     private static Game game;
     final static String BG_COLOR = "-fx-background-color: #dddddd";
 
-    public static void main(String[] args) throws IOException {
+    public Main() {
         game = new Game();
-        launch(args);
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void startGame(Stage stage) throws IOException {
         VBox root = new VBox();
         root.setStyle(BG_COLOR);
         root.setAlignment(Pos.CENTER);
-        primaryStage.setTitle("Age Of Empire");
         createTopMenu(root);
         ScrollPane sp = game.getGraphic().createScrollPane();
         root.getChildren().add(sp);
         root.getChildren().add(createBottomMenu());
         Scene scene = new Scene(root, WIDTH, HEIGHT, Color.web("#dddddd"));
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.setOnCloseRequest(e -> Platform.exit());
-        primaryStage.show();
+        stage.setScene(scene);
     }
-
     private void createTopMenu(VBox root) {
         List<Resource> resources = game.getResources();
         HBox topMenu = new HBox();
@@ -83,55 +76,18 @@ public class Main extends Application {
         HBox hbox = (HBox) root.getTabs().get(0).getContent();
         addImages(hbox);
         AnchorPane pane = (AnchorPane) root.getTabs().get(1).getContent();
-        Button b = new Button();
-        b.setText("START");
-        pane.getChildren().add(b);
-        b.setOnMouseClicked(event -> {
-            b.setDisable(true);
-            try {
-
-                Socket socket = new Socket("localhost", 8888);
-                DataInputStream inputStream = new DataInputStream(socket.getInputStream());
-                int thisID = inputStream.readInt();
-                System.out.println("Registered As " + thisID);
-                game.addPlayer(new Player(thisID));
-                for (int i = 0; i < thisID; i++)
-                    game.addPlayer(new Player(i));
-                while (true) {
-                    try {
-                        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
-                        boolean isFinished = dataInputStream.readBoolean();
-                        if (isFinished)
-                            break;
-                        int id = dataInputStream.readInt();
-                        game.addPlayer(new Player(id));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                game.startGame();
-                ServerListener serverListener = new ServerListener(socket);
-                game.setServerListener(serverListener);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
+        Button climbing = new Button();
+        climbing.setText("Climbing");
+        climbing.setOnAction(event -> {
+            getGame().getThisPlayer().changeClimbing();
+            getGame().getServerListener().sendCommand("change_climbing", getGame().getThisPlayer().getID());
+            if (getGame().getThisPlayer().isClimbing()) {
+                climbing.setStyle("-fx-background-color: #27ae60");
+            } else
+                climbing.setStyle("-fx-background-color: #e74c3c");
         });
-        Button b2 = new Button();
-        b2.setText("Climbing");
-
-        b2.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                getGame().getThisPlayer().changeClimbing();
-                getGame().getServerListener().sendCommand("change_climbing", getGame().getThisPlayer().getID());
-                if (getGame().getThisPlayer().isClimbing()) {
-                    b2.setStyle("-fx-border-color: green;-fx-border-width: 2px;-fx-border-radius: 3px");
-                } else
-                    b2.setStyle("-fx-border-color: crimson;-fx-border-width: 2px");
-            }
-        });
-        b2.setLayoutX(50);
-        pane.getChildren().add(b2);
+        climbing.setLayoutX(50);
+        pane.getChildren().add(climbing);
         return root;
     }
 

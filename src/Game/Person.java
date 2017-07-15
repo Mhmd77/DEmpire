@@ -21,6 +21,7 @@ public class Person {
     private int foodAmount = 1;
     private int attackPower = 40;
     private int team;
+    private Building building;
     private PersonImageView personImage;
     private PathTransition pathTransition;
     private boolean roamEnded = true;
@@ -38,12 +39,12 @@ public class Person {
         System.out.println("attack initial implement");
     }
 
-    public void move(int igoal, int jgoal) {
-        move(igoal, jgoal, Main.getGame().getThisPlayer().getID());
+    public void move(int iGoal, int jGoal) {
+        move(iGoal, jGoal, Main.getGame().getThisPlayer().getID());
     }
 
-    public void move(int igoal, int jgoal, int playerID) {
-        ArrayList<Tiles> list = (new PathFinder()).findPath(i, j, igoal, jgoal, playerID);
+    public void move(int iGoal, int jGoal, int playerID) {
+        ArrayList<Tiles> list = (new PathFinder()).findPath(i, j, iGoal, jGoal, playerID);
         Path path = new Path();
         path.getElements().add(new MoveTo(16, 16));
         list.remove(0);
@@ -68,24 +69,25 @@ public class Person {
             personImage.setTranslateX(0);
             personImage.setTranslateY(0);
             Main.getGame().getGraphic().setSelectedPerson(null);
+            if (building != null) {
+                building.collect();
+            }
         });
         if (getTeam() == Main.getGame().getThisPlayer().getID()) {
-            Main.getGame().getServerListener().sendCommand("person_move", team, igoal, jgoal, getPersonID());
+            Main.getGame().getServerListener().sendCommand("person_move", team, iGoal, jGoal, getPersonID());
         }
     }
 
     public void stopTransition() {
         pathTransition.stop();
-        int jTmp = (int) (personImage.getTranslateX() / 16);
-        int iTmp = (int) (personImage.getTranslateY() / 16);
         double x = personImage.getLayoutX() + personImage.getTranslateX();
         double y = personImage.getLayoutY() + personImage.getTranslateY();
         personImage.relocate(x, y);
         personImage.setTranslateX(0);
         personImage.setTranslateY(0);
+        i = (int) (y/16);
+        j = (int) (x/16);
         personImage.setInJ(i, j);
-        i = iTmp;
-        j = jTmp;
         Main.getGame().getGraphic().setSelectedPerson(null);
     }
 
@@ -128,5 +130,13 @@ public class Person {
             if (Main.getGame().getThisPlayer().getPersons().get(i).equals(this))
                 return i;
         return -1;
+    }
+
+    public Building getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(Building building) {
+        this.building = building;
     }
 }

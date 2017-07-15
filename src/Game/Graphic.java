@@ -103,10 +103,14 @@ public class Graphic {
             MineBuilding mine = new MineBuilding(100, j, i, BuildingKind.Harbor, newImage);
             Main.getGame().getThisPlayer().addBuilding(mine);
             kind = BuildingKind.Mine;
+        } else if (dragImage instanceof ArmyImageView) {
+            ArmyBuilding army = new ArmyBuilding(100, j, i, BuildingKind.Army, newImage);
+            Main.getGame().getThisPlayer().addBuilding(army);
+            kind = BuildingKind.Army;
         } else {
             CastleBuilding castle = new CastleBuilding(100, j, i, BuildingKind.Castle, newImage);
             Main.getGame().getThisPlayer().addBuilding(castle);
-            Main.getGame().getThisPlayer().createPersons(2);
+            Main.getGame().getThisPlayer().createPersons(10);
             kind = BuildingKind.Castle;
         }
         dragImage = null;
@@ -119,7 +123,7 @@ public class Graphic {
         if (kind == BuildingKind.Castle.getValue()) {
             CastleBuilding castle = new CastleBuilding(100, j, i, BuildingKind.Castle, newImage);
             Main.getGame().getPlayer(id).addBuilding(castle);
-            Main.getGame().getPlayer(id).createPersons(2);
+            Main.getGame().getPlayer(id).createPersons(10);
         } else if (kind == BuildingKind.Harbor.getValue()) {
             HarborBuilding castle = new HarborBuilding(50, j, i, BuildingKind.Harbor, newImage);
             Main.getGame().getPlayer(id).addBuilding(castle);
@@ -129,6 +133,9 @@ public class Graphic {
         } else if (kind == BuildingKind.Mine.getValue()) {
             MineBuilding mine = new MineBuilding(70, j, i, BuildingKind.Lumber, newImage);
             Main.getGame().getPlayer(id).addBuilding(mine);
+        } else if (kind == BuildingKind.Army.getValue()) {
+            ArmyBuilding army = new ArmyBuilding(100, j, i, BuildingKind.Army, newImage);
+            Main.getGame().getPlayer(id).addBuilding(army);
         }
     }
 

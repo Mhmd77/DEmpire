@@ -51,7 +51,6 @@ public class TileImageView extends ImageView {
         });
     }
 
-
     private void setDragExited() {
         setOnMouseDragExited(event -> {
             if (Main.getGame().getGraphic().isDragging()) {

@@ -8,8 +8,9 @@ public class Player {
     private int id;
     private boolean climbing;
     private double speedPerson = 300;
+    private Tiles randomPosition;
 
-    Player(int id) {
+    public Player(int id) {
         buildings = new ArrayList<>();
         this.id = id;
         climbing = false;
@@ -21,9 +22,15 @@ public class Player {
     }
 
     void createPersons(int n) {
-        Tiles pos = getCastle().getPos();
-        Person p = new Person(pos.i + 5, pos.j + 5, this.id, "Images/romanSoldier.png");
-        persons.add(p);
+        for (int j = 0, s = 0; s < n; j++, s++) {
+            if (j < 0 || j > 59) {
+                s--;
+                continue;
+            }
+            Tiles pos = getCastle().getPos();
+            Person p = new Person(pos.i + 5, pos.j + j, this.id, "Images/romanSoldier.png");
+            persons.add(p);
+        }
     }
 
 
@@ -73,4 +80,5 @@ public class Player {
     public List<Person> getPersons() {
         return persons;
     }
+
 }

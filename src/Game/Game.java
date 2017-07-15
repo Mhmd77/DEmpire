@@ -18,7 +18,7 @@ public class Game {
     private List<Resource> resources;
 
 
-    Game() {
+    public Game() {
         players = new ArrayList<>();
         graphic = new Graphic(new MapLoader().drawWorld());
         resources = new ArrayList<>();
@@ -31,7 +31,7 @@ public class Game {
         return resources;
     }
 
-    void addPlayer(Player player) {
+    public void addPlayer(Player player) {
         this.players.add(player);
     }
 
@@ -56,12 +56,12 @@ public class Game {
         return serverListener;
     }
 
-    void setServerListener(ServerListener serverListener) {
+    public void setServerListener(ServerListener serverListener) {
         serverListener.start();
         this.serverListener = serverListener;
     }
 
-    void startGame() {
+    public void startGame() {
         started = true;
         System.out.printf("Players ");
         for (Player p :

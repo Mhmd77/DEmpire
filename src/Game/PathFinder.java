@@ -27,7 +27,7 @@ public class PathFinder {
                 tiles[k][l] = t;
             }
         }
-        int g = 0;
+        int g;
         closeList = new ArrayList<>();
         openList = new ArrayList<>();
         Tiles thisNode = tiles[i][j];

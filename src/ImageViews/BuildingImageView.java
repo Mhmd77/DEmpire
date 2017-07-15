@@ -13,47 +13,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BuildingImageView extends ImageView {
-    protected int[] nFreeTile;
-
+    int[] nFreeTile;
 
     public BuildingImageView(String src) {
         super(src);
         nFreeTile = new int[]{0, 1, 32, 33};
         setMouseMethods();
         HBox.setMargin(this, new Insets(0, 10, 0, 0));
-        nFreeTile = new int[]{0, 1, 32, 33};
     }
 
     private void setMouseMethods() {
         ImageView img = this;
-        setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event)
-            {
-                setCursor(Cursor.OPEN_HAND);
-            }
+        setOnMouseEntered(event -> setCursor(Cursor.OPEN_HAND));
+        setOnMousePressed(event -> {
+            setCursor(Cursor.CLOSED_HAND);
+            event.setDragDetect(true);
+            Main.getGame().getGraphic().setDragImage((BuildingImageView) img);
         });
-        setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                setCursor(Cursor.CLOSED_HAND);
-                event.setDragDetect(true);
-                Main.getGame().getGraphic().setDragImage((BuildingImageView) img);
-            }
+        setOnMouseDragged(event -> {
+            event.setDragDetect(false);
+            setCursor(Cursor.MOVE);
         });
-        setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                event.setDragDetect(false);
-                setCursor(Cursor.MOVE);
-            }
-        });
-        setOnDragDetected(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                startFullDrag();
-            }
-        });
+        setOnDragDetected(event -> startFullDrag());
     }
 
     public void disableBuilding() {
@@ -61,7 +42,7 @@ public class BuildingImageView extends ImageView {
         setStyle("-fx-opacity: 30%");
     }
 
-    protected boolean isFreeLand(int i, int j) {
+    boolean isFreeLand(int i, int j) {
         int[][] world = MapLoader.getWorld();
         for (int x :
                 nFreeTile)
@@ -86,4 +67,5 @@ public class BuildingImageView extends ImageView {
         }
         return freeTiles;
     }
+
 }

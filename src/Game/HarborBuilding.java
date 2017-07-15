@@ -6,4 +6,5 @@ public class HarborBuilding extends Building {
     public HarborBuilding(int life, int x, int y, BuildingKind kind, ImageView imageView) {
         super(life, x, y, kind, imageView);
     }
+
 }

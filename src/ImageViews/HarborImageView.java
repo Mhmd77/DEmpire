@@ -8,7 +8,7 @@ import java.util.List;
 public class HarborImageView extends BuildingImageView {
     public HarborImageView(String src) {
         super(src);
-        nFreeTile = new int[]{598, 599, 600, 601, 602, 603, 758, 759, 760, 761, 762, 763, 630, 635, 662, 667, 694, 699, 726, 731};
+        nFreeTile = new int[]{598, 599, 600, 601,603, 630,635, 662, 663, 666, 667, 694, 695, 698, 699, 630, 726, 758,760,761,762};
     }
 
     public List<TileImageView> getFreeTiles(int i, int j) {

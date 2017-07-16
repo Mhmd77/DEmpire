@@ -52,7 +52,7 @@ public class BuildingImageView extends ImageView {
 
     public List<TileImageView> getFreeTiles(int i, int j) {
         List<TileImageView> freeTiles = null;
-        if (i > 57 || j > 77)
+        if (i > 77 || j > 97)
             return null;
         if (isFreeLand(i, j)) {
             freeTiles = new ArrayList<>();

@@ -99,8 +99,11 @@ public class Resource {
         return label;
     }
 
-    public void setRatio(double ratio) {
-        this.ratio = ratio;
+    void gainRatio() {
+        this.ratio *= 1.5;
+    }
+    void reduceRatio() {
+        this.ratio /= 1.5;
     }
 }
 

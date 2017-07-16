@@ -1,16 +1,10 @@
 package Game;
 
 import ImageViews.*;
-import Server.ServerListener;
-import javafx.animation.PathTransition;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -19,14 +13,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
-import java.io.DataInputStream;
 import java.io.IOException;
-import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -74,37 +63,44 @@ public class Main {
 
 
     private TabPane createBottomMenu() throws IOException {
-        TabPane root = FXMLLoader.load(Main.class.getResource("FXML/fxml_bottom_menu.fxml"));
-        HBox hbox = (HBox) root.getTabs().get(0).getContent();
-        addImages(hbox);
-        AnchorPane pane = (AnchorPane) root.getTabs().get(1).getContent();
+        TabPane tab1 = FXMLLoader.load(Main.class.getResource("FXML/fxml_bottom_menu.fxml"));
+        HBox hbox = (HBox) tab1.getTabs().get(0).getContent();
+        addBuildingImages(hbox);
+        HBox tab2 = (HBox) tab1.getTabs().get(1).getContent();
         Button climbing = new Button();
         climbing.setText("Climbing");
         climbing.setOnAction(event -> {
             getGame().getThisPlayer().changeClimbing();
             getGame().getServerListener().sendCommand("change_climbing", getGame().getThisPlayer().getID());
             if (getGame().getThisPlayer().isClimbing()) {
-                climbing.setStyle("-fx-background-color: #27ae60");
+                climbing.setStyle("-fx-background-color: #27ae60;-fx-text-fill: #ffffff");
             } else
-                climbing.setStyle("-fx-background-color: #e74c3c");
+                climbing.setStyle("-fx-background-color: #e74c3c;-fx-text-fill: #ffffff");
         });
-        climbing.setLayoutX(50);
-        pane.getChildren().add(climbing);
-        return root;
+        tab2.getChildren().add(climbing);
+        HBox tab3 = (HBox) tab1.getTabs().get(2).getContent();
+        tab3.setDisable(false);
+        addSoldierImages(tab3);
+        return tab1;
     }
 
-    private void addImages(HBox hBox) {
+    private void addSoldierImages(HBox hBox) {
+        ImageView person = new ImageView("Images/romanSoldier.png");
+        ImageView soldier = new ImageView("Images/romanSoldier.png");
+        HBox.setMargin(person, new Insets(0, 5, 0, 0));
+        hBox.getChildren().addAll(person, soldier);
+        person.setOnMouseClicked(event -> game.getThisPlayer().createPersonByArmy(0));
+        soldier.setOnMouseClicked(event -> game.getThisPlayer().createPersonByArmy(1));
+    }
+
+    private void addBuildingImages(HBox hBox) {
         BuildingImageView src = new BuildingImageView("Images/castle.png");
         HarborImageView src2 = new HarborImageView("Images/harbor.png");
         MineImageView src3 = new MineImageView("Images/mine.png");
         LumberImageView src4 = new LumberImageView("Images/mine.png");
         ArmyImageView src5 = new ArmyImageView("Images/army.png");
-        hBox.getChildren().add(src);
-        hBox.getChildren().add(src2);
-        hBox.getChildren().add(src3);
-        hBox.getChildren().add(src4);
-        hBox.getChildren().add(src5);
-
+        FarmImageView src6 = new FarmImageView("Images/army.png");
+        hBox.getChildren().addAll(src, src2, src3, src4, src5, src6);
     }
 
     public static Game getGame() {

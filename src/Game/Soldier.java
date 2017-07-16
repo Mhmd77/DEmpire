@@ -5,7 +5,7 @@ public class Soldier extends Person {
     private int attackPower = 140;
     private int foodAmount = 2;
 
-    Soldier(int personID, int i, int j, int team, String loc) {
+    Soldier(int personID, int j, int team, String loc, int i) {
         super(personID, j, team, loc, i);
     }
 

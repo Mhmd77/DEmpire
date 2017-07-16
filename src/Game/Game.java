@@ -2,11 +2,7 @@ package Game;
 
 import Server.ServerListener;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.MouseEvent;
 
-import java.io.File;
 import java.util.*;
 
 public class Game {
@@ -66,7 +62,7 @@ public class Game {
         for (Player p :
                 players) {
             System.out.printf(p.getID() + ",");
-//            p.createPersons(2);
+//            p.createFirstPersons(2);
         }
         System.out.println("Registered");
         collectResource();
@@ -78,10 +74,9 @@ public class Game {
                 resources) {
             timer.schedule(new TimerTask() {
                 public void run() {
-                    Platform.runLater(new Runnable() {
-                        public void run() {
-                            R.addValue(100);
-                        }
+                    Platform.runLater(() -> {
+                        R.addValue(100);
+                        R.reduceValue(Main.getGame().getThisPlayer().getAmountPersons());
                     });
                 }
             }, 0, R.getTime());
@@ -101,7 +96,14 @@ public class Game {
             }
         return enemies;
     }
-
+    List<Building> getEnemyBuildings() {
+        List<Building> buildings = new ArrayList<Building>();
+        for (Player p :
+                players)
+            if (!p.equals(getThisPlayer()))
+                buildings.addAll(p.getBuildings());
+        return buildings;
+    }
     public void killPerson(Person person) {
         for (Player p :
                 players)
@@ -110,4 +112,15 @@ public class Game {
                 return;
             }
     }
+
+    public void destroyBuilding(Building building) {
+        for (Player p :
+                players)
+            if (p.getBuildings().contains(building)) {
+                p.removeBuilding(building);
+                return;
+            }
+    }
+
+
 }

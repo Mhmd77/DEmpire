@@ -5,16 +5,23 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
-public class Building {
+public abstract class Building {
+    private int buildingId;
+    private int team;
     private BuildingKind kind;
-    private static boolean isActive = true;
     private Tiles pos;
     private int life;
     private ImageView imageView;
     private Person person;
     private boolean busy;
 
-    public Building(int life, int j, int i, BuildingKind kind, ImageView imageView) {
+    public Building(int life, int team, int j, int i, BuildingKind kind, ImageView imageView) {
+        this(Main.getGame().getPlayer(team).getBuildings().size(), life, team, j, i, kind, imageView);
+    }
+
+    public Building(int buildingId, int life, int team, int j, int i, BuildingKind kind, ImageView imageView) {
+        this.buildingId = buildingId;
+        this.team = team;
         this.life = life;
         this.kind = kind;
         setImageView(imageView);
@@ -24,28 +31,12 @@ public class Building {
         busy = false;
     }
 
-    public static void setIsActive(boolean isActive) {
-        Building.isActive = isActive;
-    }
-
-    public static boolean isActive() {
-        return isActive;
-    }
-
-    public int getLife() {
+    int getLife() {
         return life;
-    }
-
-    public void setLife(int life) {
-        this.life = life;
     }
 
     Tiles getPos() {
         return pos;
-    }
-
-    public ImageView getImageView() {
-        return imageView;
     }
 
     public BuildingKind getKind() {
@@ -65,25 +56,48 @@ public class Building {
         return busy;
     }
 
-    protected void setBusy(boolean busy) {
+    private void setBusy(boolean busy) {
         this.busy = busy;
     }
 
     private void setImageView(ImageView imageView) {
         imageView.setOnMouseClicked(event -> {
-            if (Main.getGame().getGraphic().getSelectedPerson() != null) {
-                if (isBusy()) {
-                    System.out.println("In Use");
-                } else {
-                    Main.getGame().getGraphic().getSelectedPerson().setBuilding(this);
-                    Main.getGame().getGraphic().getSelectedPerson().move(getPos().i, getPos().j);
+            if (team == Main.getGame().getThisPlayer().getID()) {
+                if (Main.getGame().getGraphic().getSelectedPerson() != null) {
+                    if (!isBusy()) {
+                        Main.getGame().getGraphic().getSelectedPerson().setBuilding(this);
+                        Main.getGame().getGraphic().getSelectedPerson().move(getPos().i, getPos().j);
+                    }
                 }
-
+            } else {
+                if (Main.getGame().getGraphic().getSelectedPerson() != null) {
+                    Main.getGame().getGraphic().getSelectedPerson().move(pos.i, pos.j);
+                }
             }
         });
         this.imageView = imageView;
     }
 
-    protected void collect() {
+    void reduceLif(int attackPower) {
+        life -= attackPower;
+        if (life < 0) {
+            Main.getGame().destroyBuilding(this);
+        }
     }
+
+    public ImageView getImage() {
+        return imageView;
+    }
+
+    int getBuildingId() {
+        return buildingId;
+    }
+
+    int getTeam() {
+        return team;
+    }
+
+    protected abstract void collect(Person person);
+
+    public abstract void destroy();
 }

@@ -40,7 +40,10 @@ public class Person {
         if (team == Main.getGame().getThisPlayer().getID()) {
             attackListener = new AttackListener(this);
             Main.getGame().getPlayer(team).addAttackListener(attackListener);
-            Main.getGame().getServerListener().sendCommand("create_person", getTeam(), personID, j, i, attackPower);
+            if (this instanceof Soldier)
+                Main.getGame().getServerListener().sendCommand("create_soldier", getTeam(), personID, j, i);
+            else
+                Main.getGame().getServerListener().sendCommand("create_person", getTeam(), personID, j, i, attackPower);
         }
     }
 
@@ -52,11 +55,17 @@ public class Person {
     }
 
     public void attack(Person p) {
-        p.reduceLife();
+        p.reduceLife(attackPower);
         System.out.println(team + "\t" + personID + "\t" + this.life + "\t" + p.team + "\t" + p.personID + "\t" + p.life);
     }
 
-    private synchronized void reduceLife() {
+    public void attack(Building building) {
+        building.reduceLif(attackPower);
+        System.out.println(building.getLife() + "\t" + building.getBuildingId());
+
+    }
+
+    private void reduceLife(int attackPower) {
         life -= attackPower;
         if (life < 0) {
             Main.getGame().killPerson(this);
@@ -71,6 +80,10 @@ public class Person {
 
     public void move(int iGoal, int jGoal, int playerID) {
         ArrayList<Tiles> list = (new PathFinder()).findPath(i, j, iGoal, jGoal, playerID);
+        if (list == null) {
+            System.out.println("Can Not Go There :/");
+            return;
+        }
         Path path = new Path();
         path.getElements().add(new MoveTo(16, 16));
         list.remove(0);
@@ -97,7 +110,7 @@ public class Person {
             if (team == Main.getGame().getThisPlayer().getID())
                 Main.getGame().getGraphic().setSelectedPerson(null);
             if (building != null) {
-                building.collect();
+                building.collect(this);
             }
         });
         if (getTeam() == Main.getGame().getThisPlayer().getID()) {
@@ -164,4 +177,5 @@ public class Person {
     public void setAttackPower(int attackPower) {
         this.attackPower = attackPower;
     }
+
 }

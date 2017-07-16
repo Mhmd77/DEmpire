@@ -11,11 +11,9 @@ public class PathFinder {
         closeList = new ArrayList<Tiles>();
     }
 
-    public ArrayList<Tiles> findPath(int i, int j, int iGoal, int jGoal) {
-        return findPath(i, j, iGoal, jGoal, Main.getGame().getThisPlayer().getID());
-    }
-
-    public ArrayList<Tiles> findPath(int i, int j, int iGoal, int jGoal, int id) {
+    ArrayList<Tiles> findPath(int i, int j, int iGoal, int jGoal, int id) {
+        if (isFreeLand(iGoal, jGoal) == 1)//It's Not Free
+            return null;
         Tiles[][] tiles = new Tiles[80][100];
         int world[][] = MapLoader.getWorld();
         for (int k = 0; k < 80; k++) {

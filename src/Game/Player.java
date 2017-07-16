@@ -26,7 +26,7 @@ public class Player {
         return speedPerson;
     }
 
-    void createPersons(int n) {
+    void createFirstPersons(int n) {
         for (int j = 0, s = 0; s < n; j++, s++) {
             if (j < 0 || j > 59) {
                 s--;
@@ -38,9 +38,27 @@ public class Player {
         }
     }
 
-    public void createEnemyPerson(int personId, int attackPower, int j, int i) {
-        Person p = new Person(personId, j, this.id, "Images/romanSoldier.png", i,attackPower);
-        persons.add(p);
+    void createPersonByArmy(int kind) {
+        ArmyBuilding army = getArmy();
+        if (army != null) {
+            Tiles pos = army.getPos();
+            Person person;
+            if (kind == 0)
+                person = new Person(persons.size(), pos.j + 5, this.id, "Images/romanSoldier.png", pos.i + 5);
+            else
+                person = new Soldier(persons.size(), pos.j + 5, this.id, "Images/romanSoldier.png", pos.i + 5);
+            persons.add(person);
+        }
+    }
+
+    public void createEnemyPerson(int personId, int attackPower, int j, int i, int kind) {
+        Person person;
+        if (kind == 0)
+            person = new Person(personId, j, this.id, "Images/romanSoldier.png", i, attackPower);
+        else
+            person = new Soldier(personId, j, this.id, "Images/romanSoldier.png", i);
+
+        persons.add(person);
     }
 
     public int getID() {
@@ -82,7 +100,12 @@ public class Player {
                 return (CastleBuilding) building;
             }
         }
-        System.out.println("null");
+        return null;
+    }
+
+    private ArmyBuilding getArmy() {
+        for (Building b : buildings)
+            if (b instanceof ArmyBuilding) return (ArmyBuilding) b;
         return null;
     }
 
@@ -94,16 +117,43 @@ public class Player {
         return null;
     }
 
+    public Building getBuildingByID(int id) {
+        for (Building building :
+                buildings)
+            if (building.getBuildingId() == id)
+                return building;
+        return null;
+    }
+
     void removePerson(Person person) {
         persons.remove(person);
         Platform.runLater(() -> Main.getGame().getGraphic().removeNode(person.getPersonImage()));
     }
 
-    public List<Person> getPersons() {
+    void removeBuilding(Building building) {
+        buildings.remove(building);
+        building.destroy();
+        Platform.runLater(() -> Main.getGame().getGraphic().removeNode(building.getImage()));
+    }
+
+    List<Person> getPersons() {
         return persons;
     }
 
-    public void addAttackListener(AttackListener attackListener) {
+    void addAttackListener(AttackListener attackListener) {
         executor.execute(attackListener);
+    }
+
+    List<Building> getBuildings() {
+        return buildings;
+    }
+
+    int getAmountPersons() {
+        int amount = 0;
+        for (Person p :
+                persons)
+            if(p instanceof Soldier) amount += 2;
+        amount += persons.size() - amount / 2;
+        return amount;
     }
 }

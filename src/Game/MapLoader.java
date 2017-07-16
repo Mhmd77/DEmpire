@@ -15,22 +15,15 @@ import java.util.List;
 public class MapLoader {
     private static int[][] world;
 
-    public  List<Image> getImages() {
-        return images;
-    }
-
     private  List<Image> images;
-    public static List<TileImageView> tileImages;
-    private static final int TILE_SIZE = 16;
-    private static final int WIDTH = 80;
-    private static final int HEIGHT = 60;
+    private static final int WIDTH = 100;
+    private static final int HEIGHT = 80;
 
     MapLoader() {
         world = new int[HEIGHT][WIDTH];
         images = new ArrayList<>();
-        tileImages=new ArrayList<>();
         for (int i = 1; i <= 1024; i++) {
-            String imageFileName = "Images/world_image_";
+            String imageFileName = "Images/wolrd_image_";
             imageFileName += i + ".png";
             Image image = new Image(imageFileName);
             images.add(image);
@@ -44,7 +37,7 @@ public class MapLoader {
 
     private void loadMap() {
         String line = null;
-        try (BufferedReader br = new BufferedReader(new FileReader("GameWorld.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("newGameWorld.csv"))) {
             for (int i = 0; (line = br.readLine()) != null; i++) {
                 String[] cells = line.split(",");
                 for (int j = 0; j < cells.length; j++)
@@ -66,20 +59,8 @@ public class MapLoader {
                 img.setLayoutX(16 * j);
                 img.setLayoutY(16 * i);
                 pane.getChildren().add(img);
-                tileImages.add(img);
            //     img.setMouseClickListener();
             }
         return pane;
-    }
-
-    static boolean isFree(int i, int j) {
-        if (Main.getGame().getGraphic().getDragImage() instanceof HarborImageView) {
-            for (int m = 0; m < 6; m++)
-                if (world[i][j] == m + 598 || world[i][j] == m + 758)
-                    return true;
-
-            return world[i][j] == 630 || world[i][j] == 662 || world[i][j] == 694 || world[i][j] == 726;
-        }
-        return world[i][j] == 0 || world[i][j] == 1 || world[i][j] == 32 || world[i][j] == 33;
     }
 }

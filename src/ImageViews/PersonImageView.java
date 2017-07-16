@@ -30,7 +30,7 @@ public class PersonImageView extends ImageView {
                     getOwnPerson().setRoamEnded(true);
                 }
             } else if (Main.getGame().getGraphic().getSelectedPerson() != null) {
-                System.out.println("Attack Incoming.");
+                Main.getGame().getGraphic().getSelectedPerson().move(ownPerson.getI() ,ownPerson.getJ());
                 Main.getGame().getGraphic().getSelectedPerson().attack(getOwnPerson());
             }
             event.consume();

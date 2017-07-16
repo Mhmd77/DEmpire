@@ -1,14 +1,10 @@
 package ImageViews;
 
 import Game.Main;
-import javafx.event.EventHandler;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseDragEvent;
-import javafx.scene.input.MouseEvent;
-
-import java.lang.reflect.Array;
 import java.util.List;
 
 public class TileImageView extends ImageView {
@@ -23,15 +19,16 @@ public class TileImageView extends ImageView {
         setDragExited();
         setDragReleased();
         mouseClicked();
-
     }
 
     public void mouseClicked() {
         this.setOnMouseClicked(event -> {
             if (Main.getGame().getGraphic().getSelectedPerson() != null
                     && Main.getGame().getGraphic().getSelectedPerson().isRoamEnded()&& event.getButton() == MouseButton.PRIMARY) {
+
                 Main.getGame().getGraphic().getSelectedPerson().setRoamEnded(false);
                 Main.getGame().getGraphic().getSelectedPerson().move(this.i, this.j);
+
             } else if (Main.getGame().getGraphic().getSelectedPerson() != null && event.getButton() == MouseButton.SECONDARY) {
                 Main.getGame().getGraphic().setSelectedPerson(null);
                 System.out.println("Person Unselected");

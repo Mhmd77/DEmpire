@@ -39,7 +39,7 @@ public class ServerListener extends Thread {
         }
     }
 
-    public void sendCommand(String op, int... values) {
+    public synchronized void sendCommand(String op, int... values) {
 
         StringBuilder str = new StringBuilder();
         str.append(values[0]).append("-");

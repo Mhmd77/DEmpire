@@ -50,6 +50,8 @@ public class Main {
         Scene scene = new Scene(root, WIDTH, HEIGHT, Color.web("#dddddd"));
         stage.setScene(scene);
     }
+
+
     private void createTopMenu(VBox root) {
         List<Resource> resources = game.getResources();
         HBox topMenu = new HBox();

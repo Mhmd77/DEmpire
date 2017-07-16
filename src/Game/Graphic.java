@@ -47,7 +47,7 @@ public class Graphic {
                     (event.getDeltaY() > 0)
                             ? SCALE_DELTA
                             : 1 / SCALE_DELTA;
-            if (pane.getScaleX() < 0.65 && event.getDeltaY() < 0) ;
+            if (pane.getScaleX() < 0.55 && event.getDeltaY() < 0) ;
             else if (pane.getScaleX() > 1.1 && event.getDeltaY() > 0) ;
             else {
                 pane.setScaleX(pane.getScaleX() * scaleFactor);
@@ -66,7 +66,7 @@ public class Graphic {
             }
             if (event.getSceneY() < 70 + 25) {
                 scrollPane.setVvalue(scrollPane.getVvalue() - ScreenMovingSpeed);
-            } else if (event.getSceneY() > Main.HEIGHT - 110) {
+            } else if (event.getScreenY() > 678 - 50) {
                 scrollPane.setVvalue(scrollPane.getVvalue() + ScreenMovingSpeed);
             }
         });
@@ -123,7 +123,6 @@ public class Graphic {
         if (kind == BuildingKind.Castle.getValue()) {
             CastleBuilding castle = new CastleBuilding(100, j, i, BuildingKind.Castle, newImage);
             Main.getGame().getPlayer(id).addBuilding(castle);
-            Main.getGame().getPlayer(id).createPersons(10);
         } else if (kind == BuildingKind.Harbor.getValue()) {
             HarborBuilding castle = new HarborBuilding(50, j, i, BuildingKind.Harbor, newImage);
             Main.getGame().getPlayer(id).addBuilding(castle);
@@ -152,7 +151,7 @@ public class Graphic {
     }
 
     public Node getNodeByRowColumnIndex(int i, int j) {
-        return pane.getChildren().get(i * 80 + j);
+        return pane.getChildren().get(i * 100 + j);
     }
 
     public void setSelectedPerson(Person selectedPerson) {
@@ -163,5 +162,8 @@ public class Graphic {
         return selectedPerson;
     }
 
+    public void removeNode(PersonImageView personImage) {
+        pane.getChildren().remove(personImage);
+    }
 }
 

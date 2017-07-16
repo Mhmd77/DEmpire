@@ -16,10 +16,10 @@ public class PathFinder {
     }
 
     public ArrayList<Tiles> findPath(int i, int j, int iGoal, int jGoal, int id) {
-        Tiles[][] tiles = new Tiles[60][80];
+        Tiles[][] tiles = new Tiles[80][100];
         int world[][] = MapLoader.getWorld();
-        for (int k = 0; k < 60; k++) {
-            for (int l = 0; l < 80; l++) {
+        for (int k = 0; k < 80; k++) {
+            for (int l = 0; l < 100; l++) {
                 Tiles t = new Tiles();
                 t.id = world[k][l];
                 t.i = k;
@@ -56,7 +56,10 @@ public class PathFinder {
     }
 
     private int isFreeLand(int i, int j) {
-        int[] nFreeTile = new int[]{0, 1, 32, 33};
+        int[] nFreeTile = new int[]{0, 1, 32, 33, 21, 30, 31, 53, 62, 63, 85, 94, 95, 117, 126, 127, 149, 158, 159, 190, 191, 214, 215, 216, 217,
+                218, 219, 222, 223, 246, 247, 248, 249, 250, 251, 254, 255, 278, 279, 280, 281, 282, 283, 310, 311, 312, 313, 314, 315, 342,
+                343, 344, 345, 346, 347, 374, 375, 376, 377, 378, 379, 590, 591, 622, 623};
+
         int[] nMineTile = new int[]{6, 7, 8, 19, 34, 38, 39, 40, 41, 45, 46, 47, 48, 49, 50, 65, 66, 69, 70, 71, 72, 73, 74, 76,
                 77, 78, 79, 80, 81, 82, 97, 98, 99, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114,
                 129, 130, 131, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 161, 162, 163, 164, 165, 169,
@@ -112,7 +115,7 @@ public class PathFinder {
             }
         }
 
-        if (i <= 58 && j >= 1) {
+        if (i <= 78 && j >= 1) {
             if (isFreeLand(i + 1, j - 1) == 0) {
                 result.add(tiles[i + 1][j - 1]);
             } else if (isFreeLand(i + 1, j - 1) == 2 && Main.getGame().getPlayer(id).isClimbing()) {
@@ -120,14 +123,14 @@ public class PathFinder {
             }
         }
 
-        if (i <= 58 && j >= 1) {
+        if (i <= 78 && j >= 1) {
             if (isFreeLand(i + 1, j) == 0) {
                 result.add(tiles[i + 1][j]);
             } else if (isFreeLand(i + 1, j) == 2 && Main.getGame().getPlayer(id).isClimbing()) {
                 result.add(tiles[i + 1][j]);
             }
         }
-        if (i <= 58 && j <= 78) {
+        if (i <= 58 && j <= 98) {
             if (isFreeLand(i + 1, j + 1) == 0) {
                 result.add(tiles[i + 1][j + 1]);
             } else if (isFreeLand(i + 1, j + 1) == 2 && Main.getGame().getPlayer(id).isClimbing()) {
@@ -144,7 +147,7 @@ public class PathFinder {
             }
         }
 
-        if (i >= 1 && j <= 78) {
+        if (i >= 1 && j <= 98) {
             if (isFreeLand(i - 1, j + 1) == 0) {
                 result.add(tiles[i - 1][j + 1]);
             } else if (isFreeLand(i - 1, j + 1) == 2 && Main.getGame().getPlayer(id).isClimbing()) {

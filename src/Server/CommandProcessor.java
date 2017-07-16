@@ -1,6 +1,8 @@
 package Server;
 
 import Game.Main;
+import Game.Person;
+import Game.Player;
 import javafx.application.Platform;
 
 import java.util.*;
@@ -42,9 +44,23 @@ public class CommandProcessor extends Thread {
             int i = Integer.parseInt(values[2]);
             int j = Integer.parseInt(values[3]);
             int personID = Integer.parseInt(values[4]);
-            Platform.runLater(() -> Main.getGame().getPlayer(id).getPersons().get(personID).move(i, j, id));
-        } else if (values[1].equals("change_climbing")) {
-            Main.getGame().getPlayer(id).changeClimbing();
+            Platform.runLater(() -> Main.getGame().getPlayer(id).getPersonByID(personID).move(i, j, id));
+        } else if (values[1].equals("person_stop")) {
+            Person person = Main.getGame().getPlayer(id).getPersonByID(Integer.parseInt(values[2]));
+            if (person != null) {
+                person.stopTransition();
+            }
+        } else if (values[1].equals("create_person")) {
+            Platform.runLater(() -> Main.getGame().getPlayer(id).createEnemyPerson(Integer.parseInt(values[2]), Integer.parseInt(values[5]), Integer.parseInt(values[3]), Integer.parseInt(values[4])));
+        } else {
+            if (values[1].equals("change_climbing")) {
+                Main.getGame().getPlayer(id).changeClimbing();
+            } else if (values[1].equals("attack")) {
+                Person attacker = Main.getGame().getPlayer(id).getPersonByID(Integer.parseInt(values[2]));
+                Person defender = Main.getGame().getPlayer(Integer.parseInt(values[3])).getPersonByID(Integer.parseInt(values[4]));
+                if (attacker != null && defender != null)
+                    attacker.attack(defender);
+            }
         }
 
     }

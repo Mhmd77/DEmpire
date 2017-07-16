@@ -12,7 +12,6 @@ import java.util.*;
 public class Game {
     private boolean started = false;
     private List<Player> players;
-    private File mapFile;
     private Graphic graphic;
     private ServerListener serverListener;
     private List<Resource> resources;
@@ -93,4 +92,22 @@ public class Game {
         return started;
     }
 
+    List<Person> getEnemyPersons() {
+        List<Person> enemies = new ArrayList<Person>();
+        for (Player p :
+                players)
+            if (!p.equals(getThisPlayer())) {
+                enemies.addAll(p.getPersons());
+            }
+        return enemies;
+    }
+
+    public void killPerson(Person person) {
+        for (Player p :
+                players)
+            if (p.getPersons().contains(person)) {
+                p.removePerson(person);
+                return;
+            }
+    }
 }

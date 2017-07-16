@@ -56,8 +56,8 @@ public class BuildingImageView extends ImageView {
             return null;
         if (isFreeLand(i, j)) {
             freeTiles = new ArrayList<>();
-            for (int m = i - 1; m >= 0 && m < 60 && m < i + 3; m++) {
-                for (int k = j - 1; k >= 0 && k < 80 && k < j + 3; k++) {
+            for (int m = i - 1; m >= 0 && m < 80 && m < i + 3; m++) {
+                for (int k = j - 1; k >= 0 && k < 100 && k < j + 3; k++) {
                     TileImageView img = (TileImageView) Main.getGame().getGraphic().getNodeByRowColumnIndex(m, k);
                     if (!isFreeLand(img.getI(), img.getJ()))
                         return null;

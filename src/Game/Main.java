@@ -85,8 +85,8 @@ public class Main {
     }
 
     private void addSoldierImages(HBox hBox) {
-        ImageView person = new ImageView("Images/romanSoldier.png");
-        ImageView soldier = new ImageView("Images/romanSoldier.png");
+        ImageView person = new ImageView();
+        ImageView soldier = new ImageView();
         HBox.setMargin(person, new Insets(0, 5, 0, 0));
         hBox.getChildren().addAll(person, soldier);
         person.setOnMouseClicked(event -> game.getThisPlayer().createPersonByArmy(0));

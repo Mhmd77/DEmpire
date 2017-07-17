@@ -33,7 +33,7 @@ public class Player {
                 continue;
             }
             Tiles pos = getCastle().getPos();
-            Person p = new Person(persons.size(), pos.j + j, this.id, "Images/romanSoldier.png", pos.i + 5);
+            Person p = new Person(persons.size(), pos.j + j, this.id, pos.i + 5);
             persons.add(p);
         }
     }
@@ -44,9 +44,9 @@ public class Player {
             Tiles pos = army.getPos();
             Person person;
             if (kind == 0)
-                person = new Person(persons.size(), pos.j + 5, this.id, "Images/romanSoldier.png", pos.i + 5);
+                person = new Person(persons.size(), pos.j + 5, this.id,  pos.i + 5);
             else
-                person = new Soldier(persons.size(), pos.j + 5, this.id, "Images/romanSoldier.png", pos.i + 5);
+                person = new Soldier(persons.size(), pos.j + 5, this.id, pos.i + 5);
             persons.add(person);
         }
     }
@@ -54,9 +54,9 @@ public class Player {
     public void createEnemyPerson(int personId, int attackPower, int j, int i, int kind) {
         Person person;
         if (kind == 0)
-            person = new Person(personId, j, this.id, "Images/romanSoldier.png", i, attackPower);
+            person = new Person(personId, j, this.id, i, attackPower);
         else
-            person = new Soldier(personId, j, this.id, "Images/romanSoldier.png", i);
+            person = new Soldier(personId, j, this.id,  i);
 
         persons.add(person);
     }

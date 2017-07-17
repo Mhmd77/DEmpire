@@ -14,13 +14,13 @@ public enum BuildingKind {
         ImageView image = null;
         switch (this) {
             case Castle:
-                image = new ImageView("Images/castle.png");
+                image = new ImageView("Images/castle1.png");
                 break;
             case Harbor:
                 image = new ImageView("Images/harbor.png");
                 break;
             case Lumber:
-                image = new ImageView("Images/mine.png");
+                image = new ImageView("Images/lumber.png");
                 break;
             case Mine:
                 image = new ImageView("Images/mine.png");
@@ -29,7 +29,7 @@ public enum BuildingKind {
                 image = new ImageView("Images/army.png");
                 break;
             case Farm:
-                image = new ImageView("Images/army.png");
+                image = new ImageView("Images/farm.png");
         }
         return image;
     }

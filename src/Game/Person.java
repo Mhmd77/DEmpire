@@ -26,23 +26,25 @@ public class Person {
     private AttackListener attackListener;
     private String location;
 
-    Person(int personID, int j, int team, String location, int i, int attackPower) {
-        this(personID, j, team, location, i);
+    Person(int personID, int j, int team, int i, int attackPower) {
+        this(personID, j, team, i);
 
-        if (this.getTeam()==0){
-            location="Images/romanSoldier.png";
+        if (team == 0) {
+            location = "Images/romanSoldier.png";
+        } else {
+            location = "Images/romanSoldier2.png";
         }
-        else
-        {
-            location="Images/romanSoldier2.png";
-
-        }
-        this.location = location;
+        System.out.println(team + "");
         setAttackPower(attackPower);
     }
 
-    Person(int personID, int j, int team, String location, int i) {
-        this.location = location;
+    Person(int personID, int j, int team, int i) {
+
+        if (team == 0) {
+            location = "Images/romanSoldier.png";
+        } else {
+            location = "Images/romanSoldier2.png";
+        }
         setInfo();
         this.personID = personID;
         personImage = new PersonImageView(location, i, j, this);

@@ -60,7 +60,7 @@ public class ServerListener extends Thread {
     }
 
     private void sendCommand(String msg) {
-        DataOutputStream dataOutputStream = null;
+        DataOutputStream dataOutputStream;
         try {
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
             dataOutputStream.writeUTF(msg);

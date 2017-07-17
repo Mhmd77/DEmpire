@@ -24,16 +24,28 @@ public class Person {
     private PathTransition pathTransition;
     private boolean roamEnded = true;
     private AttackListener attackListener;
+    private String location;
 
-    Person(int personID, int j, int team, String loc, int i, int attackPower) {
-        this(personID, j, team, loc, i);
+    Person(int personID, int j, int team, String location, int i, int attackPower) {
+        this(personID, j, team, location, i);
+
+        if (this.getTeam()==0){
+            location="Images/romanSoldier.png";
+        }
+        else
+        {
+            location="Images/romanSoldier2.png";
+
+        }
+        this.location = location;
         setAttackPower(attackPower);
     }
 
-    Person(int personID, int j, int team, String loc, int i) {
+    Person(int personID, int j, int team, String location, int i) {
+        this.location = location;
         setInfo();
         this.personID = personID;
-        personImage = new PersonImageView(loc, i, j, this);
+        personImage = new PersonImageView(location, i, j, this);
         this.team = team;
         this.i = i;
         this.j = j;

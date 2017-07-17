@@ -19,23 +19,7 @@ public class StartClass extends Application {
         launch(args);
     }
 
-    /*private void printNumbers() {
-        Set<Integer> s = new HashSet<>();
 
-        int[][] world = MapLoader.getWorld();
-        for (int i = 0; i < 80; i++) {
-            for (int j = 0; j < 100; j++)
-                if (i < 21 && i > 9 && j > 43 && j < 54)
-                    s.add(world[i][j]);
-        }
-        List<Integer> sortedList = new ArrayList<>(s);
-        Collections.sort(sortedList);
-        for (int a :
-                sortedList) {
-            System.out.print(a + ",");
-        }
-
-    }*/
     private List getFreeNumbers() {
         Integer[] b = {0, 1, 32, 33, 21, 30, 31, 53, 62, 63, 85, 94, 95, 117, 126, 127, 149, 158, 159, 190, 191, 214, 215, 216, 217,
                 218, 219, 222, 223, 246, 247, 248, 249, 250, 251, 254, 255, 278, 279, 280, 281, 282, 283, 310, 311, 312, 313, 314, 315, 342,

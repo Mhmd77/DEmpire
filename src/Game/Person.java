@@ -1,6 +1,7 @@
 package Game;
 
 import ImageViews.PersonImageView;
+import javafx.animation.Animation;
 import javafx.animation.PathTransition;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -119,20 +120,22 @@ public class Person {
     }
 
     public void stopTransition() {
-        roamEnded = true;
-        pathTransition.stop();
-        double x = personImage.getLayoutX() + personImage.getTranslateX();
-        double y = personImage.getLayoutY() + personImage.getTranslateY();
-        personImage.relocate(x, y);
-        personImage.setTranslateX(0);
-        personImage.setTranslateY(0);
-        i = (int) (y / 16);
-        j = (int) (x / 16);
-        personImage.setInJ(i, j);
-        Main.getGame().getGraphic().setSelectedPerson(null);
-        if (getTeam() == Main.getGame().getThisPlayer().getID()) {
+        if (pathTransition != null && pathTransition.getStatus() == Animation.Status.RUNNING) {
+            roamEnded = true;
+            pathTransition.stop();
+            double x = personImage.getLayoutX() + personImage.getTranslateX();
+            double y = personImage.getLayoutY() + personImage.getTranslateY();
+            personImage.relocate(x, y);
+            personImage.setTranslateX(0);
+            personImage.setTranslateY(0);
+            i = (int) (y / 16);
+            j = (int) (x / 16);
+            personImage.setInJ(i, j);
             Main.getGame().getGraphic().setSelectedPerson(null);
-            Main.getGame().getServerListener().sendCommand("person_stop", team, getPersonID());
+            if (getTeam() == Main.getGame().getThisPlayer().getID()) {
+                Main.getGame().getGraphic().setSelectedPerson(null);
+                Main.getGame().getServerListener().sendCommand("person_stop", team, getPersonID());
+            }
         }
     }
 

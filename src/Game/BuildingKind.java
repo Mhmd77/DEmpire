@@ -14,7 +14,7 @@ public enum BuildingKind {
         ImageView image = null;
         switch (this) {
             case Castle:
-                image = new ImageView("Images/castle.png");
+                image = new ImageView("Images/castle1.png");
                 break;
             case Harbor:
                 image = new ImageView("Images/harbor.png");

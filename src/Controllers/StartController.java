@@ -24,7 +24,7 @@ public class StartController implements Initializable {
             try {
                 Main main = new Main();
                 Game game = Main.getGame();
-                Socket socket = new Socket("localhost", 8888);
+                Socket socket = new Socket("192.168.100.85", 8888);
                 DataInputStream inputStream = new DataInputStream(socket.getInputStream());
                 int thisID = inputStream.readInt();
                 System.out.println("Registered As " + thisID);

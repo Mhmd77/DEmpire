@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -20,6 +21,7 @@ public class StartClass extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        primaryStage.getIcons().add(new Image("Images/logo.png"));
         Pane root = FXMLLoader.load(Main.class.getResource("FXML/fxml_start_layout.fxml"));
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         primaryStage.setScene(scene);

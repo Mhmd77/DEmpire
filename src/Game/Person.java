@@ -1,6 +1,7 @@
 package Game;
 
 import ImageViews.PersonImageView;
+import javafx.animation.Animation;
 import javafx.animation.PathTransition;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -14,9 +15,9 @@ public class Person {
     private int personID;
     protected int i;
     protected int j;
-    protected int life;
-    protected int foodAmount;
-    protected int attackPower;
+    private int life;
+    private int foodAmount;
+    private int attackPower;
     private int team;
     private Building building;
     private PersonImageView personImage;
@@ -24,14 +25,26 @@ public class Person {
     private boolean roamEnded = true;
     private AttackListener attackListener;
 
-    Person(int personID, int j, int team, String loc, int i, int attackPower) {
-        this(personID, j, team, loc, i);
+    Person(int personID, int j, int team, int i, int attackPower) {
+        this(personID, j, team, i);
         setAttackPower(attackPower);
     }
 
-    Person(int personID, int j, int team, String loc, int i) {
+    Person(int personID, int j, int team, int i) {
         setInfo();
         this.personID = personID;
+        String loc;
+        if (this instanceof Soldier) {
+            if (team == 0)
+                loc = "Images/romanSoldier.png";
+            else
+                loc = "Images/romanSoldier2.png";
+        } else {
+            if (team == 0)
+                loc = "Images/person.png";
+            else
+                loc = "Images/person2.png";
+        }
         personImage = new PersonImageView(loc, i, j, this);
         this.team = team;
         this.i = i;
@@ -111,6 +124,7 @@ public class Person {
                 Main.getGame().getGraphic().setSelectedPerson(null);
             if (building != null) {
                 building.collect(this);
+                personImage.setMouseTransparent(true);
             }
         });
         if (getTeam() == Main.getGame().getThisPlayer().getID()) {
@@ -119,20 +133,22 @@ public class Person {
     }
 
     public void stopTransition() {
-        roamEnded = true;
-        pathTransition.stop();
-        double x = personImage.getLayoutX() + personImage.getTranslateX();
-        double y = personImage.getLayoutY() + personImage.getTranslateY();
-        personImage.relocate(x, y);
-        personImage.setTranslateX(0);
-        personImage.setTranslateY(0);
-        i = (int) (y / 16);
-        j = (int) (x / 16);
-        personImage.setInJ(i, j);
-        Main.getGame().getGraphic().setSelectedPerson(null);
-        if (getTeam() == Main.getGame().getThisPlayer().getID()) {
+        if (pathTransition != null && pathTransition.getStatus() == Animation.Status.RUNNING) {
+            roamEnded = true;
+            pathTransition.stop();
+            double x = personImage.getLayoutX() + personImage.getTranslateX();
+            double y = personImage.getLayoutY() + personImage.getTranslateY();
+            personImage.relocate(x, y);
+            personImage.setTranslateX(0);
+            personImage.setTranslateY(0);
+            i = (int) (y / 16);
+            j = (int) (x / 16);
+            personImage.setInJ(i, j);
             Main.getGame().getGraphic().setSelectedPerson(null);
-            Main.getGame().getServerListener().sendCommand("person_stop", team, getPersonID());
+            if (getTeam() == Main.getGame().getThisPlayer().getID()) {
+                Main.getGame().getGraphic().setSelectedPerson(null);
+                Main.getGame().getServerListener().sendCommand("person_stop", team, getPersonID());
+            }
         }
     }
 
@@ -148,11 +164,11 @@ public class Person {
         return team;
     }
 
-    public int getPersonID() {
+    int getPersonID() {
         return personID;
     }
 
-    public PersonImageView getPersonImage() {
+    PersonImageView getPersonImage() {
         return personImage;
     }
 
@@ -170,11 +186,11 @@ public class Person {
         else return (int) (personImage.getLayoutY() + personImage.getTranslateY()) / 16;
     }
 
-    public AttackListener getAttackListener() {
+    AttackListener getAttackListener() {
         return attackListener;
     }
 
-    public void setAttackPower(int attackPower) {
+    private void setAttackPower(int attackPower) {
         this.attackPower = attackPower;
     }
 

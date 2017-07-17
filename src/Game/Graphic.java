@@ -18,7 +18,7 @@ public class Graphic {
     private final Double ScreenMovingSpeed = 0.05;
 
 
-    public Graphic(Pane pane) {
+    Graphic(Pane pane) {
         this.pane = pane;
         setGridScrollListener();
         setPaneMouseClickListener();
@@ -57,7 +57,7 @@ public class Graphic {
         });
     }
 
-    public void setMouseMoveOnNode(Node node) {
+    private void setMouseMoveOnNode(Node node) {
         node.setOnMouseMoved(event -> {
             if (event.getSceneX() < 25) {
                 scrollPane.setHvalue(scrollPane.getHvalue() - ScreenMovingSpeed);
@@ -94,24 +94,27 @@ public class Graphic {
         ImageView newImage = new ImageView(dragImage.getImage());
         add(newImage, j, i);
         if (dragImage instanceof HarborImageView) {
-            building = new HarborBuilding(100, Main.getGame().getThisPlayer().getID(), j, i, BuildingKind.Harbor, newImage);
+            building = new HarborBuilding(3000, Main.getGame().getThisPlayer().getID(), j, i, BuildingKind.Harbor, newImage);
             kind = BuildingKind.Harbor;
         } else if (dragImage instanceof LumberImageView) {
-            building = new LumberBuilding(100, Main.getGame().getThisPlayer().getID(), j, i, BuildingKind.Harbor, newImage);
+            building = new LumberBuilding(1000, Main.getGame().getThisPlayer().getID(), j, i, BuildingKind.Harbor, newImage);
             kind = BuildingKind.Lumber;
         } else if (dragImage instanceof MineImageView) {
-            building = new MineBuilding(100, Main.getGame().getThisPlayer().getID(), j, i, BuildingKind.Harbor, newImage);
+            building = new MineBuilding(1000, Main.getGame().getThisPlayer().getID(), j, i, BuildingKind.Harbor, newImage);
             kind = BuildingKind.Mine;
         } else if (dragImage instanceof ArmyImageView) {
-            building = new ArmyBuilding(100, Main.getGame().getThisPlayer().getID(), j, i, BuildingKind.Army, newImage);
+            building = new ArmyBuilding(5000, Main.getGame().getThisPlayer().getID(), j, i, BuildingKind.Army, newImage);
             kind = BuildingKind.Army;
+        } else if (dragImage instanceof FarmImageView) {
+            building = new FarmBuilding(1000, Main.getGame().getThisPlayer().getID(), j, i, BuildingKind.Farm, newImage);
+            kind = BuildingKind.Farm;
         } else {
-            building = new CastleBuilding(100, Main.getGame().getThisPlayer().getID(), j, i, BuildingKind.Castle, newImage);
+            building = new CastleBuilding(10000, Main.getGame().getThisPlayer().getID(), j, i, BuildingKind.Castle, newImage);
             flag = true;
             kind = BuildingKind.Castle;
         }
         Main.getGame().getThisPlayer().addBuilding(building);
-        if(flag) Main.getGame().getThisPlayer().createFirstPersons(10);
+        if (flag) Main.getGame().getThisPlayer().createFirstPersons();
         dragImage = null;
         Main.getGame().getServerListener().sendCommand("building", Main.getGame().getThisPlayer().getID(), building.getBuildingId(), i, j, kind.getValue());
     }
@@ -120,20 +123,23 @@ public class Graphic {
         ImageView newImage = BuildingKind.getInstanceByKind(kind).getImageView();
         add(newImage, j, i);
         if (kind == BuildingKind.Castle.getValue()) {
-            CastleBuilding castle = new CastleBuilding(buildingId, 100, id, j, i, BuildingKind.Castle, newImage);
+            CastleBuilding castle = new CastleBuilding(buildingId, 10000, id, j, i, BuildingKind.Castle, newImage);
             Main.getGame().getPlayer(id).addBuilding(castle);
         } else if (kind == BuildingKind.Harbor.getValue()) {
-            HarborBuilding castle = new HarborBuilding(buildingId, 50, id, j, i, BuildingKind.Harbor, newImage);
+            HarborBuilding castle = new HarborBuilding(buildingId, 3000, id, j, i, BuildingKind.Harbor, newImage);
             Main.getGame().getPlayer(id).addBuilding(castle);
         } else if (kind == BuildingKind.Lumber.getValue()) {
-            LumberBuilding lumber = new LumberBuilding(buildingId, 70, id, j, i, BuildingKind.Lumber, newImage);
+            LumberBuilding lumber = new LumberBuilding(buildingId, 1000, id, j, i, BuildingKind.Lumber, newImage);
             Main.getGame().getPlayer(id).addBuilding(lumber);
         } else if (kind == BuildingKind.Mine.getValue()) {
-            MineBuilding mine = new MineBuilding(buildingId, 70, id, j, i, BuildingKind.Lumber, newImage);
+            MineBuilding mine = new MineBuilding(buildingId, 1000, id, j, i, BuildingKind.Lumber, newImage);
             Main.getGame().getPlayer(id).addBuilding(mine);
         } else if (kind == BuildingKind.Army.getValue()) {
-            ArmyBuilding army = new ArmyBuilding(buildingId, 100, id, j, i, BuildingKind.Army, newImage);
+            ArmyBuilding army = new ArmyBuilding(buildingId, 5000, id, j, i, BuildingKind.Army, newImage);
             Main.getGame().getPlayer(id).addBuilding(army);
+        } else if (kind == BuildingKind.Farm.getValue()) {
+            FarmBuilding farm = new FarmBuilding(buildingId, 1000, id, j, i, BuildingKind.Farm, newImage);
+            Main.getGame().getPlayer(id).addBuilding(farm);
         }
     }
 
@@ -161,7 +167,7 @@ public class Graphic {
         return selectedPerson;
     }
 
-    public void removeNode(Node node) {
+    void removeNode(Node node) {
         pane.getChildren().remove(node);
     }
 }

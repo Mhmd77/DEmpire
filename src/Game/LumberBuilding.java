@@ -3,11 +3,11 @@ package Game;
 import javafx.scene.image.ImageView;
 
 public class LumberBuilding extends Building {
-    public LumberBuilding(int life, int team, int x, int y, BuildingKind kind, ImageView imageView) {
+    LumberBuilding(int life, int team, int x, int y, BuildingKind kind, ImageView imageView) {
         super(life, team, x, y, kind, imageView);
     }
 
-    public LumberBuilding(int buildingId, int life, int team, int x, int y, BuildingKind kind, ImageView imageView) {
+    LumberBuilding(int buildingId, int life, int team, int x, int y, BuildingKind kind, ImageView imageView) {
         super(buildingId, life, team, x, y, kind, imageView);
     }
 
@@ -19,6 +19,8 @@ public class LumberBuilding extends Building {
 
     @Override
     public void destroy() {
-
+        Main.getGame().getResources().get(Resource.WOOD).reduceRatio();
+        getPerson().getAttackListener().cancel();
+        Main.getGame().killPerson(getPerson());
     }
 }

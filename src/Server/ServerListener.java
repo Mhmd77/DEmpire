@@ -6,9 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 public class ServerListener extends Thread {
     private Socket socket;
@@ -28,7 +26,7 @@ public class ServerListener extends Thread {
         while (true) {
             try {
                 DataInputStream inputStream = new DataInputStream(socket.getInputStream());
-                commandProcessor.addCommandLis(inputStream.readUTF());
+                commandProcessor.addCommandList(inputStream.readUTF());
             } catch (IOException e) {
                 try {
                     sleep(10);
@@ -47,7 +45,7 @@ public class ServerListener extends Thread {
         for (int i = 1; i < values.length; i++)
             str.append("-").append(values[i]);
         if (Main.getGame().isGameStarted()) {
-            DataOutputStream dataOutputStream = null;
+            DataOutputStream dataOutputStream;
             try {
                 dataOutputStream = new DataOutputStream(socket.getOutputStream());
                 dataOutputStream.writeUTF(str.toString());
@@ -55,12 +53,12 @@ public class ServerListener extends Thread {
                 e.printStackTrace();
             }
         } else {
-            commandProcessor.addCommandLis(str.toString());
+            commandProcessor.addCommandList(str.toString());
         }
     }
 
     private void sendCommand(String msg) {
-        DataOutputStream dataOutputStream = null;
+        DataOutputStream dataOutputStream;
         try {
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
             dataOutputStream.writeUTF(msg);

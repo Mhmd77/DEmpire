@@ -3,7 +3,10 @@ package Game;
 import Server.ServerListener;
 import javafx.application.Platform;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Game {
     private boolean started = false;
@@ -75,7 +78,7 @@ public class Game {
             timer.schedule(new TimerTask() {
                 public void run() {
                     Platform.runLater(() -> {
-                        R.addValue(100);
+                        R.addValue();
                         R.reduceValue(Main.getGame().getThisPlayer().getAmountPersons());
                     });
                 }

@@ -2,7 +2,8 @@ package Game;
 
 import javafx.application.Platform;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -22,18 +23,18 @@ public class Player {
         executor = Executors.newCachedThreadPool();
     }
 
-    public double getSpeedPerson() {
+    double getSpeedPerson() {
         return speedPerson;
     }
 
-    void createFirstPersons(int n) {
-        for (int j = 0, s = 0; s < n; j++, s++) {
+    void createFirstPersons() {
+        for (int j = 0, s = 0; s < 10; j++, s++) {
             if (j < 0 || j > 59) {
                 s--;
                 continue;
             }
             Tiles pos = getCastle().getPos();
-            Person p = new Person(persons.size(), pos.j + j, this.id, "Images/romanSoldier.png", pos.i + 5);
+            Person p = new Person(persons.size(), pos.j + j, this.id, pos.i + 5);
             persons.add(p);
         }
     }
@@ -43,10 +44,16 @@ public class Player {
         if (army != null) {
             Tiles pos = army.getPos();
             Person person;
-            if (kind == 0)
-                person = new Person(persons.size(), pos.j + 5, this.id, "Images/romanSoldier.png", pos.i + 5);
-            else
-                person = new Soldier(persons.size(), pos.j + 5, this.id, "Images/romanSoldier.png", pos.i + 5);
+            if (kind == 0) {
+                person = new Person(persons.size(), pos.j + 5, this.id, pos.i + 5);
+                Main.getGame().getResources().get(Resource.FOOD).reduceValue(1000);
+            } else {
+                person = new Soldier(persons.size(), pos.j + 5, this.id, pos.i + 5);
+                Main.getGame().getResources().get(Resource.FOOD).reduceValue(2000);
+                Main.getGame().getResources().get(Resource.GOLD).reduceValue(250);
+                Main.getGame().getResources().get(Resource.WOOD).reduceValue(600);
+
+            }
             persons.add(person);
         }
     }
@@ -54,9 +61,9 @@ public class Player {
     public void createEnemyPerson(int personId, int attackPower, int j, int i, int kind) {
         Person person;
         if (kind == 0)
-            person = new Person(personId, j, this.id, "Images/romanSoldier.png", i, attackPower);
+            person = new Person(personId, j, this.id, i, attackPower);
         else
-            person = new Soldier(personId, j, this.id, "Images/romanSoldier.png", i);
+            person = new Soldier(personId, j, this.id, i);
 
         persons.add(person);
     }
@@ -90,9 +97,6 @@ public class Player {
         speedPerson /= 2;
     }
 
-    public void setPersons(Person persons) {
-        this.persons.add(persons);
-    }
 
     private CastleBuilding getCastle() {
         for (Building building : buildings) {
@@ -152,8 +156,9 @@ public class Player {
         int amount = 0;
         for (Person p :
                 persons)
-            if(p instanceof Soldier) amount += 2;
+            if (p instanceof Soldier) amount += 2;
         amount += persons.size() - amount / 2;
+        amount *= 10;
         return amount;
     }
 }

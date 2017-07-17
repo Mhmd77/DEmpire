@@ -1,7 +1,6 @@
 package Game;
 
 import ImageViews.*;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,8 +9,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class Main {
     static final int WIDTH = 960;
-    static final int HEIGHT = 780;
+    private static final int HEIGHT = 780;
     private static Game game;
     final static String BG_COLOR = "-fx-background-color: #dddddd";
 
@@ -85,8 +85,15 @@ public class Main {
     }
 
     private void addSoldierImages(HBox hBox) {
-        ImageView person = new ImageView("Images/romanSoldier.png");
-        ImageView soldier = new ImageView("Images/romanSoldier.png");
+        ImageView person;
+        ImageView soldier;
+        if (game.getThisPlayer().getID() == 0) {
+            person = new ImageView("Images/person.png");
+            soldier = new ImageView("Images/romanSoldier.png");
+        } else {
+            person = new ImageView("Images/person2.png");
+            soldier = new ImageView("Images/romanSoldier2.png");
+        }
         HBox.setMargin(person, new Insets(0, 5, 0, 0));
         hBox.getChildren().addAll(person, soldier);
         person.setOnMouseClicked(event -> game.getThisPlayer().createPersonByArmy(0));
@@ -97,9 +104,9 @@ public class Main {
         BuildingImageView src = new BuildingImageView("Images/castle.png");
         HarborImageView src2 = new HarborImageView("Images/harbor.png");
         MineImageView src3 = new MineImageView("Images/mine.png");
-        LumberImageView src4 = new LumberImageView("Images/mine.png");
+        LumberImageView src4 = new LumberImageView("Images/lumber.png");
         ArmyImageView src5 = new ArmyImageView("Images/army.png");
-        FarmImageView src6 = new FarmImageView("Images/army.png");
+        FarmImageView src6 = new FarmImageView("Images/farm.png");
         hBox.getChildren().addAll(src, src2, src3, src4, src5, src6);
     }
 
